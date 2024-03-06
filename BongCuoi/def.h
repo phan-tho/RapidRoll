@@ -6,8 +6,13 @@
 #include <string>
 #include <iostream>
 
-const int SCREEN_WIDTH  = 361;           // 640
-const int SCREEN_HEIGHT = 636;          // 480
+const int SCREEN_WIDTH  = 428;           // 640
+const int SCREEN_HEIGHT = 748;          // 480
+
+const int CEILING = 90;
+const int FLOOR   = 666;
+const int lPIVOT  = 40;
+const int rPIVOT  = 390;
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;

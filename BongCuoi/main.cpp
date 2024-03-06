@@ -47,7 +47,7 @@ int main( int argc, char* argv[] ){
 void loadMedia(){
     //Load dot texture
     gDotTexture.loadFromFile( "dot.bmp" );
-    gBackground.loadFromFile("background.png");
+    gBackground.loadFromFile("BackGr.png");
 }
 
 void close()

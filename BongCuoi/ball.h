@@ -9,8 +9,8 @@ class Dot
         static const int DOT_HEIGHT = 20;
 
         //Maximum axis velocity of the dot
-        static const int DOT_VEL = 3;
-        static const int DENTA_Y = 4;
+        static const int DOT_VEL = 2;
+        static const int DENTA_Y = 3;
 
         //Initializes the variables
         Dot();
@@ -67,7 +67,7 @@ void Dot::move()
     mPosX += mVelX;
 
     //If the dot went too far to the left or right
-    if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) ){
+    if( ( mPosX < lPIVOT ) || ( mPosX + DOT_WIDTH > rPIVOT ) ){
         //Move back
         mPosX -= 3*mVelX;
     }
@@ -76,18 +76,19 @@ void Dot::move()
     mPosY += DENTA_Y;
 
     //If the dot went too far up or down
-    if(mPosY + DOT_HEIGHT > SCREEN_HEIGHT)
+    if(mPosY + DOT_HEIGHT > FLOOR)
     {
         //Move back
-        mPosY = 0;
+        mPosY = CEILING + 50;
+        mPosX = (SCREEN_WIDTH - DOT_WIDTH)/2;
     }
 }
 
 Dot::Dot()
 {
     //Initialize the offsets
-    mPosX = 0;
-    mPosY = 0;
+    mPosY = CEILING + 50;
+    mPosX = (SCREEN_WIDTH - DOT_WIDTH)/2;
 
     //Initialize the velocity
     mVelX = 0;
