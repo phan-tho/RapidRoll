@@ -50,7 +50,7 @@ class LTexture
 void LTexture::loadFromFile(std::string path){
     freeFire();
     SDL_Surface* newSurface = IMG_Load(path.c_str());
-    SDL_SetColorKey(newSurface, SDL_TRUE, SDL_MapRGB(newSurface -> format, 0, 0xFF, 0xFF));             // set color key ==> alpha = max
+    SDL_SetColorKey(newSurface, SDL_TRUE, SDL_MapRGB(newSurface -> format, 0xFF, 0xFF, 0xFF));             // set color key ==> alpha = max
     mTexture = SDL_CreateTextureFromSurface(gRenderer, newSurface);
     if(mTexture != NULL){
         mWidth = newSurface->w;

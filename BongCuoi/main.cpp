@@ -4,7 +4,7 @@
 #include <iostream>
 
 LTexture gDotTexture;
-//LTexture gBackground;
+LTexture gBackground;
 
 int main( int argc, char* argv[] ){
     init();
@@ -28,10 +28,11 @@ int main( int argc, char* argv[] ){
         dot.move();
 
         //Clear screen
-        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+        SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
 
         //Render objects
+        gBackground.render(0, 0, NULL);
         gDotTexture.render(dot.getX(), dot.getY(), NULL);
 
         //Update screen
@@ -46,13 +47,14 @@ int main( int argc, char* argv[] ){
 void loadMedia(){
     //Load dot texture
     gDotTexture.loadFromFile( "dot.bmp" );
-//    gBackground.loadFromFile("background.png");
+    gBackground.loadFromFile("background.png");
 }
 
 void close()
 {
     //Free loaded images
     gDotTexture.freeFire();
+    gBackground.freeFire();
 
     //Destroy window
     SDL_DestroyRenderer( gRenderer );

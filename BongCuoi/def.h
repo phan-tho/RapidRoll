@@ -6,8 +6,8 @@
 #include <string>
 #include <iostream>
 
-const int SCREEN_WIDTH = 440;           // 640
-const int SCREEN_HEIGHT = 680;          // 480
+const int SCREEN_WIDTH  = 361;           // 640
+const int SCREEN_HEIGHT = 636;          // 480
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
