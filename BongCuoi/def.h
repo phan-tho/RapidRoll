@@ -13,18 +13,26 @@
 #include <deque>
 
 
-const int SCREEN_WIDTH  = 428;           // 640
-const int SCREEN_HEIGHT = 748;          // 480
+const int SCREEN_WIDTH  = 428;      // Dimensions of origin background image
+const int SCREEN_HEIGHT = 748;
 
-const int CEILING = 90;
+const int CEILING = 90;             // Coordinate of 4 corner of board
 const int FLOOR   = 666;
 const int lPIVOT  = 40;
 const int rPIVOT  = 390;
 
-const int vGEN_BLOCK = 30;
-const int Denta_Y    = 3;
+const int vGEN_BLOCK = 30;          // Velocity of processing generate block from floor
+//const int Denta_Y    = 3;
 
-SDL_Window* gWindow = NULL;
+const int DENTA_X = 3;              // HORIZINAL VELOCITY OF BALL
+const int DENTA_Y = 2;              // VERTICAL  VELOCITY OF BALL AND WALL
+
+/*
+    This is important to set DOWN velocity of BALL and UP velocity of BLOCK
+    This make sure that BALL and BLOCK can pass through other
+*/
+
+SDL_Window*   gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 void init();
@@ -48,7 +56,7 @@ void init(){
     IMG_Init(IMG_INIT_PNG);
     
     //Initialize SDL_ttf
-//    TTF_Init();
+//    TTF_Init();                       // WHEN WANT TO LOAD FONT
 }
 
 

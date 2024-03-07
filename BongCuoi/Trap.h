@@ -15,15 +15,13 @@ class Trap{
 //        void render();
 };
 
-Trap::Trap(){
+Trap::Trap(){                       // WE AVOID HEART ABOVE TRAP IN main.cpp
     PosY = FLOOR;
     PosX = rand()%(rPIVOT - TRAP_WIDTH - lPIVOT + 1) + lPIVOT;
-    
-//    Heart heartOnBlock((PosX + BLOCK_WIDTH)/2, PosY - BLOCK_HEIGHT);
 }
 
 void Trap::move(){
-    PosY -= Denta_Y;
+    PosY -= DENTA_Y;
 }
 
 #endif /* Trap_h */

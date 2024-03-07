@@ -9,8 +9,8 @@ class Dot
         static const int DOT_HEIGHT = 20;
 
         //Maximum axis velocity of the dot
-        static const int DENTA_X = 3;
-        static const int DENTA_Y = 2;
+//        static const int DENTA_X = 3;
+//        static const int DENTA_Y = 2;
 
         //Initializes the variables
         Dot();
@@ -34,7 +34,6 @@ class Dot
 
         //The velocity of the dot
         int mVelX;
-        int mVelY;
 };
 
 void Dot::handleEvent( SDL_Event& e ){
@@ -42,9 +41,7 @@ void Dot::handleEvent( SDL_Event& e ){
     if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
         //Adjust the velocity
         switch( e.key.keysym.sym ){
-//            case SDLK_UP:       mVelY -= DOT_VEL; break;
-//            case SDLK_DOWN:     mVelY += DOT_VEL; break;
-            case SDLK_LEFT:     mVelX -= DENTA_X; break;
+            case SDLK_LEFT:     mVelX -= DENTA_X; break;                // VELOCITY WILL RETURN 0 WHEN KEY UP
             case SDLK_RIGHT:    mVelX += DENTA_X; break;
         }
     }
@@ -53,8 +50,6 @@ void Dot::handleEvent( SDL_Event& e ){
     else if( e.type == SDL_KEYUP){
         //Adjust the velocity
         switch( e.key.keysym.sym ){
-//            case SDLK_UP:       mVelY += DOT_VEL; break;
-//            case SDLK_DOWN:     mVelY -= DOT_VEL; break;
             case SDLK_LEFT:     mVelX += DENTA_X; break;
             case SDLK_RIGHT:    mVelX -= DENTA_X; break;
         }
@@ -65,20 +60,18 @@ void Dot::move()
 {
     //Move the dot left or right
     mPosX += mVelX;
+    mPosY += DENTA_Y;
 
     //If the dot went too far to the left or right
-    if( ( mPosX < lPIVOT ) || ( mPosX + DOT_WIDTH > rPIVOT ) ){
-        //Move back
+    if( ( mPosX < lPIVOT ) || ( mPosX + DOT_WIDTH > rPIVOT ) ){         // BOUND WHEN COLLIDE WALL
         mPosX -= 3*mVelX;
     }
 
-    //Move the dot up or down
-    mPosY += DENTA_Y;
-
+    
+    //       WHEN BALL OUT OF BOARD. THIS CASE IS TEMPORARY. AND WE NEED TO END LIFE OF BALL
+     
     //If the dot went too far up or down
-    if(mPosY + DOT_HEIGHT > FLOOR)
-    {
-        //Move back
+    if(mPosY + DOT_HEIGHT > FLOOR){
         mPosY = CEILING + 50;
         mPosX = (SCREEN_WIDTH - DOT_WIDTH)/2;
     }
@@ -87,12 +80,11 @@ void Dot::move()
 Dot::Dot()
 {
     //Initialize the offsets
-    mPosY = CEILING + 50;
+    mPosY = CEILING + 30;                       // MAGIC
     mPosX = (SCREEN_WIDTH - DOT_WIDTH)/2;
 
     //Initialize the velocity
     mVelX = 0;
-    mVelY = 0;
 }
 
 int Dot::getX(){
@@ -102,6 +94,11 @@ int Dot::getX(){
 int Dot::getY(){
     return mPosY;
 }
+
+/*
+                    I TRY TO RUN THIS CODE. BUT WE HAVE ISSUE WITH GLOBAL VARIABLE DECLARE IN main.cpp
+                    WE USE gDotTexture.render(x, y, NULL) instead
+ */
 
 //void Dot::render(){
 //    //Show the dot

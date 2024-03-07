@@ -18,12 +18,10 @@ class Block{
 Block::Block(){
     PosY = FLOOR;
     PosX = rand()%(rPIVOT - BLOCK_WIDTH - lPIVOT + 1) + lPIVOT;
-    
-//    Heart heartOnBlock((PosX + BLOCK_WIDTH)/2, PosY - BLOCK_HEIGHT);
 }
 
-void Block::move(){
-    PosY -= Denta_Y;
+void Block::move(){             // MOVE UP
+    PosY -= DENTA_Y;
 }
 
 //void Block::render(){

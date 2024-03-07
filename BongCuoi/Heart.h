@@ -25,7 +25,7 @@ Heart::Heart(){
 
 
 void Heart::move(){
-    PosY -= Denta_Y;
+    PosY -= DENTA_Y;
 }
 
 //void Heart::render(){
