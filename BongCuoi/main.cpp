@@ -1,49 +1,4 @@
-#include "def.h"
-#include "ball.h"
-#include "LTexture.h"
-#include "Block.h"
-#include "Heart.h"
-#include "Trap.h"
-#include <iostream>
-
-LTexture gDotTexture;
-LTexture gBackground;
-
-LTexture gBlock;
-LTexture gHeart;
-LTexture gTrap;
-
-std::deque<Block> Blocks;
-std::deque<Trap>  Traps;
-
-bool checkCollide(Dot& dot){
-    int l = 0, r = Blocks.size() - 1;
-//    std::cout << l << ' ' << r << "\n";
-    int pos = -1;
-    while(l <= r){
-        int mid = (l + r)/2;
-        int blockPos = (*(Blocks.begin() + mid)).PosY;
-        
-        if( (blockPos + (*Blocks.begin()).BLOCK_HEIGHT >= dot.mPosY + dot.DOT_HEIGHT) && (dot.mPosY + dot.DOT_HEIGHT >= blockPos) ){
-            pos = mid;
-            break;
-        }
-        else if (dot.mPosY + dot.DOT_HEIGHT < blockPos)         r = mid - 1;
-        else                                                    l = mid + 1;
-    }
-    if(pos == -1)       return false;
-    
-    int blockPosX = (*(Blocks.begin() + pos)).PosX;
-    if( (dot.mPosX + dot.DOT_WIDTH/2 >= blockPosX) && (dot.mPosX + dot.DOT_WIDTH/2 <= blockPosX + (*Blocks.begin()).BLOCK_WIDTH) ){
-        
-        // AVOID BALL ISNOT CIRCLE (BLOCK FILL A PART OF BALL)
-        
-        dot.mPosY = (*(Blocks.begin() + pos)).PosY - dot.DOT_HEIGHT;
-        return true;
-    }
-    
-    return false;
-}
+#include "Header.h"
 
 int main( int argc, char* argv[] ){
     init();
@@ -52,13 +7,9 @@ int main( int argc, char* argv[] ){
     bool quit = false;
     SDL_Event e;
     
-//    std::deque<Block> Blocks;
-//    std::deque<Trap>  Traps;
-    
     int cnt = 0;
 
     Dot dot;
-    
     Heart heart;
 
     while( !quit ){
@@ -75,17 +26,17 @@ int main( int argc, char* argv[] ){
 
         //Render objects
         gBackground.render(0, 0, NULL);             // BACKGROUND
-
-        if(cnt % vGEN_BLOCK == 0){                      // GEN BLOCK AND HEART
-            Block block;
-            Blocks.push_back(block);
-            if( cnt % (vGEN_BLOCK*20) == 0 && cnt){
-                heart.assignPos(block.PosX + block.BLOCK_HEIGHT/2 + heart.HEART_WIDTH, block.PosY - heart.HEART_HEIGHT);
-            }
-        }
-        else if(cnt % ((vGEN_BLOCK + 1)*10) == 0){
+        
+        if(cnt % (vGEN_BLOCK*(BLOCK_ABOVE_TRAP + 1) ) == 0 && cnt){
             Trap trap;
             Traps.push_back(trap);
+        }
+        else if(cnt % vGEN_BLOCK == 0){                      // GEN BLOCK AND HEART
+            Block block;
+            Blocks.push_back(block);
+            if( cnt % ( vGEN_BLOCK*(BLOCK_ABOVE_HEART + 1) ) == 0 && cnt){
+                heart.assignPos(block.PosX + block.BLOCK_HEIGHT/2 + heart.HEART_WIDTH, block.PosY - heart.HEART_HEIGHT);
+            }
         }
         cnt++;
         
@@ -94,7 +45,7 @@ int main( int argc, char* argv[] ){
         for(auto it = Traps.begin() ; it != Traps.end() ; it++)          (*it).move();     // MOVE ALL TRAPS
         
         //Move the dot
-        dot.move( checkCollide(dot) );                                 // DOT
+        dot.move( checkCollideBlock(dot) );                                 // DOT
         gDotTexture.render(dot.getX(), dot.getY(), NULL);
                 
         heart.move();                                                                       // MOVE HEART
