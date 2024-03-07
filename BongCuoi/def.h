@@ -12,7 +12,6 @@
 
 #include <deque>
 
-
 const int SCREEN_WIDTH  = 428;      // Dimensions of origin background image
 const int SCREEN_HEIGHT = 748;
 

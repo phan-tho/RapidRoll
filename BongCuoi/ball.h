@@ -7,6 +7,11 @@ class Dot
         //The dimensions of the dot
         static const int DOT_WIDTH = 20;
         static const int DOT_HEIGHT = 20;
+    
+//        int veloY;
+    
+        //The X and Y offsets of the dot
+        int mPosX, mPosY;
 
         //Maximum axis velocity of the dot
 //        static const int DENTA_X = 3;
@@ -19,7 +24,7 @@ class Dot
         void handleEvent( SDL_Event& e );
 
         //Moves the dot
-        void move();
+        void move(const bool& up);
 
         //Shows the dot on the screen
         void render();
@@ -29,8 +34,8 @@ class Dot
         int getY();
 
     private:
-        //The X and Y offsets of the dot
-        int mPosX, mPosY;
+//        //The X and Y offsets of the dot
+//        int mPosX, mPosY;
 
         //The velocity of the dot
         int mVelX;
@@ -56,11 +61,10 @@ void Dot::handleEvent( SDL_Event& e ){
     }
 }
 
-void Dot::move()
-{
+void Dot::move(const bool& up){
     //Move the dot left or right
     mPosX += mVelX;
-    mPosY += DENTA_Y;
+    mPosY += (up ? (-DENTA_Y) : DENTA_Y);
 
     //If the dot went too far to the left or right
     if( ( mPosX < lPIVOT ) || ( mPosX + DOT_WIDTH > rPIVOT ) ){         // BOUND WHEN COLLIDE WALL
