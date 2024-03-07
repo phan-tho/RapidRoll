@@ -3,6 +3,7 @@
 #include "LTexture.h"
 #include "Block.h"
 #include "Heart.h"
+#include "Trap.h"
 #include <iostream>
 
 LTexture gDotTexture;
@@ -10,6 +11,7 @@ LTexture gBackground;
 
 LTexture gBlock;
 LTexture gHeart;
+LTexture gTrap;
 
 int main( int argc, char* argv[] ){
     init();
@@ -19,8 +21,10 @@ int main( int argc, char* argv[] ){
     SDL_Event e;
     
     std::deque<Block> Blocks;
+    std::deque<Trap>  Traps;
+    
     int cnt = 0;
-//    The dot that will be moving around on the screen
+
     Dot dot;
     
     Heart heart;
@@ -52,16 +56,27 @@ int main( int argc, char* argv[] ){
                 heart.assignPos(block.PosX + block.BLOCK_HEIGHT/2 + heart.HEART_WIDTH, block.PosY - heart.HEART_HEIGHT);
             }
         }
+        else if(cnt % ((vGEN_BLOCK + 1)*10) == 0){
+            Trap trap;
+            Traps.push_back(trap);
+        }
         cnt++;
         
-        for(auto it = Blocks.begin(); it != Blocks.end(); it++)        (*it).move();            // MOVE ALL BLOCKS
-    
-        heart.move();                                                                           // MOVE HEART
         
-        if( ( *Blocks.begin() ).PosY <= CEILING )           Blocks.pop_front();             // eliminate block out board
-
+        for(auto it = Blocks.begin(); it != Blocks.end(); it++)          (*it).move();     // MOVE ALL BLOCKS
+        for(auto it = Traps.begin() ; it != Traps.end() ; it++)          (*it).move();     // MOVE ALL TRAPS
+                
+        heart.move();                                                                       // MOVE HEART
+        
+        if( !Blocks.empty() && ( *Blocks.begin() ).PosY <= CEILING )           Blocks.pop_front();          // Eliminate block out board
+        if( !Traps.empty()  && ( *Traps.begin()  ).PosY <= CEILING )           Traps.pop_front();           // Eliminate trap out board
+        
         for(auto it = Blocks.begin(); it != Blocks.end(); it++){                            // RENDER ALL BLOCKS
-            gBlock.render((*it).PosX,  (*it).PosY, NULL);
+            gBlock.render((*it).PosX, (*it).PosY, NULL);
+        }
+            
+        for(auto it = Traps.begin(); it != Traps.end(); it++){                              // RENDER ALL TRAPS
+            gTrap.render((*it).PosX, (*it).PosY, NULL);
         }
         
         if(heart.PosY >= CEILING)     gHeart.render(heart.PosX, heart.PosY, NULL);
@@ -82,6 +97,7 @@ void loadMedia(){
     
     gBlock.loadFromFile("Block.png");
     gHeart.loadFromFile("Heart.png");
+    gTrap.loadFromFile("trap.png");
     
 }
 
@@ -93,6 +109,7 @@ void close()
     
     gBlock.freeFire();
     gHeart.freeFire();
+    gTrap.freeFire();
 
     //Destroy window
     SDL_DestroyRenderer( gRenderer );

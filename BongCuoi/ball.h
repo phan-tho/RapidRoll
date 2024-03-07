@@ -9,7 +9,7 @@ class Dot
         static const int DOT_HEIGHT = 20;
 
         //Maximum axis velocity of the dot
-        static const int DENTA_X = 4;
+        static const int DENTA_X = 3;
         static const int DENTA_Y = 2;
 
         //Initializes the variables
