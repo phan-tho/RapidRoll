@@ -22,6 +22,8 @@
 		0458A5FD2B98C9100058B970 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0458A5F62B98C9100058B970 /* SDL2_image.framework */; };
 		0458A5FE2B98C9100058B970 /* SDL2_image.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0458A5F62B98C9100058B970 /* SDL2_image.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0458A6152B98E11B0058B970 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0458A6142B98E11B0058B970 /* background.png */; };
+		04FCA7D42B9A27BA006597FF /* GameOver.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FCA7D32B9A27BA006597FF /* GameOver.png */; };
+		04FCA7D82B9A4027006597FF /* tim.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FCA7D72B9A4027006597FF /* tim.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -64,6 +66,8 @@
 		04FCA7CE2B9A1607006597FF /* defGlobalSpecialVar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = defGlobalSpecialVar.h; sourceTree = "<group>"; };
 		04FCA7CF2B9A1702006597FF /* CheckCollide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CheckCollide.h; sourceTree = "<group>"; };
 		04FCA7D02B9A174A006597FF /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
+		04FCA7D32B9A27BA006597FF /* GameOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GameOver.png; path = ../../ImageRapidRoll/GameOver.png; sourceTree = "<group>"; };
+		04FCA7D72B9A4027006597FF /* tim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tim.png; path = ../../ImageRapidRoll/tim.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +105,8 @@
 		0458A5DB2B98C86B0058B970 /* BongCuoi */ = {
 			isa = PBXGroup;
 			children = (
+				04FCA7D72B9A4027006597FF /* tim.png */,
+				04FCA7D32B9A27BA006597FF /* GameOver.png */,
 				041B81382B99AD3E00E1D7D5 /* BackGr.png */,
 				041B81372B99AD3E00E1D7D5 /* Block.png */,
 				041B81392B99AD3E00E1D7D5 /* dot.bmp */,
@@ -195,6 +201,8 @@
 				0458A6152B98E11B0058B970 /* background.png in Resources */,
 				041B81402B99AD3E00E1D7D5 /* trap.png in Resources */,
 				041B813D2B99AD3E00E1D7D5 /* BackGr.png in Resources */,
+				04FCA7D82B9A4027006597FF /* tim.png in Resources */,
+				04FCA7D42B9A27BA006597FF /* GameOver.png in Resources */,
 				041B813C2B99AD3E00E1D7D5 /* Block.png in Resources */,
 				041B813E2B99AD3E00E1D7D5 /* dot.bmp in Resources */,
 			);

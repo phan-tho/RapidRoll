@@ -4,6 +4,8 @@
 LTexture gDotTexture;
 LTexture gBackground;
 
+LTexture gGameOver;
+
 LTexture gBlock;
 LTexture gHeart;
 LTexture gTrap;

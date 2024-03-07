@@ -8,6 +8,8 @@ class Heart{
         
         int PosX, PosY;
     
+        bool isEaten = false;
+    
         Heart();
         
         void move();

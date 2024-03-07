@@ -29,6 +29,8 @@ const int DENTA_Y = 2;              // VERTICAL  VELOCITY OF BALL AND WALL
 const int BLOCK_ABOVE_TRAP = 4;             // 4  BLOCK ==> 1 TRAP
 const int BLOCK_ABOVE_HEART = 20;           // 15 BLOCK ==> 1 HEART
 
+const int TIME_REVIVE = 90;                 // TIME TO BACK GAME. FPS ≈ 60 ==> 1.5S
+
 /*
     This is important to set DOWN velocity of BALL and UP velocity of BLOCK
     This make sure that BALL and BLOCK can pass through other

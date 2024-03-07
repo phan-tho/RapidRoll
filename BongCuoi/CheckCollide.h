@@ -6,6 +6,8 @@ bool checkCollideTrap(Dot& dot);
 bool checkCollideHeart(Dot& dot, Heart& heart);
 
 bool checkCollideBlock(Dot& dot){
+    if(Blocks.empty())          return false;
+    
     int l = 0, r = Blocks.size() - 1;
     int pos = -1;
     while(l <= r){
@@ -22,7 +24,7 @@ bool checkCollideBlock(Dot& dot){
     if(pos == -1)       return false;
     
     int blockPosX = (*(Blocks.begin() + pos)).PosX;
-    if( (dot.mPosX + dot.DOT_WIDTH/2 >= blockPosX) && (dot.mPosX + dot.DOT_WIDTH/2 <= blockPosX + (*Blocks.begin()).BLOCK_WIDTH) ){
+    if( (dot.mPosX + dot.DOT_WIDTH*9/10 >= blockPosX) && (dot.mPosX + dot.DOT_WIDTH/10 <= blockPosX + (*Blocks.begin()).BLOCK_WIDTH) ){
         
         // AVOID BALL ISNOT CIRCLE (BLOCK FILL A PART OF BALL)
         
@@ -41,6 +43,8 @@ bool checkCollideHeart(Dot& dot, Heart& heart){
 }
 
 bool checkCollideTrap(Dot& dot){
+    if(Traps.empty())       return false;
+    
     int l = 0, r = Traps.size() - 1;
     int pos = -1;
     while(l <= r){
@@ -57,7 +61,7 @@ bool checkCollideTrap(Dot& dot){
     if(pos == -1)       return false;
     
     int trapPosX = (*(Traps.begin() + pos)).PosX;
-    if( (dot.mPosX + dot.DOT_WIDTH/2 >= trapPosX) && (dot.mPosX + dot.DOT_WIDTH/2 <= trapPosX + (*Traps.begin()).TRAP_WIDTH) ){
+    if( (dot.mPosX + dot.DOT_WIDTH*9/10 >= trapPosX) && (dot.mPosX + dot.DOT_WIDTH/10 <= trapPosX + (*Traps.begin()).TRAP_WIDTH) ){
         
         // AVOID BALL ISNOT CIRCLE (BLOCK FILL A PART OF BALL)
         

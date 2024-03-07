@@ -12,6 +12,8 @@ class Dot
     
         //The X and Y offsets of the dot
         int mPosX, mPosY;
+    
+        int mVelX;
 
         //Maximum axis velocity of the dot
 //        static const int DENTA_X = 3;
@@ -38,7 +40,7 @@ class Dot
 //        int mPosX, mPosY;
 
         //The velocity of the dot
-        int mVelX;
+//        int mVelX;
 };
 
 void Dot::handleEvent( SDL_Event& e ){
@@ -55,8 +57,8 @@ void Dot::handleEvent( SDL_Event& e ){
     else if( e.type == SDL_KEYUP){
         //Adjust the velocity
         switch( e.key.keysym.sym ){
-            case SDLK_LEFT:     mVelX += DENTA_X; break;
-            case SDLK_RIGHT:    mVelX -= DENTA_X; break;
+            case SDLK_LEFT:     mVelX = 0; break;
+            case SDLK_RIGHT:    mVelX = 0; break;
         }
     }
 }
@@ -84,7 +86,7 @@ void Dot::move(const bool& up){
 Dot::Dot()
 {
     //Initialize the offsets
-    mPosY = CEILING + 30;                       // MAGIC
+    mPosY = CEILING + 60;                       // MAGIC
     mPosX = (SCREEN_WIDTH - DOT_WIDTH)/2;
 
     //Initialize the velocity
