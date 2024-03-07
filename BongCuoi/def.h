@@ -5,6 +5,13 @@
 #include "SDL2_image/SDL_image.h"
 #include <string>
 #include <iostream>
+// random
+#include <cstdlib>
+#include <ctime>
+#include <random>
+
+#include <deque>
+
 
 const int SCREEN_WIDTH  = 428;           // 640
 const int SCREEN_HEIGHT = 748;          // 480
@@ -14,6 +21,9 @@ const int FLOOR   = 666;
 const int lPIVOT  = 40;
 const int rPIVOT  = 390;
 
+const int vGEN_BLOCK = 30;
+const int Denta_Y    = 3;
+
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
@@ -22,6 +32,7 @@ void loadMedia();
 void close();
 
 void init(){
+    srand(time(0));
     SDL_Init( SDL_INIT_VIDEO );
     
     //Create window

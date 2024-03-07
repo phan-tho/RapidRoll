@@ -9,8 +9,8 @@ class Dot
         static const int DOT_HEIGHT = 20;
 
         //Maximum axis velocity of the dot
-        static const int DOT_VEL = 2;
-        static const int DENTA_Y = 3;
+        static const int DENTA_X = 4;
+        static const int DENTA_Y = 2;
 
         //Initializes the variables
         Dot();
@@ -44,8 +44,8 @@ void Dot::handleEvent( SDL_Event& e ){
         switch( e.key.keysym.sym ){
 //            case SDLK_UP:       mVelY -= DOT_VEL; break;
 //            case SDLK_DOWN:     mVelY += DOT_VEL; break;
-            case SDLK_LEFT:     mVelX -= DOT_VEL; break;
-            case SDLK_RIGHT:    mVelX += DOT_VEL; break;
+            case SDLK_LEFT:     mVelX -= DENTA_X; break;
+            case SDLK_RIGHT:    mVelX += DENTA_X; break;
         }
     }
     
@@ -55,8 +55,8 @@ void Dot::handleEvent( SDL_Event& e ){
         switch( e.key.keysym.sym ){
 //            case SDLK_UP:       mVelY += DOT_VEL; break;
 //            case SDLK_DOWN:     mVelY -= DOT_VEL; break;
-            case SDLK_LEFT:     mVelX += DOT_VEL; break;
-            case SDLK_RIGHT:    mVelX -= DOT_VEL; break;
+            case SDLK_LEFT:     mVelX += DENTA_X; break;
+            case SDLK_RIGHT:    mVelX -= DENTA_X; break;
         }
     }
 }
