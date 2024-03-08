@@ -8,22 +8,24 @@ class Block{
     
         int PosX, PosY;
     
-        int staticAboveDyn;
-    
         bool dynamic, left;     // Going left
     
         Block();
         
         void move(const int& DENTA_Y);
-//        void render();
-        const int dentaX = 1;
+
+//    int dentaX = 1;
+//    int staticAboveDyn = 1;
+        static int dentaX, staticAboveDyn;
 };
+
+int Block::dentaX;
+int Block::staticAboveDyn;
 
 Block::Block(){
     PosY = FLOOR;
     PosX = rand()%(rPIVOT - BLOCK_WIDTH - lPIVOT + 1) + lPIVOT;
     
-    staticAboveDyn = 3;
     dynamic = (rand()%staticAboveDyn == 0);
     left = (PosX - lPIVOT >= rPIVOT - PosX - BLOCK_WIDTH);
 }

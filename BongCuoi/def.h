@@ -22,7 +22,6 @@ const int lPIVOT  = 40;
 const int rPIVOT  = 390;
 
 const int vGEN_BLOCK = 60;          // Velocity of processing generate block from floor
-//const int Denta_Y    = 3;
 
 const int DENTA_X = 3;              // HORIZINAL VELOCITY OF BALL
 //const int DENTA_Y = 2;              // VERTICAL  VELOCITY OF BALL AND WALL

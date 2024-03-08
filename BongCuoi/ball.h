@@ -4,25 +4,17 @@
 class Dot
 {
     public:
-        //The dimensions of the dot
         static const int DOT_WIDTH = 20;
         static const int DOT_HEIGHT = 20;
-    
-//        int veloY;
     
         //The X and Y offsets of the dot
         int mPosX, mPosY;
     
         int mVelX;
 
-        //Maximum axis velocity of the dot
-//        static const int DENTA_X = 3;
-//        static const int DENTA_Y = 2;
-
-        //Initializes the variables
         Dot();
 
-        //Takes key presses and adjusts the dot's velocity
+        // CHANGE VELOCITY DEPEND TYPED KEY
         void handleEvent( SDL_Event& e );
 
         //Moves the dot
@@ -44,7 +36,6 @@ class Dot
 };
 
 void Dot::handleEvent( SDL_Event& e ){
-    //If a key was pressed
     if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
         //Adjust the velocity
         switch( e.key.keysym.sym ){

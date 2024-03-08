@@ -3,6 +3,9 @@
 
 class Game{
     private:
+//        const int BLOCK_ABOVE_TRAP = 3;             // 4  BLOCK ==> 1 TRAP
+//        const int BLOCK_ABOVE_HEART = 30;           // 15 BLOCK ==> 1 HEART
+    
         int cnt, life;
         int score;              // CALCULATE WHEN SOME BLOCK OR TRAP REMOVE
         int DENTA_Y;
@@ -130,7 +133,7 @@ void Game::genBlocksTrapsHeart(){
         Block block;
         Blocks.push_back(block);
         if( cnt % ( (vGEN_BLOCK/DENTA_Y)*(BLOCK_ABOVE_HEART + 1) ) == 0 && cnt){
-            heart.assignPos(block.PosX + block.BLOCK_HEIGHT/2 + heart.HEART_WIDTH, block.PosY - heart.HEART_HEIGHT);
+            heart.assignPos(block.PosX + block.BLOCK_WIDTH/2 - heart.HEART_WIDTH/2, block.PosY - heart.HEART_HEIGHT);
             heart.isEaten = false;
             heart.moveToLeft = 0;
             
@@ -211,7 +214,12 @@ Game::Game(){
     life = 3;
     score = 0;
     DENTA_Y = 2;
-//    waitRevive = 0;
+    
+    Block::dentaX = 1;
+    Block::staticAboveDyn = 5;
+    
+    Trap::dentaX = 1;
+    Trap::staticAboveDyn = 5;
 }
 
 #endif /* Game_h */

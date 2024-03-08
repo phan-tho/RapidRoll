@@ -33,6 +33,11 @@ void Heart::move(const int& DENTA_Y){
     PosY -= DENTA_Y;
     
     PosX += moveToLeft;
+    
+    if( ( PosX <= 64 ) || ( PosX >= 367 ) ){         // BOUND WHEN COLLIDE WALL
+        PosX -= moveToLeft;                             // MAGIC NUMBERS
+        moveToLeft = -moveToLeft;
+    }
 }
 
 //void Heart::render(){
