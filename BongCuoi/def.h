@@ -27,7 +27,7 @@ const int DENTA_X = 3;              // HORIZINAL VELOCITY OF BALL
 const int DENTA_Y = 2;              // VERTICAL  VELOCITY OF BALL AND WALL
 
 const int BLOCK_ABOVE_TRAP = 4;             // 4  BLOCK ==> 1 TRAP
-const int BLOCK_ABOVE_HEART = 20;           // 15 BLOCK ==> 1 HEART
+const int BLOCK_ABOVE_HEART = 15;           // 15 BLOCK ==> 1 HEART
 
 const int TIME_REVIVE = 90;                 // TIME TO BACK GAME. FPS ≈ 60 ==> 1.5S
 

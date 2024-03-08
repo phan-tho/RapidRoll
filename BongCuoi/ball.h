@@ -86,7 +86,7 @@ void Dot::move(const bool& up){
 Dot::Dot()
 {
     //Initialize the offsets
-    mPosY = CEILING + 60;                       // MAGIC
+    mPosY = CEILING + 120;                       // MAGIC
     mPosX = (SCREEN_WIDTH - DOT_WIDTH)/2;
 
     //Initialize the velocity

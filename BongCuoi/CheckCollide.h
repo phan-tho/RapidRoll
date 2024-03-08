@@ -1,11 +1,11 @@
 #ifndef CheckCollide_h
 #define CheckCollide_h
 
-bool checkCollideBlock(Dot& dot);
-bool checkCollideTrap(Dot& dot);
+bool checkCollideBlock(Dot& dot, std::deque<Block> Blocks);
+bool checkCollideTrap(Dot& dot, std::deque<Trap> Traps);
 bool checkCollideHeart(Dot& dot, Heart& heart);
 
-bool checkCollideBlock(Dot& dot){
+bool checkCollideBlock(Dot& dot, std::deque<Block> Blocks){
     if(Blocks.empty())          return false;
     
     int l = 0, r = Blocks.size() - 1;
@@ -42,7 +42,7 @@ bool checkCollideHeart(Dot& dot, Heart& heart){
     return true;;
 }
 
-bool checkCollideTrap(Dot& dot){
+bool checkCollideTrap(Dot& dot, std::deque<Trap> Traps){
     if(Traps.empty())       return false;
     
     int l = 0, r = Traps.size() - 1;

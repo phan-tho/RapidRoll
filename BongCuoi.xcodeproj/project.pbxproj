@@ -63,6 +63,7 @@
 		0458A5F52B98C9100058B970 /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2_ttf.framework; sourceTree = "<group>"; };
 		0458A5F62B98C9100058B970 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2_image.framework; sourceTree = "<group>"; };
 		0458A6142B98E11B0058B970 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = ../../background.png; sourceTree = "<group>"; };
+		04EAF6DF2B9AF18200383D29 /* Game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		04FCA7CE2B9A1607006597FF /* defGlobalSpecialVar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = defGlobalSpecialVar.h; sourceTree = "<group>"; };
 		04FCA7CF2B9A1702006597FF /* CheckCollide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CheckCollide.h; sourceTree = "<group>"; };
 		04FCA7D02B9A174A006597FF /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 				04FCA7CE2B9A1607006597FF /* defGlobalSpecialVar.h */,
 				04FCA7CF2B9A1702006597FF /* CheckCollide.h */,
 				04FCA7D02B9A174A006597FF /* Header.h */,
+				04EAF6DF2B9AF18200383D29 /* Game.h */,
 			);
 			path = BongCuoi;
 			sourceTree = "<group>";

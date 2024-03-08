@@ -9,5 +9,6 @@
 #include "Trap.h"
 #include "defGlobalSpecialVar.h"
 #include "CheckCollide.h"
+#include "Game.h"
 
 #endif /* Header_h */

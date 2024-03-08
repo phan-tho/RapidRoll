@@ -1,14 +1,18 @@
 #include "Header.h"
 
-int checkLife(Dot& dot, Heart& heart){
-    if( checkCollideTrap(dot) || dot.mPosY <= CEILING || dot.mPosY + dot.DOT_HEIGHT >= FLOOR){
+int checkLife(Dot& dot, Heart& heart, std::deque<Block> Blocks, std::deque<Trap> Traps){
+    if( checkCollideTrap(dot, Traps) || dot.mPosY <= CEILING || dot.mPosY + dot.DOT_HEIGHT >= FLOOR){
         dot = Dot();
-//        dot.mVelX = 0;
-//        std::cout << "Pos in func" << dot.mPosY << "\n";
-//        std::cout << (checkCollideTrap(dot) ? "Trap\n" : "NOT TRAP\n");
-//        std::cout << (dot.mPosY <= CEILING ? "Ceiling\n" : "Not ceiling\n");
-//        std::cout << (dot.mPosY + dot.DOT_HEIGHT >= FLOOR ? "FLOOR?" : "Not floor\n");
+        
+        
+        // BALL WILL APPEAR ABOVE LOWEST BLOCK FROM CEILING---------------------------------------------
+        if( !Blocks.empty() ){
+            dot.mPosY = Blocks.back().PosY - dot.DOT_HEIGHT;
+            dot.mPosX = Blocks.back().PosX + (Blocks.back().BLOCK_WIDTH - dot.DOT_WIDTH)/2;
+        }
         return -1;
+        // ---------------------------------------------------------------------------------------- DIED
+        
     }
     if( checkCollideHeart(dot, heart) ){
         heart.isEaten = true;
@@ -27,12 +31,13 @@ int main( int argc, char* argv[] ){
     SDL_Event e;
     
     int cnt = 0;
-    int life = 1;
+    int life = 3;
 
     Dot dot;
     Heart heart;
     
-    std::cout << "posy : " << dot.mPosY << "\n";
+    std::deque<Block> Blocks;
+    std::deque<Trap>  Traps;
 
     while( !quit ){
         while( SDL_PollEvent( &e ) != 0 ){
@@ -77,9 +82,9 @@ int main( int argc, char* argv[] ){
             
             
             // CHECK LIFE AND MOVE THE BALL------------------------------------------------------------------------CHECK LIFE
-            life += checkLife(dot, heart);                                      // CHECK LIFE OF BALL
-            dot.move( checkCollideBlock(dot) );                                 // DOT
+            dot.move( checkCollideBlock(dot, Blocks) );                                 // DOT
             gDotTexture.render(dot.getX(), dot.getY(), NULL);
+            life += checkLife(dot, heart, Blocks, Traps);                                      // CHECK LIFE OF BALL
             //END --------------------------------------------------------------------------------------------------------END
             
             
@@ -89,7 +94,7 @@ int main( int argc, char* argv[] ){
             //END --------------------------------------------------------------------------------------------------------END
             
             
-            // RENDER ALL BLOCKS ADN TRAPS BEEING ON BOARD-------------------------------------------------------------RENDER
+            // RENDER ALL BLOCKS AND TRAPS BEEING ON BOARD-------------------------------------------------------------RENDER
             for(auto it = Blocks.begin(); it != Blocks.end(); it++){                            // RENDER ALL BLOCKS
                 gBlock.render((*it).PosX, (*it).PosY, NULL);
             }
