@@ -38,6 +38,64 @@ class Game{
         
 };
 
+void Game::Play(){
+    bool quit = false;
+    SDL_Event e;
+    
+    while( !quit ){
+        while( SDL_PollEvent( &e ) != 0 ){
+            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x)        quit = true;
+            
+            //Handle input for the dot
+            dot.handleEvent( e );
+        }
+        
+        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+        SDL_RenderClear( gRenderer );
+        
+        //Render objects
+        gBackground.render(0, 0, NULL);             // BACKGROUND
+        
+        if(life > 0){
+            genBlocksTrapsHeart();
+            
+            moveBlocksAndTraps();
+            
+            removeItemOutBoard();
+            
+            renderBlocksAndTraps();
+            
+        
+            // PROCESSING HEART -->
+            moveAndRenderHeart();
+            
+            moveAndRenderBall();
+            
+            checkLifeBall();     // DIE OR EAT HEART
+        }
+
+                                                // GAME OVER
+        
+        else{
+            if(!Blocks.empty() || !Traps.empty()){
+                moveBlocksAndTraps();
+                
+                removeItemOutBoard();
+                
+                renderBlocksAndTraps();
+                
+                moveAndRenderHeart();
+            }
+            else{
+                gGameOver.render(54, 310, NULL);            // MAGIC NUMBERS
+            }
+        }
+
+        //Update screen
+        SDL_RenderPresent( gRenderer );
+        
+    }
+}
 
 void Game::genBlocksTrapsHeart(){
     if(cnt % (vGEN_BLOCK*(BLOCK_ABOVE_TRAP + 1) ) == 0 && cnt){     // GEN TRAPS
