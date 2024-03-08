@@ -10,9 +10,11 @@ class Heart{
     
         bool isEaten = false;
     
+        int moveToLeft;
+    
         Heart();
         
-        void move();
+        void move(const int& DENTA_Y);
         
 //        void render();
     
@@ -22,12 +24,15 @@ class Heart{
 Heart::Heart(){
     PosX = 0;
     PosY = 0;
+    moveToLeft = 0;
 }
 
 
 
-void Heart::move(){
+void Heart::move(const int& DENTA_Y){
     PosY -= DENTA_Y;
+    
+    PosX += moveToLeft;
 }
 
 //void Heart::render(){

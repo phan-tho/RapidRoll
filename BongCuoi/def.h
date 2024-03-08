@@ -3,6 +3,7 @@
 
 #include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
+#include "SDL2_ttf/SDL_ttf.h"
 #include <string>
 #include <iostream>
 // random
@@ -20,16 +21,14 @@ const int FLOOR   = 666;
 const int lPIVOT  = 40;
 const int rPIVOT  = 390;
 
-const int vGEN_BLOCK = 30;          // Velocity of processing generate block from floor
+const int vGEN_BLOCK = 60;          // Velocity of processing generate block from floor
 //const int Denta_Y    = 3;
 
 const int DENTA_X = 3;              // HORIZINAL VELOCITY OF BALL
-const int DENTA_Y = 2;              // VERTICAL  VELOCITY OF BALL AND WALL
+//const int DENTA_Y = 2;              // VERTICAL  VELOCITY OF BALL AND WALL
 
-const int BLOCK_ABOVE_TRAP = 4;             // 4  BLOCK ==> 1 TRAP
-const int BLOCK_ABOVE_HEART = 15;           // 15 BLOCK ==> 1 HEART
-
-const int TIME_REVIVE = 90;                 // TIME TO BACK GAME. FPS ≈ 60 ==> 1.5S
+const int BLOCK_ABOVE_TRAP = 3;             // 4  BLOCK ==> 1 TRAP
+const int BLOCK_ABOVE_HEART = 30;           // 15 BLOCK ==> 1 HEART
 
 /*
     This is important to set DOWN velocity of BALL and UP velocity of BLOCK
@@ -38,6 +37,7 @@ const int TIME_REVIVE = 90;                 // TIME TO BACK GAME. FPS ≈ 60 ==>
 
 SDL_Window*   gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
+TTF_Font* gFont = NULL;
 
 void init();
 void loadMedia();
@@ -60,7 +60,7 @@ void init(){
     IMG_Init(IMG_INIT_PNG);
     
     //Initialize SDL_ttf
-//    TTF_Init();                       // WHEN WANT TO LOAD FONT
+    TTF_Init();                       // WHEN WANT TO LOAD FONT
 }
 
 

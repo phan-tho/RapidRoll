@@ -10,7 +10,6 @@ LTexture gBlock;
 LTexture gHeart;
 LTexture gTrap;
 
-//std::deque<Block> Blocks;
-//std::deque<Trap>  Traps;
+LTexture gTextTexture;
 
 #endif /* defGlobalSpecialVar_h */

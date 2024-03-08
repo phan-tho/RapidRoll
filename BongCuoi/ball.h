@@ -26,7 +26,7 @@ class Dot
         void handleEvent( SDL_Event& e );
 
         //Moves the dot
-        void move(const bool& up);
+        void move(const int& up, const int& DENTA_Y);
 
         //Shows the dot on the screen
         void render();
@@ -63,23 +63,21 @@ void Dot::handleEvent( SDL_Event& e ){
     }
 }
 
-void Dot::move(const bool& up){
-    //Move the dot left or right
-    mPosX += mVelX;
-    mPosY += (up ? (-DENTA_Y) : DENTA_Y);
-
+void Dot::move(const int& upANDdyn, const int& DENTA_Y){
+    
+    if(upANDdyn == -20){             // NOT COLLIDE
+        mPosY += DENTA_Y;
+        mPosX += mVelX;
+    }
+    else{                           // COLLIDE
+        mPosY -= DENTA_Y;
+        mPosX += mVelX + upANDdyn;
+    }
+    
+    
     //If the dot went too far to the left or right
     if( ( mPosX < lPIVOT ) || ( mPosX + DOT_WIDTH > rPIVOT ) ){         // BOUND WHEN COLLIDE WALL
-        mPosX -= 3*mVelX;
-    }
-
-    
-    //       WHEN BALL OUT OF BOARD. THIS CASE IS TEMPORARY. AND WE NEED TO END LIFE OF BALL
-     
-    //If the dot went too far up or down
-    if(mPosY + DOT_HEIGHT > FLOOR){
-        mPosY = CEILING + 50;
-        mPosX = (SCREEN_WIDTH - DOT_WIDTH)/2;
+        mPosX -= mVelX;
     }
 }
 

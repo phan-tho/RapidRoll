@@ -10,7 +10,7 @@ class Trap{
     
         Trap();
         
-        void move();
+        void move(const int& DENTA_Y);
         
 //        void render();
 };
@@ -20,7 +20,7 @@ Trap::Trap(){                       // WE AVOID HEART ABOVE TRAP IN main.cpp
     PosX = rand()%(rPIVOT - TRAP_WIDTH - lPIVOT + 1) + lPIVOT;
 }
 
-void Trap::move(){
+void Trap::move(const int& DENTA_Y){
     PosY -= DENTA_Y;
 }
 

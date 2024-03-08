@@ -23,6 +23,7 @@ void loadMedia(){
     gHeart.loadFromFile("tim.png");
     gTrap.loadFromFile("trap.png");
     
+    gFont = TTF_OpenFont("Sears_Tower.ttf", 30);
 }
 
 void close()
@@ -36,6 +37,11 @@ void close()
     gBlock.freeFire();
     gHeart.freeFire();
     gTrap.freeFire();
+    
+    gTextTexture.freeFire();
+    
+    TTF_CloseFont(gFont);
+    gFont = NULL;
 
     //Destroy window
     SDL_DestroyRenderer( gRenderer );
@@ -45,6 +51,7 @@ void close()
 
     //Quit SDL subsystems
     IMG_Quit();
+    TTF_Quit();
     SDL_Quit();
 }
 
