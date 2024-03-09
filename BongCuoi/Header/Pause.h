@@ -31,17 +31,13 @@ private:
 
 void Pause::handleEvent(SDL_Event* e){
     if(e->type == SDL_MOUSEBUTTONDOWN){
-        //Get mouse position
+        //Get mouse pos
         int x, y;
         SDL_GetMouseState( &x, &y );
         
         if( mCurrentState[PAUSE] ){
             if ( x >= CORRECTLY_POS[PLAY].x && x <=  CORRECTLY_POS[PLAY].x + BUTTON_WIDTH && y >= CORRECTLY_POS[PLAY].y && y <= CORRECTLY_POS[PLAY].y + BUTTON_HEIGHT){
                 mCurrentState[PAUSE] = false;
-//                mCurrentPos[PAUSE]  = { 275, 16 };
-//                mCurrentPos[PLAY]   = { 275, 16 };
-//                mCurrentPos[REPLAY] = { 275, 18 };
-//                mCurrentPos[EXIT]   = { 275, 20 };
             }
             else if ( x >= CORRECTLY_POS[REPLAY].x && x <=  CORRECTLY_POS[REPLAY].x + BUTTON_WIDTH && y >= CORRECTLY_POS[REPLAY].y && y <= CORRECTLY_POS[REPLAY].y + BUTTON_HEIGHT){
                 mCurrentState[REPLAY] = true;

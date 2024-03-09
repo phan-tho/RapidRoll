@@ -34,7 +34,6 @@ void loadMedia(){
     gButtonControlGame[PLAY].loadFromFile("Play.png");
     gButtonControlGame[REPLAY].loadFromFile("Replay.png");
     gButtonControlGame[EXIT].loadFromFile("Exit.png");
-//    gButtonControlGame[EXIT].loadFromFile("/Users/mac/Documents/EditImage/pause/Exit.png");
     
     gFont = TTF_OpenFont("Sears_Tower.ttf", 30);
 }
