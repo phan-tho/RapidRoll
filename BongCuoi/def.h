@@ -29,6 +29,15 @@ const int LENGTH_SCORE = 6;
 
 const int TOTAL_FIRE_TIME_LAPSE = 6;
 
+enum Button{
+    PAUSE,
+    PLAY,
+    REPLAY,
+    EXIT,
+    TOTAL_BUTTON_IN_GAME
+};
+
+
 
 /*
     This is important to set DOWN velocity of BALL and UP velocity of BLOCK
@@ -48,7 +57,7 @@ void init(){
     SDL_Init( SDL_INIT_VIDEO );
     
     //Create window
-    gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+    gWindow = SDL_CreateWindow( "BY PHAN THO", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
     
     //Create vsynced renderer for window
     gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );

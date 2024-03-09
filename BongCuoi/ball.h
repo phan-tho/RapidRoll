@@ -17,6 +17,7 @@ class Dot
             UP_RIGHT = -6,
             DOWN_LEFT = 15,
             DOWN_RIGHT = -15
+
         };
         
         int currentState;
