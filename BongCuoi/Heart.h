@@ -35,12 +35,12 @@ void Heart::move(const int& DENTA_Y){
     PosX += moveToLeft;             // PASS VELOCITY OF BLOCK TO HEART
                                     // HEART MOVE INDEPEND WITH BLOCK BELOW ITS
     
-    if( ( PosX <= 64 ) || ( PosX >= 367 ) ){         // BOUND WHEN COLLIDE WALL
+    if( ( PosX <= 64 ) || ( PosX >= 349 ) ){         // BOUND WHEN COLLIDE WALL
         PosX -= moveToLeft;                             // MAGIC NUMBERS
         moveToLeft = -moveToLeft;
     }
 }
-
+//
 //void Heart::render(){
 //    gHeart.render(PosX, PosY, NULL);
 //}

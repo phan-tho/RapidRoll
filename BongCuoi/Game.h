@@ -1,25 +1,9 @@
 #ifndef Game_h
 #define Game_h
 
-class Game{
-    private:
-        const int BLOCK_ABOVE_TRAP = 3;             // 4  BLOCK ==> 1 TRAP
-        const int BLOCK_ABOVE_HEART = 30;           // 15 BLOCK ==> 1 HEART
-    
-        const int TIME_DELAY = 90;                  // 1.5s
-        int cntTime = 0;
-        int waitRevive;
-    
-        int cnt, life;
-        int score;              // CALCULATE WHEN SOME BLOCK OR TRAP REMOVE
-        int DENTA_Y;
+#include "Pause.h"
 
-        Dot dot;
-        Heart heart;
-        
-        std::deque<Block> Blocks;
-        std::deque<Trap>  Traps;
-    
+class Game{
     public:
         Game();
         
@@ -32,21 +16,41 @@ class Game{
         void moveBlocksAndTraps();
         void removeItemOutBoard();
         void renderBlocksAndTraps();
-
     
         // PROCESSING HEART -->
-        void moveAndRenderHeart();
+        void moveHeart();
+        void renderHeart();
         
-        void moveAndRenderBall();
+        void moveBall();
+        void renderBall();
+    
         void checkLifeBall();     // DIE OR EAT HEART
     
         void updateScoreAndDentaY();
+    private:
+        const int BLOCK_ABOVE_TRAP = 3;             // 4  BLOCK ==> 1 TRAP
+        const int BLOCK_ABOVE_HEART = 13;           // 15 BLOCK ==> 1 HEART
+
+        const int TIME_DELAY = 90;                  // 1.5s
+        int cntTime;
+        int waitRevive;
+
+        int cnt, life;
+        int score;              // CALCULATE WHEN SOME BLOCK OR TRAP REMOVE
+        int DENTA_Y;
+
+        Dot dot;
+        Heart heart;
         
+        std::deque<Block> Blocks;
+        std::deque<Trap>  Traps;
 };
 
 void Game::Play(){
     bool quit = false;
     SDL_Event e;
+    
+    Pause OptionInGame;
     
     while( !quit ){
         while( SDL_PollEvent( &e ) != 0 ){
@@ -54,15 +58,49 @@ void Game::Play(){
             
             //Handle input for the dot
             dot.handleEvent( e );
+            OptionInGame.handleEvent( &e );
+            if (OptionInGame.mCurrentState[EXIT])       quit = true;
+        }
+        
+        if(OptionInGame.mCurrentState[REPLAY]){
+            cnt = 0;
+            life = 3;
+            score = 0;
+            DENTA_Y = 2;
+            waitRevive = 0;
+            
+            dot.mPosY = CEILING + 120;                       // MAGIC
+            dot.mPosX = (SCREEN_WIDTH - dot.DOT_WIDTH)/2;
+            dot.mVelX = 0;
+            
+            heart.PosX = 0;
+            heart.PosY = 0;
+            heart.moveToLeft = 0;
+            
+            Blocks.clear();
+            Traps.clear();
+        
+            OptionInGame.mCurrentState[PAUSE] = false;
+            OptionInGame.mCurrentState[REPLAY] = false;
         }
         
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
         
         gBackground.render(0, 0, NULL);             // BACKGROUND
+        OptionInGame.render();
         renderLifeAndScore();
         
-        if(life > 0){
+        if(OptionInGame.mCurrentState[PAUSE]){
+            renderBlocksAndTraps();
+            if(life)   renderBall();
+            else       gGameOver.render(54, 310, NULL);
+            renderHeart();
+            
+            OptionInGame.render();
+        }
+        
+        if(life > 0 && !OptionInGame.mCurrentState[PAUSE]){
             genBlocksTrapsHeart();
             moveBlocksAndTraps();
             removeItemOutBoard();
@@ -70,9 +108,11 @@ void Game::Play(){
         
         
             // PROCESSING HEART -->
-            moveAndRenderHeart();
+            moveHeart();
+            renderHeart();
             
-            moveAndRenderBall();
+            moveBall();
+            renderBall();
             
             updateScoreAndDentaY();
             
@@ -80,18 +120,21 @@ void Game::Play(){
             // APPEAR AFTER 1 SECOND
         }
                                             // GAME OVER
-        else{
+        else if(life == 0 && !OptionInGame.mCurrentState[PAUSE]){
             if(cntTime++ < TIME_DELAY){
                 moveBlocksAndTraps();
                 removeItemOutBoard();
                 renderBlocksAndTraps();
         
-                moveAndRenderHeart();
+                moveHeart();
+                renderHeart();
             }
             else{
                 renderBlocksAndTraps();
+                renderHeart();
                 
                 gGameOver.render(54, 310, NULL);            // MAGIC NUMBERS
+                OptionInGame.mCurrentState[PAUSE] = true;
             }
         }
 
@@ -113,7 +156,7 @@ void Game::renderLifeAndScore(){
     for(int i = 0; i < LENGTH_SCORE - leng; i++)          str += '0';
     str += std::to_string(score);
     gTextTexture.loadFromRenderedText(str, textColor);
-    gTextTexture.render(210, 20, NULL);
+    gTextTexture.render(130, 20, NULL);
 }
 
 void Game::genBlocksTrapsHeart(){
@@ -162,22 +205,39 @@ void Game::renderBlocksAndTraps(){
     }
 }
 
-void Game::moveAndRenderHeart(){
+void Game::moveHeart(){
     heart.move(DENTA_Y);
+}
+
+void Game::renderHeart(){
     if(heart.PosY >= CEILING && !heart.isEaten){
         gHeart.render(heart.PosX, heart.PosY, NULL);
     }
 }
 
-void Game::moveAndRenderBall(){
+void Game::moveBall(){
     dot.move( checkCollideBlock(dot, Blocks), DENTA_Y);                                 // DOT
-    
+}
+
+void Game::renderBall(){
     if(waitRevive == 0){
         gDotTexture.render(dot.getX(), dot.getY(), NULL);
+        
+        int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;
+        int yFire = dot.mPosY - dot.FIRE_HEIGHT + dot.DOT_HEIGHT;
+        
+        SDL_Point centre = { dot.FIRE_WIDTH/2, dot.FIRE_HEIGHT - dot.DOT_HEIGHT/2 };
+        gFire[(cnt/9)%6].renderFlip( xFire , yFire, NULL, dot.currentState, &centre , SDL_FLIP_NONE);
     }
     else{
         if((waitRevive/20)&1){
             gDotTexture.render(dot.getX(), dot.getY(), NULL);
+            
+            int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;
+            int yFire = dot.mPosY - dot.FIRE_HEIGHT + dot.DOT_HEIGHT;
+            
+            SDL_Point centre = { dot.FIRE_WIDTH/2, dot.FIRE_HEIGHT - dot.DOT_HEIGHT/2 };
+            gFire[(cnt/9)%6].renderFlip( xFire , yFire, NULL, dot.currentState, &centre , SDL_FLIP_NONE);
         }
         waitRevive++;
         if(waitRevive >= TIME_DELAY){
@@ -194,11 +254,13 @@ void Game::updateScoreAndDentaY(){
 void Game::checkLifeBall(){
     
     if( checkCollideTrap(dot, Traps) || dot.mPosY <= CEILING || dot.mPosY + dot.DOT_HEIGHT >= FLOOR){
-        dot = Dot();
+//        dot = Dot();
+        dot.mVelX = 0;
+        dot.currentState = dot.DOWN;
         
         // BALL WILL APPEAR ABOVE LOWEST BLOCK FROM CEILING---------------------------------------------
         if( !Blocks.empty() ){
-            dot.mPosY = Blocks.back().PosY - dot.DOT_HEIGHT*3;
+            dot.mPosY = Blocks.back().PosY - dot.DOT_HEIGHT;
             dot.mPosX = Blocks.back().PosX + (Blocks.back().BLOCK_WIDTH - dot.DOT_WIDTH)/2;
         }
         life--;
@@ -220,9 +282,10 @@ Game::Game(){
     score = 0;
     DENTA_Y = 2;
     waitRevive = 0;
+    cntTime = 0;
     
     Block::dentaX = 1;
-    Block::staticAboveDyn = 5;
+    Block::staticAboveDyn = 1;
     
     Trap::dentaX = 1;
     Trap::staticAboveDyn = 3;

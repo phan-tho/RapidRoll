@@ -1,8 +1,12 @@
 #ifndef defGlobalSpecialVar_h
 #define defGlobalSpecialVar_h
 
-LTexture gDotTexture;
 LTexture gBackground;
+
+LTexture gDotTexture;
+LTexture gFire[TOTAL_FIRE_TIME_LAPSE];
+
+LTexture gButtonControlGame[TOTAL_BUTTON_IN_GAME];
 
 LTexture gGameOver;
 
