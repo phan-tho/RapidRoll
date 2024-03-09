@@ -26,13 +26,6 @@ class Dot
         int getX();
     
         int getY();
-
-    private:
-//        //The X and Y offsets of the dot
-//        int mPosX, mPosY;
-
-        //The velocity of the dot
-//        int mVelX;
 };
 
 void Dot::handleEvent( SDL_Event& e ){

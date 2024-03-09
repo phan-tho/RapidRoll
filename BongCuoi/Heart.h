@@ -32,7 +32,8 @@ Heart::Heart(){
 void Heart::move(const int& DENTA_Y){
     PosY -= DENTA_Y;
     
-    PosX += moveToLeft;
+    PosX += moveToLeft;             // PASS VELOCITY OF BLOCK TO HEART
+                                    // HEART MOVE INDEPEND WITH BLOCK BELOW ITS
     
     if( ( PosX <= 64 ) || ( PosX >= 367 ) ){         // BOUND WHEN COLLIDE WALL
         PosX -= moveToLeft;                             // MAGIC NUMBERS

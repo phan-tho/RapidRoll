@@ -14,8 +14,6 @@ class Block{
         
         void move(const int& DENTA_Y);
 
-//    int dentaX = 1;
-//    int staticAboveDyn = 1;
         static int dentaX, staticAboveDyn;
 };
 

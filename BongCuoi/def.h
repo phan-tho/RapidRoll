@@ -24,10 +24,9 @@ const int rPIVOT  = 390;
 const int vGEN_BLOCK = 60;          // Velocity of processing generate block from floor
 
 const int DENTA_X = 3;              // HORIZINAL VELOCITY OF BALL
-//const int DENTA_Y = 2;              // VERTICAL  VELOCITY OF BALL AND WALL
 
-const int BLOCK_ABOVE_TRAP = 3;             // 4  BLOCK ==> 1 TRAP
-const int BLOCK_ABOVE_HEART = 30;           // 15 BLOCK ==> 1 HEART
+const int LENGTH_SCORE = 6;
+
 
 /*
     This is important to set DOWN velocity of BALL and UP velocity of BLOCK
