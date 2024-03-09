@@ -7,6 +7,20 @@ class Dot
         static const int DOT_WIDTH = 20;
         static const int DOT_HEIGHT = 20;
     
+        const int FIRE_WIDTH = 36;
+        const int FIRE_HEIGHT = 46;
+    
+        enum fireState{
+            UP = 0,
+            DOWN = 0,
+            UP_LEFT = 6,
+            UP_RIGHT = -6,
+            DOWN_LEFT = 15,
+            DOWN_RIGHT = -15
+        };
+        
+        int currentState;
+    
         //The X and Y offsets of the dot
         int mPosX, mPosY;
     
@@ -52,10 +66,16 @@ void Dot::move(const int& upANDdyn, const int& DENTA_Y){
     if(upANDdyn == -20){             // NOT COLLIDE
         mPosY += DENTA_Y;
         mPosX += mVelX;
+        if(mVelX > 0)           currentState = DOWN_RIGHT;
+        else if(mVelX < 0)      currentState = DOWN_LEFT;
+        else                    currentState = DOWN;
     }
     else{                           // COLLIDE
         mPosY -= DENTA_Y;
         mPosX += mVelX + upANDdyn;
+        if(mVelX + upANDdyn > 0)        currentState = UP_RIGHT;
+        else if(mVelX + upANDdyn < 0)   currentState = UP_LEFT;
+        else                            currentState = UP;
     }
     
     
@@ -73,6 +93,8 @@ Dot::Dot()
 
     //Initialize the velocity
     mVelX = 0;
+    
+//    currentState = DOWN;
 }
 
 int Dot::getX(){

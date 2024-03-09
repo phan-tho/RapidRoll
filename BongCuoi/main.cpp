@@ -13,9 +13,16 @@ int main( int argc, char* argv[] ){
 }
 
 void loadMedia(){
-    //Load dot texture
-    gDotTexture.loadFromFile( "Ball.png" );
     gBackground.loadFromFile("BackGr.png");
+    
+    gDotTexture.loadFromFile( "Ball.png" );
+    
+    gFire[0].loadFromFile("fire1.png");
+    gFire[1].loadFromFile("fire2.png");
+    gFire[2].loadFromFile("fire3.png");
+    gFire[3].loadFromFile("fire4.png");
+    gFire[4].loadFromFile("fire5.png");
+    gFire[5].loadFromFile("fire6.png");
     
     gGameOver.loadFromFile("GameOver.png");
     
@@ -31,6 +38,13 @@ void close()
     //Free loaded images
     gDotTexture.freeFire();
     gBackground.freeFire();
+    
+    gFire[0].freeFire();
+    gFire[1].freeFire();
+    gFire[2].freeFire();
+    gFire[3].freeFire();
+    gFire[4].freeFire();
+    gFire[5].freeFire();
     
     gGameOver.freeFire();
     
