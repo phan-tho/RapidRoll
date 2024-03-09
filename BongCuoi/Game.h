@@ -3,15 +3,16 @@
 
 class Game{
     private:
-//        const int BLOCK_ABOVE_TRAP = 3;             // 4  BLOCK ==> 1 TRAP
-//        const int BLOCK_ABOVE_HEART = 30;           // 15 BLOCK ==> 1 HEART
+        const int BLOCK_ABOVE_TRAP = 3;             // 4  BLOCK ==> 1 TRAP
+        const int BLOCK_ABOVE_HEART = 30;           // 15 BLOCK ==> 1 HEART
+    
+        const int TIME_DELAY = 90;                  // 1.5s
+        int cntTime = 0;
+        int waitRevive;
     
         int cnt, life;
         int score;              // CALCULATE WHEN SOME BLOCK OR TRAP REMOVE
         int DENTA_Y;
-//        int waitRevive;
-//    
-//        const int TIME_REVIVE = 90;                 // TIME TO BACK GAME. FPS ≈ 60 ==> 1.5S
 
         Dot dot;
         Heart heart;
@@ -28,22 +29,18 @@ class Game{
     
         // PROCESSING BLOCKS AND TRAPS -->
         void genBlocksTrapsHeart();
-        
         void moveBlocksAndTraps();
-        
         void removeItemOutBoard();
-        
         void renderBlocksAndTraps();
-        
+
     
         // PROCESSING HEART -->
         void moveAndRenderHeart();
         
         void moveAndRenderBall();
+        void checkLifeBall();     // DIE OR EAT HEART
     
         void updateScoreAndDentaY();
-        
-        void checkLifeBall();     // DIE OR EAT HEART
         
 };
 
@@ -62,19 +59,15 @@ void Game::Play(){
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
         
-        //Render objects
         gBackground.render(0, 0, NULL);             // BACKGROUND
         renderLifeAndScore();
         
         if(life > 0){
             genBlocksTrapsHeart();
-            
             moveBlocksAndTraps();
-            
             removeItemOutBoard();
-            
             renderBlocksAndTraps();
-            
+        
         
             // PROCESSING HEART -->
             moveAndRenderHeart();
@@ -84,21 +77,20 @@ void Game::Play(){
             updateScoreAndDentaY();
             
             checkLifeBall();     // DIE OR EAT HEART
+            // APPEAR AFTER 1 SECOND
         }
-
-                                                // GAME OVER
-        
+                                            // GAME OVER
         else{
-            if(!Blocks.empty() || !Traps.empty()){
+            if(cntTime++ < TIME_DELAY){
                 moveBlocksAndTraps();
-                
                 removeItemOutBoard();
-                
                 renderBlocksAndTraps();
-                
+        
                 moveAndRenderHeart();
             }
             else{
+                renderBlocksAndTraps();
+                
                 gGameOver.render(54, 310, NULL);            // MAGIC NUMBERS
             }
         }
@@ -118,10 +110,10 @@ void Game::renderLifeAndScore(){
     
     str = '0';
     auto leng = (std::to_string(score)).size();
-    for(int i = 0; i < 10 - leng; i++)          str += '0';
+    for(int i = 0; i < LENGTH_SCORE - leng; i++)          str += '0';
     str += std::to_string(score);
     gTextTexture.loadFromRenderedText(str, textColor);
-    gTextTexture.render(170, 20, NULL);
+    gTextTexture.render(210, 20, NULL);
 }
 
 void Game::genBlocksTrapsHeart(){
@@ -134,15 +126,15 @@ void Game::genBlocksTrapsHeart(){
         Blocks.push_back(block);
         if( cnt % ( (vGEN_BLOCK/DENTA_Y)*(BLOCK_ABOVE_HEART + 1) ) == 0 && cnt){
             heart.assignPos(block.PosX + block.BLOCK_WIDTH/2 - heart.HEART_WIDTH/2, block.PosY - heart.HEART_HEIGHT);
-            heart.isEaten = false;
+            heart.isEaten = false;                  // CAN DISPLAY AND EATEN BY BALL
             heart.moveToLeft = 0;
             
             if(block.dynamic){
-                heart.moveToLeft += (block.left ? -block.dentaX : block.dentaX);
+                heart.moveToLeft += (block.left ? -block.dentaX : block.dentaX);        // PASS VELOCITY AND DIRECTLY TO HEART
             }
         }
     }
-    cnt++;
+    cnt = (cnt + 1)%( (vGEN_BLOCK/DENTA_Y)*(BLOCK_ABOVE_TRAP + 1)*10 );         // AVOID CASE OVERFLOW NUM AND TRAP NOT APPEAR AT TENTH
 }
 
 
@@ -179,12 +171,24 @@ void Game::moveAndRenderHeart(){
 
 void Game::moveAndRenderBall(){
     dot.move( checkCollideBlock(dot, Blocks), DENTA_Y);                                 // DOT
-    gDotTexture.render(dot.getX(), dot.getY(), NULL);
+    
+    if(waitRevive == 0){
+        gDotTexture.render(dot.getX(), dot.getY(), NULL);
+    }
+    else{
+        if((waitRevive/20)&1){
+            gDotTexture.render(dot.getX(), dot.getY(), NULL);
+        }
+        waitRevive++;
+        if(waitRevive >= TIME_DELAY){
+            waitRevive = 0;
+        }
+    }
 }
 
 void Game::updateScoreAndDentaY(){
     score += DENTA_Y;
-    DENTA_Y += (score%15000 == 0);
+    DENTA_Y += (score%20000 == 0);
 }
 
 void Game::checkLifeBall(){
@@ -194,10 +198,11 @@ void Game::checkLifeBall(){
         
         // BALL WILL APPEAR ABOVE LOWEST BLOCK FROM CEILING---------------------------------------------
         if( !Blocks.empty() ){
-            dot.mPosY = Blocks.back().PosY - dot.DOT_HEIGHT;
+            dot.mPosY = Blocks.back().PosY - dot.DOT_HEIGHT*3;
             dot.mPosX = Blocks.back().PosX + (Blocks.back().BLOCK_WIDTH - dot.DOT_WIDTH)/2;
         }
         life--;
+        waitRevive = 1;
         // ---------------------------------------------------------------------------------------- DIED
         
     }
@@ -214,12 +219,13 @@ Game::Game(){
     life = 3;
     score = 0;
     DENTA_Y = 2;
+    waitRevive = 0;
     
     Block::dentaX = 1;
     Block::staticAboveDyn = 5;
     
     Trap::dentaX = 1;
-    Trap::staticAboveDyn = 5;
+    Trap::staticAboveDyn = 3;
 }
 
 #endif /* Game_h */

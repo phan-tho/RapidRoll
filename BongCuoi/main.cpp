@@ -14,7 +14,7 @@ int main( int argc, char* argv[] ){
 
 void loadMedia(){
     //Load dot texture
-    gDotTexture.loadFromFile( "dot.bmp" );
+    gDotTexture.loadFromFile( "Ball.png" );
     gBackground.loadFromFile("BackGr.png");
     
     gGameOver.loadFromFile("GameOver.png");

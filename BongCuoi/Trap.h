@@ -14,7 +14,6 @@ class Trap{
         
         void move(const int& DENTA_Y);
         
-//        int dentaX = 1, staticAboveDyn = 1;
         static int dentaX, staticAboveDyn;
     // AS CONST BUT WE CAN ASSIGN ONCE
 };
@@ -26,7 +25,6 @@ Trap::Trap(){                       // WE AVOID HEART ABOVE TRAP IN main.cpp
     PosY = FLOOR;
     PosX = rand()%(rPIVOT - TRAP_WIDTH - lPIVOT + 1) + lPIVOT;
     
-    staticAboveDyn = 4;
     dynamic = (rand()%staticAboveDyn == 0);
     left = (PosX - lPIVOT >= rPIVOT - PosX - TRAP_WIDTH);
 }
