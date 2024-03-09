@@ -51,12 +51,12 @@ void close()
     gFire[3].freeFire();
     gFire[4].freeFire();
     gFire[5].freeFire();
-    
+
     gButtonControlGame[0].freeFire();
     gButtonControlGame[1].freeFire();
     gButtonControlGame[2].freeFire();
     gButtonControlGame[3].freeFire();
-    
+
     gGameOver.freeFire();
     
     gBlock.freeFire();
