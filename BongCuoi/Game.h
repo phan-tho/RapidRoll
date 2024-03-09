@@ -174,10 +174,22 @@ void Game::moveAndRenderBall(){
     
     if(waitRevive == 0){
         gDotTexture.render(dot.getX(), dot.getY(), NULL);
+        
+        int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;
+        int yFire = dot.mPosY - dot.FIRE_HEIGHT + dot.DOT_HEIGHT;
+        
+        SDL_Point centre = { dot.FIRE_WIDTH/2, dot.FIRE_HEIGHT - dot.DOT_HEIGHT/2 };
+        gFire[(cnt/9)%6].renderFlip( xFire , yFire, NULL, dot.currentState, &centre , SDL_FLIP_NONE);
     }
     else{
         if((waitRevive/20)&1){
             gDotTexture.render(dot.getX(), dot.getY(), NULL);
+            
+            int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;
+            int yFire = dot.mPosY - dot.FIRE_HEIGHT + dot.DOT_HEIGHT;
+            
+            SDL_Point centre = { dot.FIRE_WIDTH/2, dot.FIRE_HEIGHT - dot.DOT_HEIGHT/2 };
+            gFire[(cnt/9)%6].renderFlip( xFire , yFire, NULL, dot.currentState, &centre , SDL_FLIP_NONE);
         }
         waitRevive++;
         if(waitRevive >= TIME_DELAY){
@@ -194,11 +206,13 @@ void Game::updateScoreAndDentaY(){
 void Game::checkLifeBall(){
     
     if( checkCollideTrap(dot, Traps) || dot.mPosY <= CEILING || dot.mPosY + dot.DOT_HEIGHT >= FLOOR){
-        dot = Dot();
+//        dot = Dot();
+        dot.mVelX = 0;
+        dot.currentState = dot.DOWN;
         
         // BALL WILL APPEAR ABOVE LOWEST BLOCK FROM CEILING---------------------------------------------
         if( !Blocks.empty() ){
-            dot.mPosY = Blocks.back().PosY - dot.DOT_HEIGHT*3;
+            dot.mPosY = Blocks.back().PosY - dot.DOT_HEIGHT;
             dot.mPosX = Blocks.back().PosX + (Blocks.back().BLOCK_WIDTH - dot.DOT_WIDTH)/2;
         }
         life--;

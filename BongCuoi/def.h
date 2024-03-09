@@ -27,6 +27,8 @@ const int DENTA_X = 3;              // HORIZINAL VELOCITY OF BALL
 
 const int LENGTH_SCORE = 6;
 
+const int TOTAL_FIRE_TIME_LAPSE = 6;
+
 
 /*
     This is important to set DOWN velocity of BALL and UP velocity of BLOCK
