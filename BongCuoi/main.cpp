@@ -1,4 +1,4 @@
-#include "Header.h"
+#include "Header/Header.h"
 
 int main( int argc, char* argv[] ){
     init();
@@ -29,6 +29,9 @@ void loadMedia(){
     gBlock.loadFromFile("Block.png");
     gHeart.loadFromFile("tim.png");
     gTrap.loadFromFile("trap.png");
+    
+    gFuel.loadFromFile("fuel.png");
+    gEnergyBar.loadFromFile("energyBar.png");
     
     gButtonControlGame[PAUSE].loadFromFile("Pause.png");
     gButtonControlGame[PLAY].loadFromFile("Play.png");
@@ -61,6 +64,9 @@ void close()
     gBlock.freeFire();
     gHeart.freeFire();
     gTrap.freeFire();
+    
+    gFuel.freeFire();
+    gEnergyBar.freeFire();
     
     gTextTexture.freeFire();
     

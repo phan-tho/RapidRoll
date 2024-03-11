@@ -31,8 +31,9 @@ class LTexture
         void render( int x, int y, SDL_Rect* clip);             // clip ==> a part of pictrure {x, y, w, h}
     
         //Renders texture at given point
-        void renderFlip( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip);
+        void renderFlip( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip, float xScale = 1);
 //        void renderFlip( int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
+        void renderCustomSize(int x, int y, float xScale);
 
         //Gets image dimensions
         int getWidth();
@@ -74,10 +75,10 @@ void LTexture::render(int x, int y, SDL_Rect* clip){                    // copy 
     SDL_RenderCopy(gRenderer, mTexture, clip, &xywh);
 }
 
-void LTexture::renderFlip( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
+void LTexture::renderFlip( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip, float xScale )
 {
     //Set rendering space and render to screen
-    SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+    SDL_Rect renderQuad = {x, y, mWidth, mHeight};
 
     //Set clip rendering dimensions
     if( clip != NULL ){
@@ -87,6 +88,12 @@ void LTexture::renderFlip( int x, int y, SDL_Rect* clip, double angle, SDL_Point
 
     //Render to screen
     SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip );
+}
+
+void LTexture::renderCustomSize(int x, int y, float xScale){
+//    SDL_Rect renderQuad = { int(x - (xScale - 1)*mHeight/2 ), int(y - (xScale - 1)*mWidth/2 ), int(mWidth*xScale), int(mHeight*xScale) };
+    SDL_Rect renderQuad = {x, y, int(mWidth*xScale), int(mHeight*xScale) };
+    SDL_RenderCopyEx( gRenderer, mTexture, NULL, &renderQuad, 0, NULL, SDL_FLIP_NONE );
 }
 
 void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )

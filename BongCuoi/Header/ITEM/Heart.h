@@ -8,7 +8,7 @@ class Heart{
         
         int PosX, PosY;
     
-        bool isEaten = false;
+        bool isEaten;
     
         int moveToLeft;
     
@@ -16,7 +16,7 @@ class Heart{
         
         void move(const int& DENTA_Y);
         
-//        void render();
+//      void render();
     
         void assignPos(const int x, const int y);
 };
@@ -25,9 +25,8 @@ Heart::Heart(){
     PosX = 0;
     PosY = 0;
     moveToLeft = 0;
+    isEaten = false;
 }
-
-
 
 void Heart::move(const int& DENTA_Y){
     PosY -= DENTA_Y;

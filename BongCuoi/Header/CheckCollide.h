@@ -1,14 +1,18 @@
 #ifndef CheckCollide_h
 #define CheckCollide_h
 
+#include "ITEM/ITEM.h"
+#include "def.h"
+
 int checkCollideBlock(Dot& dot, std::deque<Block> Blocks);
 bool checkCollideTrap(Dot& dot, std::deque<Trap> Traps);
 bool checkCollideHeart(Dot& dot, Heart& heart);
+bool checkCollideFuel(Dot& dot, Fuel& fuel);
 
 int findBlockSameY(Dot& dot, std::deque<Block> Blocks){
     if(Blocks.empty())          return -1;
     
-    int l = 0, r = Blocks.size() - 1;
+    int l = 0, r = int(Blocks.size()) - 1;
     while(l <= r){
         int mid = (l + r)/2;
         int blockPos = (*(Blocks.begin() + mid)).PosY;
@@ -51,13 +55,20 @@ bool checkCollideHeart(Dot& dot, Heart& heart){
     if( dot.mPosY + dot.DOT_HEIGHT < heart.PosY || dot.mPosY > heart.PosY + heart.HEART_HEIGHT)        return false;           // NOT SAME VERTICAL COORDINATE
     if( dot.mPosX + dot.DOT_WIDTH < heart.PosX || dot.mPosX > heart.PosX + heart.HEART_WIDTH)          return false;           // NOT SAME HORIZONAL COORDINATE
     
-    return true;;
+    return true;
+}
+
+bool checkCollideFuel(Dot& dot, Fuel& fuel){
+    if( dot.mPosY + dot.DOT_HEIGHT < fuel.PosY || dot.mPosY > fuel.PosY + fuel.FUEL_HEIGHT)        return false;           // NOT SAME VERTICAL COORDINATE
+    if( dot.mPosX + dot.DOT_WIDTH < fuel.PosX || dot.mPosX > fuel.PosX + fuel.FUEL_WIDTH)          return false;           // NOT SAME HORIZONAL COORDINATE
+    
+    return true;
 }
 
 bool checkCollideTrap(Dot& dot, std::deque<Trap> Traps){
     if(Traps.empty())       return false;
     
-    int l = 0, r = Traps.size() - 1;
+    int l = 0, r = int(Traps.size()) - 1;
     int pos = -1;
     while(l <= r){
         int mid = (l + r)/2;

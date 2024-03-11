@@ -5,6 +5,8 @@
 #ifndef Pause_h
 #define Pause_h
 
+#include "def.h"
+
 class Pause {
 public:
     
@@ -35,7 +37,7 @@ void Pause::handleEvent(SDL_Event* e){
         int x, y;
         SDL_GetMouseState( &x, &y );
         
-        if( mCurrentState[PAUSE] ){
+        if( mCurrentState[PAUSE] ){                 // PROCESSING 3 BUTTON
             if ( x >= CORRECTLY_POS[PLAY].x && x <=  CORRECTLY_POS[PLAY].x + BUTTON_WIDTH && y >= CORRECTLY_POS[PLAY].y && y <= CORRECTLY_POS[PLAY].y + BUTTON_HEIGHT){
                 mCurrentState[PAUSE] = false;
             }
@@ -45,6 +47,7 @@ void Pause::handleEvent(SDL_Event* e){
             else if( x >= CORRECTLY_POS[EXIT].x && x <=  CORRECTLY_POS[EXIT].x + BUTTON_WIDTH && y >= CORRECTLY_POS[EXIT].y && y <= CORRECTLY_POS[EXIT].y+ BUTTON_HEIGHT){
                 mCurrentState[EXIT] = true;
             }
+            
         }
         else{
             mCurrentState[PAUSE] = ( x >= CORRECTLY_POS[PAUSE].x && x <=  CORRECTLY_POS[PAUSE].x + BUTTON_WIDTH && y >= CORRECTLY_POS[PAUSE].y && y <= BUTTON_HEIGHT);
@@ -53,15 +56,11 @@ void Pause::handleEvent(SDL_Event* e){
 }
 
 Pause::Pause(){
-    mCurrentState[0] = false;
-    mCurrentState[1] = false;
-    mCurrentState[2] = false;
-    mCurrentState[3] = false;
-    
-    mCurrentPos[PAUSE]  = { 275, 16 };
-    mCurrentPos[PLAY]   = { 275, 16 };
-    mCurrentPos[REPLAY] = { 275, 16 };
-    mCurrentPos[EXIT]   = { 275, 26 };
+    for(int i = PAUSE; i <= EXIT; i++){
+        mCurrentState[i] = false;
+        
+        mCurrentPos[i]  = { 275, 16 };
+    }
 }
 
 void Pause::render(){

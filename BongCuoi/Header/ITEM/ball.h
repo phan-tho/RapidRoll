@@ -10,14 +10,17 @@ class Dot
         const int FIRE_WIDTH = 36;
         const int FIRE_HEIGHT = 46;
     
+        const int ENERGY_BAR_WIDTH = 8;
+        const int ENERGY_BAR_HEIGHT = 800;
+        const int DISTANCE_BAR_BALL = 15;
+    
         enum fireState{
             UP = 0,
             DOWN = 0,
-            UP_LEFT = 6,
-            UP_RIGHT = -6,
-            DOWN_LEFT = 15,
-            DOWN_RIGHT = -15
-
+            UP_LEFT = 12,
+            UP_RIGHT = -12,
+            DOWN_LEFT = 30,
+            DOWN_RIGHT = -30
         };
         
         int currentState;
@@ -26,6 +29,7 @@ class Dot
         int mPosX, mPosY;
     
         int mVelX;
+        int vJetEngine;
 
         Dot();
 
@@ -41,49 +45,93 @@ class Dot
         int getX();
     
         int getY();
+    
+        int energy;
+private:
+    enum StateEngine {
+        NOT = 0,
+        GOING_UP = 1,
+        MOVE_HORIZONAL = 2
+    };
 };
 
 void Dot::handleEvent( SDL_Event& e ){
     if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
         //Adjust the velocity
+        if(!energy)     vJetEngine = NOT;
+        else{
+            if( e.key.keysym.sym == SDLK_SPACE || e.key.keysym.sym == SDLK_g || e.key.keysym.sym == SDLK_UP){
+                vJetEngine = GOING_UP;
+            }
+            else if( e.key.keysym.sym == SDLK_b ){
+                vJetEngine = MOVE_HORIZONAL;
+            }
+            else{
+                vJetEngine = NOT;
+            }
+        }
+        
         switch( e.key.keysym.sym ){
             case SDLK_LEFT:     mVelX -= DENTA_X; break;                // VELOCITY WILL RETURN 0 WHEN KEY UP
             case SDLK_RIGHT:    mVelX += DENTA_X; break;
         }
     }
-    
+
     //If a key was released
     else if( e.type == SDL_KEYUP){
         //Adjust the velocity
+        if( e.key.keysym.sym == SDLK_SPACE || e.key.keysym.sym == SDLK_g || e.key.keysym.sym == SDLK_b || e.key.keysym.sym == SDLK_UP){
+            vJetEngine = NOT;
+        }
+        
         switch( e.key.keysym.sym ){
-            case SDLK_LEFT:     mVelX = 0; break;
-            case SDLK_RIGHT:    mVelX = 0; break;
+            case SDLK_LEFT:     mVelX = 0; break;                //
+            case SDLK_RIGHT:    mVelX = 0; break;                // VELOCITY
         }
     }
 }
 
 void Dot::move(const int& upANDdyn, const int& DENTA_Y){
+    if(!energy)     vJetEngine = NOT;
     
     if(upANDdyn == -20){             // NOT COLLIDE
-        mPosY += DENTA_Y;
-        mPosX += mVelX;
+        if(vJetEngine == GOING_UP){
+            mPosY -= DENTA_Y/2;
+            mPosX += mVelX*5/3;
+            energy -= 1;
+        }
+        else if(vJetEngine == MOVE_HORIZONAL){
+            mPosY += DENTA_Y;
+            mPosX += mVelX*5/3;
+            energy -= 1;
+        }
+        else{
+            mPosY += DENTA_Y;
+            mPosX += mVelX;
+        }
+        
         if(mVelX > 0)           currentState = DOWN_RIGHT;
         else if(mVelX < 0)      currentState = DOWN_LEFT;
         else                    currentState = DOWN;
     }
     else{                           // COLLIDE
+//        if(vJetEngine){
+//            mPosY -= DENTA_Y;
+//            mPosX += mVelX*5/3 + upANDdyn;
+//        }
+//        else{
+//            mPosY -= DENTA_Y;
+//            mPosX += mVelX + upANDdyn;
+//        }
         mPosY -= DENTA_Y;
         mPosX += mVelX + upANDdyn;
         if(mVelX + upANDdyn > 0)        currentState = UP_RIGHT;
         else if(mVelX + upANDdyn < 0)   currentState = UP_LEFT;
         else                            currentState = UP;
     }
-    
-    
-    //If the dot went too far to the left or right
-    if( ( mPosX < lPIVOT ) || ( mPosX + DOT_WIDTH > rPIVOT ) ){         // BOUND WHEN COLLIDE WALL
-        mPosX -= mVelX;
-    }
+
+    mPosX = fmin(mPosX, rPIVOT - DOT_WIDTH);
+    mPosX = fmax(mPosX, lPIVOT);
 }
 
 Dot::Dot()
@@ -94,8 +142,11 @@ Dot::Dot()
 
     //Initialize the velocity
     mVelX = 0;
+    vJetEngine = 0;
     
-//    currentState = DOWN;
+    energy = 0;
+    
+    currentState = DOWN;
 }
 
 int Dot::getX(){

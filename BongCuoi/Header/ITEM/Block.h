@@ -5,7 +5,7 @@ class Block{
     public:
         const int BLOCK_HEIGHT = 10;
         const int BLOCK_WIDTH  = 65;
-    
+
         int PosX, PosY;
     
         bool dynamic, left;     // Going left
