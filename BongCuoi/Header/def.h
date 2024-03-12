@@ -34,7 +34,8 @@ enum Button{
     PLAY,
     REPLAY,
     EXIT,
-    TOTAL_BUTTON_IN_GAME
+    TOTAL_BUTTON_IN_GAME,
+    NONE
 };
 
 

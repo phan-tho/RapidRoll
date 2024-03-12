@@ -92,6 +92,8 @@ void Game::Play(){
         
         if(OptionInGame.mCurrentState[PAUSE]){          // PAUSE
             renderBlocksAndTraps();
+            renderHeart();
+            renderFuel();
             if(life){
                 renderBall();
                 renderEnergyBar();
@@ -99,8 +101,6 @@ void Game::Play(){
             else{
                 gGameOver.render(54, 310, NULL);
             }
-            renderHeart();
-            renderFuel();
     
             OptionInGame.render();
             

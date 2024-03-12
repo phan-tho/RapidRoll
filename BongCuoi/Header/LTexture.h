@@ -7,10 +7,8 @@ class LTexture
         //Initializes variables
         LTexture();
 
-        //Loads image at specified path
         void loadFromFile( std::string path );
 
-        //Deallocates texture
         void freeFire();
     
         //Set blending

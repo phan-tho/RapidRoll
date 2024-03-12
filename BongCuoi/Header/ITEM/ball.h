@@ -98,12 +98,12 @@ void Dot::move(const int& upANDdyn, const int& DENTA_Y){
         if(vJetEngine == GOING_UP){
             mPosY -= DENTA_Y/2;
             mPosX += mVelX*5/3;
-            energy -= 1;
+            energy -= 3;
         }
         else if(vJetEngine == MOVE_HORIZONAL){
             mPosY += DENTA_Y;
             mPosX += mVelX*5/3;
-            energy -= 1;
+            energy -= 3;
         }
         else{
             mPosY += DENTA_Y;
