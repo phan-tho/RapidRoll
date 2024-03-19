@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
 #include "SDL2_ttf/SDL_ttf.h"
+#include "SDL2_mixer/SDL_mixer.h"
 #include <string>
 #include <iostream>
 // random
@@ -23,7 +24,7 @@ const int rPIVOT  = 390;
 
 const int vGEN_BLOCK = 60;          // Velocity of processing generate block from floor
 
-const int DENTA_X = 3;              // HORIZINAL VELOCITY OF BALL
+//const int DENTA_X = 2;              // HORIZINAL VELOCITY OF BALL
 
 const int LENGTH_SCORE = 6;
 
@@ -54,8 +55,8 @@ void loadMedia();
 void close();
 
 void init(){
-    srand(time(0));
-    SDL_Init( SDL_INIT_VIDEO );
+    srand(int(time(0)));
+    SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO );
     
     //Create window
     gWindow = SDL_CreateWindow( "BY PHAN THO", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
@@ -71,6 +72,10 @@ void init(){
     
     //Initialize SDL_ttf
     TTF_Init();                       // WHEN WANT TO LOAD FONT
+    
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){          // number of channels is 2.
+        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+    }
 }
 
 

@@ -8,12 +8,12 @@ int main( int argc, char* argv[] ){
     game.Play();
     
     close();
-
     return 0;
 }
 
 void loadMedia(){
     gBackground.loadFromFile("BackGr.png");
+//    gBackground.loadFromFile("/Users/mac/Documents/Code/Project/RapidRoll/BongCuoi/Image/BackGr.png");
     
     gDotTexture.loadFromFile( "Ball.png" );
     
@@ -39,10 +39,24 @@ void loadMedia(){
     gButtonControlGame[EXIT].loadFromFile("Exit.png");
     
     gFont = TTF_OpenFont("Sears_Tower.ttf", 30);
+    
+    gBackGrMusic = Mix_LoadMUS("BackGrMusic.wav");
+    gMusicWhenMove = Mix_LoadWAV("fireMove.wav");
+    gTailFireMove = Mix_LoadWAV("tailFireMove.wav");
+//    gMusicWhenMove = Mix_LoadWAV("BackGrMusic.wav");
 }
 
 void close()
 {
+    Mix_FreeMusic(gBackGrMusic);
+    gBackGrMusic = NULL;
+    
+    Mix_FreeChunk(gMusicWhenMove);
+    gMusicWhenMove = NULL;
+    
+    Mix_FreeChunk(gTailFireMove);
+    gTailFireMove = NULL;
+    
     //Free loaded images
     gDotTexture.freeFire();
     gBackground.freeFire();
@@ -82,7 +96,31 @@ void close()
     //Quit SDL subsystems
     IMG_Quit();
     TTF_Quit();
+    Mix_Quit();
     SDL_Quit();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -52,15 +52,17 @@ void LTexture::loadFromFile(std::string path){
     
     if(newSurface == NULL){
         std::cout << "Deo load duoc anh " << path << "\n";
+        SDL_GetError();
     }
-    
-    SDL_SetColorKey(newSurface, SDL_TRUE, SDL_MapRGB(newSurface -> format, 0xFF, 0xFF, 0xFF));             // set color key ==> alpha = max
-    mTexture = SDL_CreateTextureFromSurface(gRenderer, newSurface);
-    if(mTexture != NULL){
-        mWidth = newSurface->w;
-        mHeight = newSurface->h;
+    else{
+        SDL_SetColorKey(newSurface, SDL_TRUE, SDL_MapRGB(newSurface -> format, 0xFF, 0xFF, 0xFF));             // set color key ==> alpha = max
+        mTexture = SDL_CreateTextureFromSurface(gRenderer, newSurface);
+        if(mTexture != NULL){
+            mWidth = newSurface->w;
+            mHeight = newSurface->h;
+        }
+        SDL_FreeSurface(newSurface);
     }
-    SDL_FreeSurface(newSurface);
 }
 
 void LTexture::render(int x, int y, SDL_Rect* clip){                    // copy to gRender

@@ -5,6 +5,10 @@
 #include "Header/def.h"
 #include "Header/LTexture.h"
 #include "Header/defLTexture.h"
+#include "Header/defMusic.h"
+
+//#include "Header/ITEM/ITEM.h"
+//#include "Header/CheckCollide.h"
 
 class Game{
     public:
@@ -57,30 +61,47 @@ class Game{
     
         Pause OptionInGame;
         
-        std::deque<Block> Blocks;
+        std::deque<Block> Blocks;               // distance is 170
         std::deque<Trap>  Traps;
+    
+        // Musical
+    enum Channel{
+            FIRST_CHANNEL = 0,
+            SECOND_CHANNEL = 1
+        };
 };
 
 void Game::Play(){
+    // Play Background Music
+    Mix_PlayMusic(gBackGrMusic, -1);
+
     bool quit = false;
     SDL_Event e;
     
     while( !quit ){
         while( SDL_PollEvent( &e ) != 0 ){
             if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x)        quit = true;
+//            // Play gMusicWhenMove when keydown
+//            if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
+//                if( e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_RIGHT){
+//                    Mix_PlayChannel(-1, gMusicWhenMove, 0);
+//                }
+//            }
             
             //Handle input for the dot
-            dot.handleEvent( e );
+            dot.handleEvent( e, DENTA_Y );
             OptionInGame.handleEvent( &e );
-            if (OptionInGame.mCurrentState[EXIT])       quit = true;        // EXIT
+            
+            if (OptionInGame.mCurrentState[EXIT]){   quit = true;   }        // EXIT
         }
         
-        if(OptionInGame.mCurrentState[REPLAY]){                     // RESET PARAMETER
+        if(OptionInGame.mCurrentState[REPLAY]){                     // RESET PARAMETER WHEN REPLACE
             resetParameter();
-            dot.energy = 0;
-            
             OptionInGame.mCurrentState[PAUSE] = false;
             OptionInGame.mCurrentState[REPLAY] = false;
+            
+            // PLAY ONLY BACKGROUND MUSIC
+            Mix_PlayMusic(gBackGrMusic, -1);
         }
         
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -104,8 +125,18 @@ void Game::Play(){
     
             OptionInGame.render();
             
+            // pause music
+            Mix_PauseMusic();
+            Mix_HaltChannel(FIRST_CHANNEL);
+            
             SDL_RenderPresent( gRenderer );
             continue;
+        }
+        else{
+            // is music is paused, resume music
+            if(Mix_PausedMusic()){
+                Mix_ResumeMusic();
+            }
         }
         
         if(life > 0){               // WHEN PAUSE = FALSE
@@ -151,6 +182,12 @@ void Game::Play(){
                 
                 gGameOver.render(54, 310, NULL);            // MAGIC
                 OptionInGame.mCurrentState[PAUSE] = true;
+                
+                // pause music
+                Mix_PauseMusic();
+                Mix_HaltChannel(FIRST_CHANNEL);
+                
+//                std::cout << Blocks.front().PosX - (*(Blocks.begin() + 1)).PosX;
             }
         }
 
@@ -177,8 +214,8 @@ void Game::renderLifeAndScore(){
 
 void Game::genItem(){
     if(cnt % ( (vGEN_BLOCK/DENTA_Y) *(BLOCK_ABOVE_TRAP + 1) ) == 0 && cnt){     // GEN TRAPS
-        Trap trap;
-        Traps.push_back(trap);
+//        Trap trap;
+//        Traps.push_back(trap);
     }
     else if(cnt % (vGEN_BLOCK/DENTA_Y) == 0){                      // GEN BLOCK AND HEART
         Block block;
@@ -259,6 +296,22 @@ void Game::renderFuel(){
 
 void Game::moveBall(){
     dot.move( checkCollideBlock(dot, Blocks), DENTA_Y);                                 // DOT
+    
+    // play gMusicWhenMove when dot.mVelX != 0
+    if(dot.mVelX != 0){
+        // play when music is paused
+        if(!Mix_Playing(FIRST_CHANNEL)){
+            Mix_PlayChannel(FIRST_CHANNEL, gMusicWhenMove, -1);
+        }
+    }
+    else{
+        // PAUSE MUSIC IN CHANNEL 0 if this channel is playing
+        if(Mix_Playing(FIRST_CHANNEL)){
+            Mix_HaltChannel(FIRST_CHANNEL);
+            // play gTailFireMove
+            Mix_PlayChannel(SECOND_CHANNEL, gTailFireMove, -1);
+        }
+    }
 }
 
 void Game::renderBall(){
@@ -272,10 +325,10 @@ void Game::renderBall(){
         gFire[(cnt/9)%6].renderFlip( xFire , yFire, NULL, dot.currentState, &centre , SDL_FLIP_NONE);
     }
     else{
-        if((waitRevive/20)&1){
+        if((waitRevive/20)&1){              // dot appear and disappear
             gDotTexture.render(dot.getX(), dot.getY(), NULL);
             
-//            int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;
+//            int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;                   // render fire
 //            int yFire = dot.mPosY - dot.FIRE_HEIGHT + dot.DOT_HEIGHT;
 //            
 //            SDL_Point centre = { dot.FIRE_WIDTH/2, dot.FIRE_HEIGHT - dot.DOT_HEIGHT/2 };
@@ -352,6 +405,7 @@ void Game::resetParameter(){
     score = 0;
     DENTA_Y = 2;
     waitRevive = 0;
+    dot.energy = 0;
     
     dot.mPosY = CEILING + 120;                       // MAGIC
     dot.mPosX = (SCREEN_WIDTH - dot.DOT_WIDTH)/2;

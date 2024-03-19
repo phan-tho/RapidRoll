@@ -34,7 +34,7 @@ class Dot
         Dot();
 
         // CHANGE VELOCITY DEPEND TYPED KEY
-        void handleEvent( SDL_Event& e );
+        void handleEvent( SDL_Event& e, const int& DENTA_Y );
 
         //Moves the dot
         void move(const int& up, const int& DENTA_Y);
@@ -51,11 +51,10 @@ private:
     enum StateEngine {
         NOT = 0,
         GOING_UP = 1,
-        MOVE_HORIZONAL = 2
     };
 };
 
-void Dot::handleEvent( SDL_Event& e ){
+void Dot::handleEvent( SDL_Event& e, const int& DENTA_Y ){
     if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
         //Adjust the velocity
         if(!energy)     vJetEngine = NOT;
@@ -63,17 +62,18 @@ void Dot::handleEvent( SDL_Event& e ){
             if( e.key.keysym.sym == SDLK_SPACE || e.key.keysym.sym == SDLK_g || e.key.keysym.sym == SDLK_UP){
                 vJetEngine = GOING_UP;
             }
-            else if( e.key.keysym.sym == SDLK_b ){
-                vJetEngine = MOVE_HORIZONAL;
-            }
             else{
                 vJetEngine = NOT;
             }
         }
         
         switch( e.key.keysym.sym ){
-            case SDLK_LEFT:     mVelX -= DENTA_X; break;                // VELOCITY WILL RETURN 0 WHEN KEY UP
-            case SDLK_RIGHT:    mVelX += DENTA_X; break;
+            case SDLK_LEFT:     
+                mVelX -= DENTA_Y;
+                break;                // VELOCITY WILL RETURN 0 WHEN KEY UP
+            case SDLK_RIGHT:    
+                mVelX += DENTA_Y;
+                break;
         }
     }
 
@@ -100,11 +100,6 @@ void Dot::move(const int& upANDdyn, const int& DENTA_Y){
             mPosX += mVelX*5/3;
             energy -= 3;
         }
-        else if(vJetEngine == MOVE_HORIZONAL){
-            mPosY += DENTA_Y;
-            mPosX += mVelX*5/3;
-            energy -= 3;
-        }
         else{
             mPosY += DENTA_Y;
             mPosX += mVelX;
@@ -115,14 +110,6 @@ void Dot::move(const int& upANDdyn, const int& DENTA_Y){
         else                    currentState = DOWN;
     }
     else{                           // COLLIDE
-//        if(vJetEngine){
-//            mPosY -= DENTA_Y;
-//            mPosX += mVelX*5/3 + upANDdyn;
-//        }
-//        else{
-//            mPosY -= DENTA_Y;
-//            mPosX += mVelX + upANDdyn;
-//        }
         mPosY -= DENTA_Y;
         mPosX += mVelX + upANDdyn;
         if(mVelX + upANDdyn > 0)        currentState = UP_RIGHT;
