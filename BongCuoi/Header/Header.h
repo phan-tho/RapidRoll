@@ -8,7 +8,7 @@
 
 #include "defLTexture.h"
 #include "CheckCollide.h"
-#include "Game.h"
+//#include "Game.h"
 #include "Pause.h"
 
 #endif /* Header_h */

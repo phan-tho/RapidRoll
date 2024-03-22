@@ -58,11 +58,13 @@ class Game{
         Dot dot;
         Heart heart;
         Fuel fuel;
-    
+
         Pause OptionInGame;
         
         std::deque<Block> Blocks;               // distance is 170
         std::deque<Trap>  Traps;
+    
+        int nearestPosBlock;
     
         // Musical
     enum Channel{
@@ -81,15 +83,15 @@ void Game::Play(){
     while( !quit ){
         while( SDL_PollEvent( &e ) != 0 ){
             if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x)        quit = true;
-//            // Play gMusicWhenMove when keydown
-//            if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
-//                if( e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_RIGHT){
-//                    Mix_PlayChannel(-1, gMusicWhenMove, 0);
-//                }
-//            }
+            // Play gMusicWhenMove when keydown
+            if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
+                if( e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_RIGHT){
+                    Mix_PlayChannel(-1, gMusicWhenMove, 0);
+                }
+            }
             
             //Handle input for the dot
-            dot.handleEvent( e, DENTA_Y );
+//            dot.handleEvent( e, DENTA_Y );
             OptionInGame.handleEvent( &e );
             
             if (OptionInGame.mCurrentState[EXIT]){   quit = true;   }        // EXIT
@@ -100,7 +102,7 @@ void Game::Play(){
             OptionInGame.mCurrentState[PAUSE] = false;
             OptionInGame.mCurrentState[REPLAY] = false;
             
-            // PLAY ONLY BACKGROUND MUSIC
+//             PLAY ONLY BACKGROUND MUSIC
             Mix_PlayMusic(gBackGrMusic, -1);
         }
         
@@ -128,15 +130,15 @@ void Game::Play(){
             // pause music
             Mix_PauseMusic();
             Mix_HaltChannel(FIRST_CHANNEL);
+            Mix_HaltChannel(SECOND_CHANNEL);
             
             SDL_RenderPresent( gRenderer );
             continue;
         }
-        else{
-            // is music is paused, resume music
-            if(Mix_PausedMusic()){
-                Mix_ResumeMusic();
-            }
+        
+        // is music is paused, resume music
+        if(Mix_PausedMusic()){
+            Mix_ResumeMusic();
         }
         
         if(life > 0){               // WHEN PAUSE = FALSE
@@ -153,8 +155,10 @@ void Game::Play(){
             moveFuel();
             renderFuel();
             
+            nearestPosBlock = checkFindBlockSameY(dot, Blocks);
+            dot.autoMove(DENTA_Y, nearestPosBlock, Blocks);
             moveBall();
-            renderBall();
+            renderBall();                               // MOVE AND RENDER BALL
             renderEnergyBar();
             
             updateScoreAndDentaY();
@@ -186,8 +190,6 @@ void Game::Play(){
                 // pause music
                 Mix_PauseMusic();
                 Mix_HaltChannel(FIRST_CHANNEL);
-                
-//                std::cout << Blocks.front().PosX - (*(Blocks.begin() + 1)).PosX;
             }
         }
 
@@ -295,7 +297,7 @@ void Game::renderFuel(){
 
 
 void Game::moveBall(){
-    dot.move( checkCollideBlock(dot, Blocks), DENTA_Y);                                 // DOT
+    dot.move( checkCollideBlock(dot, Blocks, nearestPosBlock), DENTA_Y);                                 // DOT
     
     // play gMusicWhenMove when dot.mVelX != 0
     if(dot.mVelX != 0){
@@ -316,7 +318,7 @@ void Game::moveBall(){
 
 void Game::renderBall(){
     if(waitRevive == 0){
-        gDotTexture.render(dot.getX(), dot.getY(), NULL);
+        gDotTexture.render(dot.mPosX, dot.mPosY, NULL);
         
         int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;
         int yFire = dot.mPosY - dot.FIRE_HEIGHT + dot.DOT_HEIGHT;
@@ -431,11 +433,14 @@ Game::Game(){
     waitRevive = 0;
     cntTime = 0;
     
+    nearestPosBlock = 0;
+    
     Block::dentaX = 1;
-    Block::staticAboveDyn = 4;
+    Block::staticAboveDyn = 1;
     
     Trap::dentaX = 1;
     Trap::staticAboveDyn = 3;
+
 }
 
 #endif /* Game_h */

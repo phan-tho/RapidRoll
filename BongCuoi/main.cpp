@@ -1,4 +1,5 @@
 #include "Header/Header.h"
+#include "Game.h"
 
 int main( int argc, char* argv[] ){
     init();
@@ -43,6 +44,9 @@ void loadMedia(){
     gBackGrMusic = Mix_LoadMUS("BackGrMusic.wav");
     gMusicWhenMove = Mix_LoadWAV("fireMove.wav");
     gTailFireMove = Mix_LoadWAV("tailFireMove.wav");
+    if( gBackGrMusic == NULL || gMusicWhenMove == NULL || gTailFireMove == NULL){
+        printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+    }
 //    gMusicWhenMove = Mix_LoadWAV("BackGrMusic.wav");
 }
 
