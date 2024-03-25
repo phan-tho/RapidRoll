@@ -34,6 +34,7 @@ class Dot
         int vJetEngine;
 
         Dot();
+        void reset();
 
         // CHANGE VELOCITY DEPEND TYPED KEY
         void handleEvent( SDL_Event& e, const int& DENTA_Y );
@@ -45,10 +46,6 @@ class Dot
 
         //Shows the dot on the screen
         void render();
-    
-        int getX();
-    
-        int getY();
     
         int energy;
 private:
@@ -234,6 +231,13 @@ void Dot::move(const int& upANDdyn, const int& DENTA_Y){
     mPosX = fmax(mPosX, lPIVOT);
 }
 
+void Dot::reset(){
+    energy = 0;
+    mPosY = CEILING + 120;                       // MAGIC
+    mPosX = (SCREEN_WIDTH - DOT_WIDTH)/2;
+    mVelX = 0;
+}
+
 Dot::Dot()
 {
     //Initialize the offsets
@@ -247,14 +251,6 @@ Dot::Dot()
     energy = 0;
     
     currentState = DOWN;
-}
-
-int Dot::getX(){
-    return mPosX;
-}
-
-int Dot::getY(){
-    return mPosY;
 }
 
 /*

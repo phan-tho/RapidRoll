@@ -1,11 +1,11 @@
 #ifndef Game_h
 #define Game_h
 
-#include "Header/Pause.h"
-#include "Header/def.h"
-#include "Header/LTexture.h"
-#include "Header/defLTexture.h"
-#include "Header/defMusic.h"
+#include "Option/Pause.h"
+#include "Other/def.h"
+#include "Other/LTexture.h"
+#include "Other/defLTexture.h"
+#include "Other/defMusic.h"
 
 //#include "Header/ITEM/ITEM.h"
 //#include "Header/CheckCollide.h"
@@ -18,188 +18,57 @@ class Game{
     
         void resetParameter();
         
-        void renderLifeAndScore();
+        void renderLifeAndScore(const int& score, const int& life);
     
         // PROCESSING BLOCKS AND TRAPS -->
-        void genItem();         // BLOCKS TRAPS HEART FUEL
+        void genItem(Fuel& fuel, Heart& heart);         // BLOCKS TRAPS HEART FUEL
         void moveBlocksAndTraps();
         void removeItemOutBoard();
         void renderBlocksAndTraps();
     
         // PROCESSING HEART -->
-        void moveHeart();
-        void renderHeart();
+        void moveHeart(Heart& heart);
+        void renderHeart(const Heart& heart);
         
         // PROCESSING FUEL -->
-        void moveFuel();
-        void renderFuel();
+        void moveFuel(Fuel& fuel);
+        void renderFuel(const Fuel& fuel);
         
-        void moveBall();
-        void renderBall();
+        void moveBall(Dot& dot, const int& nearestPosBlock);
+        void renderBall(const Dot& dot);
     
-        void renderEnergyBar();
+        void renderEnergyBar(const Dot& dot);
     
-        void checkLifeBall();     // DIE OR EAT HEART FUEL
+        void checkLifeBall(Dot& dot, Heart& heart, Fuel& fuel, int& life);     // DIE OR EAT HEART FUEL
     
-        void updateScoreAndDentaY();
+        void updateScoreAndDentaY(int& score);
+    protected:
+        int DENTA_Y;
+    
+        Pause OptionInGame;
+    
+        std::deque<Block> Blocks;               // distance is 170
+        std::deque<Trap>  Traps;
+    
+        const int TIME_DELAY = 90;                  // 1.5s
+    
+        // Musical
+        enum Channel{
+            FIRST_CHANNEL = 0,
+            SECOND_CHANNEL = 1
+        };
+    
     private:
         const int BLOCK_ABOVE_TRAP = 3;             // 4  BLOCK ==> 1 TRAP
         const int BLOCK_ABOVE_HEART = 13;           // 15 BLOCK ==> 1 HEART
         const int BLOCK_ABOVE_FUEL = 18;            // AVOID = BLOCK_ABOVE_HEART
 
-        const int TIME_DELAY = 90;                  // 1.5s
-        int cntTime;
         int waitRevive;
 
-        int cnt, life;
-        int score;              // CALCULATE WHEN SOME BLOCK OR TRAP REMOVE
-        int DENTA_Y;
-
-        Dot dot;
-        Heart heart;
-        Fuel fuel;
-
-        Pause OptionInGame;
-        
-        std::deque<Block> Blocks;               // distance is 170
-        std::deque<Trap>  Traps;
-    
-        int nearestPosBlock;
-    
-        // Musical
-    enum Channel{
-            FIRST_CHANNEL = 0,
-            SECOND_CHANNEL = 1
-        };
+        int cnt;
 };
 
-void Game::Play(){
-    // Play Background Music
-    Mix_PlayMusic(gBackGrMusic, -1);
-
-    bool quit = false;
-    SDL_Event e;
-    
-    while( !quit ){
-        while( SDL_PollEvent( &e ) != 0 ){
-            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x)        quit = true;
-            // Play gMusicWhenMove when keydown
-            if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
-                if( e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_RIGHT){
-                    Mix_PlayChannel(-1, gMusicWhenMove, 0);
-                }
-            }
-            
-            //Handle input for the dot
-//            dot.handleEvent( e, DENTA_Y );
-            OptionInGame.handleEvent( &e );
-            
-            if (OptionInGame.mCurrentState[EXIT]){   quit = true;   }        // EXIT
-        }
-        
-        if(OptionInGame.mCurrentState[REPLAY]){                     // RESET PARAMETER WHEN REPLACE
-            resetParameter();
-            OptionInGame.mCurrentState[PAUSE] = false;
-            OptionInGame.mCurrentState[REPLAY] = false;
-            
-//             PLAY ONLY BACKGROUND MUSIC
-            Mix_PlayMusic(gBackGrMusic, -1);
-        }
-        
-        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-        SDL_RenderClear( gRenderer );
-        
-        gBackground.render(0, 0, NULL);             // BACKGROUND
-        OptionInGame.render();                      // OPTION PAUSE PLAY REPLAY EXIT
-        renderLifeAndScore();
-        
-        if(OptionInGame.mCurrentState[PAUSE]){          // PAUSE
-            renderBlocksAndTraps();
-            renderHeart();
-            renderFuel();
-            if(life){
-                renderBall();
-                renderEnergyBar();
-            }
-            else{
-                gGameOver.render(54, 310, NULL);
-            }
-    
-            OptionInGame.render();
-            
-            // pause music
-            Mix_PauseMusic();
-            Mix_HaltChannel(FIRST_CHANNEL);
-            Mix_HaltChannel(SECOND_CHANNEL);
-            
-            SDL_RenderPresent( gRenderer );
-            continue;
-        }
-        
-        // is music is paused, resume music
-        if(Mix_PausedMusic()){
-            Mix_ResumeMusic();
-        }
-        
-        if(life > 0){               // WHEN PAUSE = FALSE
-            genItem();
-            moveBlocksAndTraps();
-            removeItemOutBoard();
-            renderBlocksAndTraps();
-        
-        
-            // PROCESSING HEART -->
-            moveHeart();
-            renderHeart();
-            
-            moveFuel();
-            renderFuel();
-            
-            nearestPosBlock = checkFindBlockSameY(dot, Blocks);
-            dot.autoMove(DENTA_Y, nearestPosBlock, Blocks);
-            moveBall();
-            renderBall();                               // MOVE AND RENDER BALL
-            renderEnergyBar();
-            
-            updateScoreAndDentaY();
-            
-            checkLifeBall();     // DIE OR EAT HEART
-            // APPEAR AFTER 1 SECOND
-        }
-                                            // GAME OVER
-        else if(life == 0){
-            if(cntTime++ < TIME_DELAY){
-                moveBlocksAndTraps();
-                removeItemOutBoard();
-                renderBlocksAndTraps();
-        
-                moveHeart();
-                renderHeart();
-                
-                moveFuel();
-                renderFuel();
-            }
-            else{
-                renderFuel();
-                renderBlocksAndTraps();
-                renderHeart();
-                
-                gGameOver.render(54, 310, NULL);            // MAGIC
-                OptionInGame.mCurrentState[PAUSE] = true;
-                
-                // pause music
-                Mix_PauseMusic();
-                Mix_HaltChannel(FIRST_CHANNEL);
-            }
-        }
-
-        //Update screen
-        SDL_RenderPresent( gRenderer );
-        
-    }
-}
-
-void Game::renderLifeAndScore(){
+void Game::renderLifeAndScore(const int& score, const int& life){
     std::string str = 'X' + std::to_string(life);
     SDL_Color textColor = {0, 0, 0};
     
@@ -214,10 +83,10 @@ void Game::renderLifeAndScore(){
     gTextTexture.render(130, 20, NULL);
 }
 
-void Game::genItem(){
+void Game::genItem(Fuel& fuel, Heart& heart){
     if(cnt % ( (vGEN_BLOCK/DENTA_Y) *(BLOCK_ABOVE_TRAP + 1) ) == 0 && cnt){     // GEN TRAPS
-//        Trap trap;
-//        Traps.push_back(trap);
+        Trap trap;
+        Traps.push_back(trap);
     }
     else if(cnt % (vGEN_BLOCK/DENTA_Y) == 0){                      // GEN BLOCK AND HEART
         Block block;
@@ -271,21 +140,21 @@ void Game::renderBlocksAndTraps(){
     }
 }
 
-void Game::moveHeart(){
+void Game::moveHeart(Heart& heart){
     heart.move(DENTA_Y);
 }
 
-void Game::renderHeart(){
+void Game::renderHeart(const Heart& heart){
     if(heart.PosY >= CEILING && !heart.isEaten){
         gHeart.render(heart.PosX, heart.PosY, NULL);
     }
 }
 
-void Game::moveFuel(){
+void Game::moveFuel(Fuel& fuel){
     fuel.move(DENTA_Y);
 }
 
-void Game::renderFuel(){
+void Game::renderFuel(const Fuel& fuel){
     if(fuel.PosY >= CEILING && !fuel.isEaten){
         gFuel.render(fuel.PosX, fuel.PosY, NULL);
     }
@@ -296,11 +165,11 @@ void Game::renderFuel(){
 }
 
 
-void Game::moveBall(){
+void Game::moveBall(Dot& dot, const int& nearestPosBlock){
     dot.move( checkCollideBlock(dot, Blocks, nearestPosBlock), DENTA_Y);                                 // DOT
     
     // play gMusicWhenMove when dot.mVelX != 0
-    if(dot.mVelX != 0){
+    if(dot.mVelX != 0){                                                                 // PLAY AND PAUSE MUSIC WHEN MOVE
         // play when music is paused
         if(!Mix_Playing(FIRST_CHANNEL)){
             Mix_PlayChannel(FIRST_CHANNEL, gMusicWhenMove, -1);
@@ -316,7 +185,7 @@ void Game::moveBall(){
     }
 }
 
-void Game::renderBall(){
+void Game::renderBall(const Dot& dot){
     if(waitRevive == 0){
         gDotTexture.render(dot.mPosX, dot.mPosY, NULL);
         
@@ -328,7 +197,7 @@ void Game::renderBall(){
     }
     else{
         if((waitRevive/20)&1){              // dot appear and disappear
-            gDotTexture.render(dot.getX(), dot.getY(), NULL);
+            gDotTexture.render(dot.mPosX, dot.mPosY, NULL);
             
 //            int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;                   // render fire
 //            int yFire = dot.mPosY - dot.FIRE_HEIGHT + dot.DOT_HEIGHT;
@@ -343,7 +212,7 @@ void Game::renderBall(){
     }
 }
 
-void Game::renderEnergyBar(){
+void Game::renderEnergyBar(const Dot& dot){
     if(dot.energy >= 80){
         SDL_Rect splitBar = { 0, dot.ENERGY_BAR_HEIGHT/10 - dot.energy/10 + dot.ENERGY_BAR_WIDTH/2, dot.ENERGY_BAR_WIDTH, dot.energy/10 - dot.ENERGY_BAR_WIDTH/2 };         // x y w h
         int x = dot.mPosX + dot.DOT_WIDTH + dot.DISTANCE_BAR_BALL;
@@ -364,12 +233,12 @@ void Game::renderEnergyBar(){
 //    }
 }
 
-void Game::updateScoreAndDentaY(){
+void Game::updateScoreAndDentaY(int& score){
     score += DENTA_Y;
     DENTA_Y += (score%20000 == 0);
 }
 
-void Game::checkLifeBall(){
+void Game::checkLifeBall(Dot& dot, Heart& heart, Fuel& fuel, int& life){
     
     if( checkCollideTrap(dot, Traps) || dot.mPosY <= CEILING || dot.mPosY + dot.DOT_HEIGHT >= FLOOR){
 //        dot = Dot();
@@ -403,44 +272,19 @@ void Game::checkLifeBall(){
 
 void Game::resetParameter(){
     cnt = 0;
-    life = 3;
-    score = 0;
+
     DENTA_Y = 2;
     waitRevive = 0;
-    dot.energy = 0;
-    
-    dot.mPosY = CEILING + 120;                       // MAGIC
-    dot.mPosX = (SCREEN_WIDTH - dot.DOT_WIDTH)/2;
-    dot.mVelX = 0;
-    
-    heart.PosX = 0;
-    heart.PosY = 0;
-    heart.moveToLeft = 0;
-    
-    fuel.PosX = 0;
-    fuel.PosY = 0;
-    fuel.moveToLeft = 0;
-    
+
     Blocks.clear();
     Traps.clear();
 }
 
 Game::Game(){
     cnt = 0;
-    life = 3;
-    score = 0;
+
     DENTA_Y = 2;
     waitRevive = 0;
-    cntTime = 0;
-    
-    nearestPosBlock = 0;
-    
-    Block::dentaX = 1;
-    Block::staticAboveDyn = 1;
-    
-    Trap::dentaX = 1;
-    Trap::staticAboveDyn = 3;
-
 }
 
 #endif /* Game_h */

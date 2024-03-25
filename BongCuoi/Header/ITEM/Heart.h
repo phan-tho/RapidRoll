@@ -13,10 +13,9 @@ class Heart{
         int moveToLeft;
     
         Heart();
+        void reset();
         
         void move(const int& DENTA_Y);
-        
-//      void render();
     
         void assignPos(const int x, const int y);
 };
@@ -39,10 +38,12 @@ void Heart::move(const int& DENTA_Y){
         moveToLeft = -moveToLeft;
     }
 }
-//
-//void Heart::render(){
-//    gHeart.render(PosX, PosY, NULL);
-//}
+
+void Heart::reset(){
+    PosX = 0;
+    PosY = 0;
+    moveToLeft = 0;
+}
 
 void Heart::assignPos(const int x, const int y){
     PosX = x;

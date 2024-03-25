@@ -1,12 +1,16 @@
 #include "Header/Header.h"
-#include "Game.h"
+#include "Header/Game.h"
+#include "Header/BasicMode.h"
 
 int main( int argc, char* argv[] ){
     init();
     loadMedia();
     
-    Game game;
-    game.Play();
+//    Game game;
+//    game.Play();
+    
+    BasicMode basicMode;
+    basicMode.Play();
     
     close();
     return 0;
@@ -44,10 +48,11 @@ void loadMedia(){
     gBackGrMusic = Mix_LoadMUS("BackGrMusic.wav");
     gMusicWhenMove = Mix_LoadWAV("fireMove.wav");
     gTailFireMove = Mix_LoadWAV("tailFireMove.wav");
-    if( gBackGrMusic == NULL || gMusicWhenMove == NULL || gTailFireMove == NULL){
-        printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
-    }
-//    gMusicWhenMove = Mix_LoadWAV("BackGrMusic.wav");
+    
+    Mix_VolumeChunk(gMusicWhenMove, MIX_MAX_VOLUME/16);
+    Mix_VolumeChunk(gTailFireMove, MIX_MAX_VOLUME/16);
+    
+    Mix_VolumeMusic(MIX_MAX_VOLUME/16);
 }
 
 void close()

@@ -11,10 +11,13 @@ public:
     bool isEaten;
 
     int moveToLeft;
-
+    
     Fuel();
     
+    void reset();
+    
     void move(const int& DENTA_Y);
+    
 
     void assignPos(const int x, const int y);
 };
@@ -24,6 +27,12 @@ Fuel::Fuel(){
     PosY = 0;
     moveToLeft = 0;
     isEaten = false;
+}
+
+void Fuel::reset(){
+    PosX = 0;
+    PosY = 0;
+    moveToLeft = 0;
 }
 
 void Fuel::move(const int& DENTA_Y){
@@ -37,10 +46,7 @@ void Fuel::move(const int& DENTA_Y){
         moveToLeft = -moveToLeft;
     }
 }
-//
-//void Fuel::render(){
-//    gFuel.render(PosX, PosY, NULL);
-//}
+
 
 void Fuel::assignPos(const int x, const int y){
     PosX = x;
