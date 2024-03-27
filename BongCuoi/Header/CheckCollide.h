@@ -27,7 +27,7 @@ int findBlockSameY(const Dot& dot, const std::deque<Block>& Blocks){
     return -1;
 }
 
-int checkFindBlockSameY(const Dot& dot, const std::deque<Block>& Blocks){
+int findNearestBlock(const Dot& dot, const std::deque<Block>& Blocks){
     if(Blocks.empty())          return -1;
     // id PosY of dot is greateer than PosY of last element in Blocks
 //    if( dot.mPosY <= Blocks.back().PosY + Blocks.back().BLOCK_HEIGHT )           return -1;
@@ -91,23 +91,36 @@ bool checkCollideFuel(const Dot& dot, const Fuel& fuel){
     return true;
 }
 
-bool checkCollideTrap(Dot& dot, const std::deque<Trap>& Traps){
-    if(Traps.empty())       return false;
+int findNearestTrap(const Dot& dot, const std::deque<Trap>& Traps){
+    if(Traps.empty())          return -1;
+    // id PosY of dot is greateer than PosY of last element in Blocks
+//    if( dot.mPosY <= Blocks.back().PosY + Blocks.back().BLOCK_HEIGHT )           return -1;
     
     int l = 0, r = int(Traps.size()) - 1;
-    int pos = -1;
-    while(l <= r){
+    while(l < r){
         int mid = (l + r)/2;
         int trapPos = (*(Traps.begin() + mid)).PosY;
         
         if( (trapPos + (*Traps.begin()).TRAP_HEIGHT >= dot.mPosY + dot.DOT_HEIGHT) && (dot.mPosY + dot.DOT_HEIGHT >= trapPos) ){
-            pos = mid;
-            break;
+            return mid;
         }
-        else if (dot.mPosY + dot.DOT_HEIGHT < trapPos)          r = mid - 1;
-        else                                                    l = mid + 1;
+        if (trapPos > dot.mPosY + dot.DOT_HEIGHT)          r = mid;
+        else                                               l = mid + 1;
     }
+    return l;
+}
+
+bool checkCollideTrap(Dot& dot, const std::deque<Trap>& Traps){
+    int pos = findNearestTrap(dot, Traps);
     if(pos == -1)       return false;
+    
+    Trap trap = *(Traps.begin() + pos);
+    
+    // check block pos Y collide or not
+    int trapPosY = trap.PosY;
+    if( (trapPosY + trap.TRAP_HEIGHT < dot.mPosY) || (dot.mPosY + dot.DOT_HEIGHT < trapPosY) ){
+        return false;
+    }                                       // NOT COLLIDE WITH ANY BLOCK
     
     int trapPosX = (*(Traps.begin() + pos)).PosX;
     if( (dot.mPosX + dot.DOT_WIDTH*10/10 >= trapPosX) && (dot.mPosX + dot.DOT_WIDTH*0/10 <= trapPosX + (*Traps.begin()).TRAP_WIDTH) ){

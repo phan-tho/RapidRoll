@@ -2,6 +2,7 @@
 #define ball_h
 
 #include "Block.h"
+#include "Trap.h"
 
 class Dot
 {
@@ -39,7 +40,7 @@ class Dot
         // CHANGE VELOCITY DEPEND TYPED KEY
         void handleEvent( SDL_Event& e, const int& DENTA_Y );
     
-        void autoMove(const int& DENTA_Y, int idInBlocks, const std::deque<Block>& Blocks);
+        void autoMove(const int& DENTA_Y, int idNearBlock, int idNearTrap, const std::deque<Block>& Blocks, const std::deque<Trap>& Traps);
 
         //Moves the dot
         void move(const int& up, const int& DENTA_Y);
@@ -57,94 +58,125 @@ private:
     int nearestBlockCanReach(const int& DENTA_Y, int idInBlocks, const std::deque<Block>& Blocks);
 };
 
-void Dot::autoMove(const int& DENTA_Y, int idInBlocks, const std::deque<Block>& Blocks){            // auto handle mVelX
-    Block block = *(Blocks.begin() + idInBlocks);
+void Dot::autoMove(const int& DENTA_Y, int idNearBlock, int idNearTrap, const std::deque<Block>& Blocks, const std::deque<Trap>& Traps){            // auto handle mVelX
+    Block nearBlock = *(Blocks.begin() + idNearBlock);
 
-    if( (block.PosY + block.BLOCK_HEIGHT >= mPosY + DOT_HEIGHT + 2) && (mPosY + DOT_HEIGHT + 2 >= block.PosY) &&                // if collide
-       (mPosX + DOT_WIDTH*10/10 >= block.PosX) && (mPosX + DOT_WIDTH*0/10 <= block.PosX + block.BLOCK_WIDTH) )
+    if(idNearTrap == -1)        return;
+    Trap nearTrap = (*(Traps.begin() + idNearTrap));
+
+    if( (nearBlock.PosY + nearBlock.BLOCK_HEIGHT >= mPosY + DOT_HEIGHT + 2) && (mPosY + DOT_HEIGHT + 2 >= nearBlock.PosY) &&       // if collide
+       (mPosX + DOT_WIDTH*10/10 + 5>= nearBlock.PosX) && (mPosX + DOT_WIDTH*0/10 - 5 <= nearBlock.PosX + nearBlock.BLOCK_WIDTH) )
     {                                                                               // dot is above block
-        std::cout << "id of block " << idInBlocks << "\n";
-//        mVelX = 0;
-        if(idInBlocks >= Blocks.end() - Blocks.begin() - 2){
-            mVelX = 0;
-            return;
-        }
 
         // find nearest block can reach
-        idInBlocks++;
-        int nextIdCanReach = nearestBlockCanReach(DENTA_Y, idInBlocks, Blocks);
+        idNearBlock++;
+        int nextIdCanReach = nearestBlockCanReach(DENTA_Y, idNearBlock, Blocks);
         
-        if(nextIdCanReach == -1){
+        if(nextIdCanReach == -1 || idNearBlock >= Blocks.end() - Blocks.begin() - 3){
             mVelX = 0;
+            return;
         }             // cannot reach any block ==> mVelX = 0. Velocity of ball in dynamic block is computed in func checkCollide and move
         
+        
         // move right or left
-        else{
-            if(block.PosX - lPIVOT < DOT_WIDTH*15/10){
-                mVelX = DENTA_Y + 1;
-            }
-            else if(rPIVOT - block.PosX - block.BLOCK_WIDTH < DOT_WIDTH*15/10){
-                mVelX = -DENTA_Y - 1;
-            }
-            
-            if(mVelX){ return; };
-            
-            Block nextBlock = *(Blocks.begin() + nextIdCanReach);
-            if(mPosX + DOT_WIDTH/2 < nextBlock.PosX + nextBlock.BLOCK_WIDTH/2){
-                mVelX = -DENTA_Y - 1;
-            }
-            else{
-                mVelX = DENTA_Y + 1;
-            }
-            
-            // if space is so small
-            std::cout << "new vel : " << mVelX << "\n";
+        if(nearBlock.PosX - lPIVOT < DOT_WIDTH*15/10){                  // collide with wall
+            mVelX = DENTA_Y + 1;
             return;
         }
+        else if(rPIVOT - nearBlock.PosX - nearBlock.BLOCK_WIDTH < DOT_WIDTH*15/10){
+            mVelX = -DENTA_Y - 1;
+            return;
+        }
+        
+//            if(mVelX){ return; };
+        
+        Block nextBlock = *(Blocks.begin() + nextIdCanReach);
+        
+        if(nearBlock.PosX < nextBlock.PosX){
+            mVelX = DENTA_Y + 1;
+        }
+        else{
+            mVelX = -DENTA_Y - 1;
+        }
+        
+        // AVOID TRAP
+        if(nearBlock.PosX + 5 < nearTrap.PosX){                 // trap is longer than block 10 pixel
+            int x = nearTrap.PosX + nearTrap.TRAP_WIDTH - nearBlock.PosX - nearBlock.BLOCK_WIDTH;
+            x = fmin(x, nearTrap.TRAP_WIDTH - x + DOT_WIDTH) + 0;
+            int y = nearTrap.PosY - nearBlock.PosY - nearBlock.BLOCK_HEIGHT;
+            
+            if(y < 2*x){ mVelX = -DENTA_Y - 1; }
+        }
+        else{
+            int x = nearTrap.PosX + nearTrap.TRAP_WIDTH - nearBlock.PosX + DOT_WIDTH;
+            x = fmin(nearBlock.PosX - nearTrap.PosX, x) + 10;
+            int y = nearTrap.PosY - nearBlock.PosY - nearBlock.BLOCK_HEIGHT;
+            
+            if(y < 2*x){ mVelX = DENTA_Y + 1; }
+        }
+        
         // MOVE LEFT OR RIGHT WHEN HAVE ANY TARGET BLOCK
     }
     else{               // NOT COLLIDE WITH ANY BLOCK
-        if( mPosY + DOT_HEIGHT + 2 >= (*(Blocks.begin() + idInBlocks)).PosY )        idInBlocks++;
+        if( mPosY + DOT_HEIGHT > (*(Blocks.begin() + idNearBlock)).PosY )        idNearBlock++;
         
-        int nextIdCanReach = nearestBlockCanReach(DENTA_Y, idInBlocks, Blocks);
+        int nextIdCanReach = nearestBlockCanReach(DENTA_Y, idNearBlock, Blocks);
         
         if(nextIdCanReach == -1){
             mVelX = 0;
+            return;
         }
+        
+        // AVOID TRAP
+        int xLeft = mPosX + DOT_WIDTH - nearTrap.PosX + 10;
+        int xRight = nearTrap.PosX + nearTrap.TRAP_WIDTH - mPosX + 10;
+        int y = nearTrap.PosY - mPosY - DOT_HEIGHT;
+        if(xLeft < xRight){             // ball site at left with trap
+            if(y < 2*xLeft){
+                mVelX = -DENTA_Y - 1;
+                return;
+            }
+        }
+        else{                               // ball at right
+            if(y < 2*xRight){
+                mVelX = DENTA_Y + 1;
+                return;
+            }
+        }
+        
+        
+        Block nextBlock = *(Blocks.begin() + nextIdCanReach);
+        // IF POSX OF DOT IS IN BLOCK
+        if( (mPosX + DOT_WIDTH*10/10 >= nextBlock.PosX + 30) && (mPosX + DOT_WIDTH*0/10 + 30 <= nextBlock.PosX + nextBlock.BLOCK_WIDTH) ){
+            mVelX = 0;
+        }
+        // posX of dot is at left of block
+        else if(mPosX + DOT_WIDTH*10/10 < nextBlock.PosX + 30){                 // avoid ball in margin of block and fall down
+            mVelX = DENTA_Y + 1;
+        }
+        // posX of dot is at right of block
         else{
-            Block nextBlock = *(Blocks.begin() + nextIdCanReach);
-            // IF POSX OF DOT IS IN BLOCK
-            if( (mPosX + DOT_WIDTH*10/10 >= nextBlock.PosX + 10) && (mPosX + DOT_WIDTH*0/10 + 10 <= nextBlock.PosX + nextBlock.BLOCK_WIDTH) ){
-                mVelX = 0;
-            }
-            // posX of dot is at left of block
-            else if(mPosX + DOT_WIDTH*10/10 < nextBlock.PosX + 10){                 // avoid ball in margin of block and fall down
-                mVelX = DENTA_Y;
-            }
-            // posX of dot is at right of block
-            else{
-                mVelX = -DENTA_Y;
-            }
-            
+            mVelX = -DENTA_Y - 1;
         }
+
         // MOVE LEFT, RIGHT OR STOP
     }
 }
 
 int Dot::nearestBlockCanReach(const int& DENTA_Y, int idInBlocks, const std::deque<Block>& Blocks){
-    while(idInBlocks + 1 <= Blocks.end() - Blocks.begin() ){                // not a last block
+    while(idInBlocks <= Blocks.end() - Blocks.begin() - 1){                // not a last block
         Block block = *(Blocks.begin() + idInBlocks);
         
         // if posX of dot is in posX of Block
-        if( (mPosX + DOT_WIDTH*10/10 >= block.PosX) && (mPosX + DOT_WIDTH*0/10 <= block.PosX + block.BLOCK_WIDTH) ){
+        if( (mPosX + DOT_WIDTH*5/10 >= block.PosX) && (mPosX + DOT_WIDTH*5/10 <= block.PosX + block.BLOCK_WIDTH) ){
             return idInBlocks;
         }
         
         // posX of dot is at left of block
-        else if(mPosX < block.PosX){
+        else if(mPosX + DOT_WIDTH*5/10 < block.PosX){
             int x = block.PosX - mPosX - DOT_WIDTH;
             int y = block.PosY - mPosY - DOT_HEIGHT;
-            if( y*(DENTA_Y + 1) >= x*DENTA_Y ){
+            if( y >= 2*x){
                 return idInBlocks;
             }
             else{ idInBlocks++; }
@@ -154,7 +186,7 @@ int Dot::nearestBlockCanReach(const int& DENTA_Y, int idInBlocks, const std::deq
         else{
             int x = mPosX - block.PosX - block.BLOCK_WIDTH;
             int y = block.PosY - mPosY - DOT_HEIGHT;
-            if( y*(DENTA_Y + 1) >= x*DENTA_Y ){
+            if( y >= 2*x){
                 return idInBlocks;
             }
             else{ idInBlocks++; }
@@ -252,6 +284,8 @@ Dot::Dot()
     
     currentState = DOWN;
 }
+
+
 
 /*
                     I TRY TO RUN THIS CODE. BUT WE HAVE ISSUE WITH GLOBAL VARIABLE DECLARE IN main.cpp

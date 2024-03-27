@@ -36,7 +36,8 @@ private:
     int life;
     // DIE WHEN LIFE = 0
     
-    int nearestPosBlock;
+    int idNearBlock;
+    int idNearTrap;
     
     int cntTime;
     // TIME DELAY WITHIN 1.5S
@@ -121,10 +122,12 @@ void BasicMode::handleWhenPlay(){
     moveFuel(fuel);
     renderFuel(fuel);
     
-    nearestPosBlock = checkFindBlockSameY(dot, Blocks);
-//    dot.autoMove(DENTA_Y, nearestPosBlock, Blocks);
+    idNearBlock = findNearestBlock(dot, Blocks);
+    idNearTrap  = findNearestTrap(dot, Traps);
     
-    moveBall(dot, nearestPosBlock);
+    dot.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
+    
+    moveBall(dot, idNearBlock);
     renderBall(dot);                               // MOVE AND RENDER BALL
     renderEnergyBar(dot);
     
@@ -202,7 +205,7 @@ void BasicMode::resetParameter(){
 
 BasicMode::BasicMode(){
     Block::dentaX = 1;
-    Block::staticAboveDyn = 5;
+    Block::staticAboveDyn = 0;
     
     Trap::dentaX = 1;
     Trap::staticAboveDyn = 3;
@@ -212,7 +215,8 @@ BasicMode::BasicMode(){
     
     cntTime = 0;
     
-    nearestPosBlock = 0;
+    idNearBlock = 0;
+    idNearTrap = 0;
 }
 
 #endif /* BasicMode_h */
