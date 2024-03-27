@@ -6,7 +6,7 @@
 
 LTexture gBackground;
 
-LTexture gDotTexture;
+LTexture gBallTexture;
 LTexture gFire[TOTAL_FIRE_TIME_LAPSE];
 
 LTexture gButtonControlGame[TOTAL_BUTTON_IN_GAME];

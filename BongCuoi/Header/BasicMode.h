@@ -5,6 +5,7 @@
 #define BasicMode_h
 
 #include "Game.h"
+#include "ITEM/autoBall.h"
 
 class BasicMode: public Game{
 public:
@@ -27,7 +28,7 @@ public:
     // INHERIT FROM GAME. RESET PARAMETER WHEN REPLAY
     
 private:
-    Dot dot;
+    autoBall ball;
     Heart heart;
     Fuel fuel;
     
@@ -61,8 +62,8 @@ void BasicMode::Play(){
         while( SDL_PollEvent( &e ) != 0 ){
             if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x)        quit = true;
             
-            //Handle input for the dot
-            dot.handleEvent( e, DENTA_Y );
+            //Handle input for the ball
+            ball.handleEvent( e, DENTA_Y );
             OptionInGame.handleEvent( &e );
             
             if (OptionInGame.mCurrentState[EXIT]){   quit = true;   }        // EXIT
@@ -122,18 +123,23 @@ void BasicMode::handleWhenPlay(){
     moveFuel(fuel);
     renderFuel(fuel);
     
-    idNearBlock = findNearestBlock(dot, Blocks);
-    idNearTrap  = findNearestTrap(dot, Traps);
+    // FIND ID IN DEQUE OF NEAREST TRAP AND BLOCK
+    idNearBlock = findNearestBlock(ball, Blocks);
+    idNearTrap  = findNearestTrap(ball, Traps);
     
-    dot.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
+    // AUTO MOVE
+    ball.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
     
-    moveBall(dot, idNearBlock);
-    renderBall(dot);                               // MOVE AND RENDER BALL
-    renderEnergyBar(dot);
+    // HANDLE BALL
+    moveBall(ball, idNearBlock);
+    renderBall(ball);                               // MOVE AND RENDER BALL
+    renderEnergyBar(ball);
     
+    // HANDLE INFOR BAR
     updateScoreAndDentaY(score);
     
-    checkLifeBall(dot, heart, fuel, life);     // DIE OR EAT HEART
+    // UPDATE LIFE
+    checkLifeBall(ball, heart, fuel, life, idNearTrap);     // DIE OR EAT HEART
     // APPEAR AFTER 1 SECOND
 }
 
@@ -142,8 +148,8 @@ void BasicMode::handleWhenPause(){
     renderHeart(heart);
     renderFuel(fuel);
     if(life){
-        renderBall(dot);
-        renderEnergyBar(dot);
+        renderBall(ball);
+        renderEnergyBar(ball);
     }
     else{
         gGameOver.render(54, 310, NULL);
@@ -196,7 +202,7 @@ void BasicMode::resetParameter(){
     life  = 3;
     score = 0;
     
-    dot.reset();
+    ball.reset();
 
     heart.reset();
 

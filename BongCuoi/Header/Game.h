@@ -1,11 +1,11 @@
 #ifndef Game_h
 #define Game_h
 
-#include "Option/Pause.h"
-#include "Other/def.h"
-#include "Other/LTexture.h"
-#include "Other/defLTexture.h"
-#include "Other/defMusic.h"
+#include "Pause.h"
+#include "def.h"
+#include "LTexture.h"
+#include "defLTexture.h"
+#include "defMusic.h"
 
 //#include "Header/ITEM/ITEM.h"
 //#include "Header/CheckCollide.h"
@@ -34,12 +34,12 @@ class Game{
         void moveFuel(Fuel& fuel);
         void renderFuel(const Fuel& fuel);
         
-        void moveBall(Dot& dot, const int& nearestPosBlock);
-        void renderBall(const Dot& dot);
+        void moveBall(Ball& ball, const int& nearestPosBlock);
+        void renderBall(const Ball& ball);
     
-        void renderEnergyBar(const Dot& dot);
+        void renderEnergyBar(const Ball& ball);
     
-        void checkLifeBall(Dot& dot, Heart& heart, Fuel& fuel, int& life);     // DIE OR EAT HEART FUEL
+        void checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const int& idNearTrap);     // DIE OR EAT HEART FUEL
     
         void updateScoreAndDentaY(int& score);
     protected:
@@ -165,11 +165,11 @@ void Game::renderFuel(const Fuel& fuel){
 }
 
 
-void Game::moveBall(Dot& dot, const int& nearestPosBlock){
-    dot.move( checkCollideBlock(dot, Blocks, nearestPosBlock), DENTA_Y);                                 // DOT
+void Game::moveBall(Ball& ball, const int& nearestPosBlock){
+    ball.move( checkCollideBlock(ball, Blocks, nearestPosBlock), DENTA_Y);                                 // ball
     
-    // play gMusicWhenMove when dot.mVelX != 0
-    if(dot.mVelX != 0){                                                                 // PLAY AND PAUSE MUSIC WHEN MOVE
+    // play gMusicWhenMove when ball.mVelX != 0
+    if(ball.mVelX != 0){                                                                 // PLAY AND PAUSE MUSIC WHEN MOVE
         // play when music is paused
         if(!Mix_Playing(FIRST_CHANNEL)){
             Mix_PlayChannel(FIRST_CHANNEL, gMusicWhenMove, -1);
@@ -185,19 +185,19 @@ void Game::moveBall(Dot& dot, const int& nearestPosBlock){
     }
 }
 
-void Game::renderBall(const Dot& dot){
+void Game::renderBall(const Ball& ball){
     if(waitRevive == 0){
-        gDotTexture.render(dot.mPosX, dot.mPosY, NULL);
+        gBallTexture.render(ball.mPosX, ball.mPosY, NULL);
         
-        int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;
-        int yFire = dot.mPosY - dot.FIRE_HEIGHT + dot.DOT_HEIGHT;
+        int xFire = ball.mPosX - (ball.FIRE_WIDTH - ball.BALL_WIDTH)/2;
+        int yFire = ball.mPosY - ball.FIRE_HEIGHT + ball.BALL_HEIGHT;
         
-        SDL_Point centre = { dot.FIRE_WIDTH/2, dot.FIRE_HEIGHT - dot.DOT_HEIGHT/2 };
-        gFire[(cnt/9)%6].renderFlip( xFire , yFire, NULL, dot.currentState, &centre , SDL_FLIP_NONE);
+        SDL_Point centre = { ball.FIRE_WIDTH/2, ball.FIRE_HEIGHT - ball.BALL_HEIGHT/2 };
+        gFire[(cnt/9)%6].renderFlip( xFire , yFire, NULL, ball.currentState, &centre , SDL_FLIP_NONE);
     }
     else{
         if((waitRevive/20)&1){              // dot appear and disappear
-            gDotTexture.render(dot.mPosX, dot.mPosY, NULL);
+            gBallTexture.render(ball.mPosX, ball.mPosY, NULL);
             
 //            int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;                   // render fire
 //            int yFire = dot.mPosY - dot.FIRE_HEIGHT + dot.DOT_HEIGHT;
@@ -212,14 +212,14 @@ void Game::renderBall(const Dot& dot){
     }
 }
 
-void Game::renderEnergyBar(const Dot& dot){
-    if(dot.energy >= 80){
-        SDL_Rect splitBar = { 0, dot.ENERGY_BAR_HEIGHT/10 - dot.energy/10 + dot.ENERGY_BAR_WIDTH/2, dot.ENERGY_BAR_WIDTH, dot.energy/10 - dot.ENERGY_BAR_WIDTH/2 };         // x y w h
-        int x = dot.mPosX + dot.DOT_WIDTH + dot.DISTANCE_BAR_BALL;
-        int y = dot.mPosY + dot.DOT_HEIGHT - dot.energy/10;
-        gEnergyBar.render( x, y + dot.ENERGY_BAR_WIDTH/2, &splitBar);
+void Game::renderEnergyBar(const Ball& ball){
+    if(ball.energy >= 80){
+        SDL_Rect splitBar = { 0, ball.ENERGY_BAR_HEIGHT/10 - ball.energy/10 + ball.ENERGY_BAR_WIDTH/2, ball.ENERGY_BAR_WIDTH, ball.energy/10 - ball.ENERGY_BAR_WIDTH/2 };         // x y w h
+        int x = ball.mPosX + ball.BALL_WIDTH + ball.DISTANCE_BAR_BALL;
+        int y = ball.mPosY + ball.BALL_HEIGHT - ball.energy/10;
+        gEnergyBar.render( x, y + ball.ENERGY_BAR_WIDTH/2, &splitBar);
         
-        splitBar = { 0, 0, dot.ENERGY_BAR_WIDTH, dot.ENERGY_BAR_WIDTH/2 };
+        splitBar = { 0, 0, ball.ENERGY_BAR_WIDTH, ball.ENERGY_BAR_WIDTH/2 };
         gEnergyBar.render(x, y, &splitBar);
     }
 //    else if(dot.energy > 0){
@@ -238,35 +238,35 @@ void Game::updateScoreAndDentaY(int& score){
     DENTA_Y += (score%20000 == 0);
 }
 
-void Game::checkLifeBall(Dot& dot, Heart& heart, Fuel& fuel, int& life){
+void Game::checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const int& idNearTrap){
     
-    if( checkCollideTrap(dot, Traps) || dot.mPosY <= CEILING || dot.mPosY + dot.DOT_HEIGHT >= FLOOR){
+    if( checkCollideTrap(ball, Traps, idNearTrap) || ball.mPosY <= CEILING || ball.mPosY + ball.BALL_HEIGHT >= FLOOR){
 //        dot = Dot();
-        dot.mVelX = 0;
-        dot.currentState = dot.DOWN;
+        ball.mVelX = 0;
+        ball.currentState = ball.DOWN;
         
         // BALL WILL APPEAR ABOVE LOWEST BLOCK FROM CEILING---------------------------------------------
         if( !Blocks.empty() ){
-            dot.mPosY = Blocks.back().PosY - dot.DOT_HEIGHT;
-            dot.mPosX = Blocks.back().PosX + (Blocks.back().BLOCK_WIDTH - dot.DOT_WIDTH)/2;
+            ball.mPosY = Blocks.back().PosY - ball.BALL_HEIGHT;
+            ball.mPosX = Blocks.back().PosX + (Blocks.back().BLOCK_WIDTH - ball.BALL_WIDTH)/2;
         }
         life--;
         waitRevive = 1;
         // ---------------------------------------------------------------------------------------- DIED
         
     }
-    else if( checkCollideHeart(dot, heart) ){
+    else if( checkCollideHeart(ball, heart) ){
         heart.isEaten = true;
         heart.PosX = 0;
         heart.PosY = 0;
         life++;
     }
     
-    else if( checkCollideFuel(dot, fuel) ){
+    else if( checkCollideFuel(ball, fuel) ){
         fuel.isEaten = true;
         fuel.PosX = 0;
         fuel.PosY = 0;
-        dot.energy = (fmin(500, dot.energy + 160));
+        ball.energy = (fmin(500, ball.energy + 160));
     }
 }
 

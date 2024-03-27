@@ -1,8 +1,7 @@
 #ifndef LTexture_h
 #define LTexture_h
 
-class LTexture
-{
+class LTexture{
     public:
         //Initializes variables
         LTexture();

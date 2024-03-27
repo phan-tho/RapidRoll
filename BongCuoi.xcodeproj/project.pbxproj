@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040B47B52BB1C118000F2DEE /* fuel.png in Resources */ = {isa = PBXBuildFile; fileRef = 040B47B32BB1C118000F2DEE /* fuel.png */; };
+		040B47B62BB1C118000F2DEE /* energyBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 040B47B42BB1C118000F2DEE /* energyBar.png */; };
+		040B47BD2BB1C14B000F2DEE /* fireMove1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 040B47B82BB1C14B000F2DEE /* fireMove1.wav */; };
+		040B47BE2BB1C14B000F2DEE /* tailFireMove1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 040B47B92BB1C14B000F2DEE /* tailFireMove1.wav */; };
+		040B47BF2BB1C14B000F2DEE /* BackGrMusic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 040B47BA2BB1C14B000F2DEE /* BackGrMusic.wav */; };
+		040B47C02BB1C14B000F2DEE /* tailFireMove.wav in Resources */ = {isa = PBXBuildFile; fileRef = 040B47BB2BB1C14B000F2DEE /* tailFireMove.wav */; };
+		040B47C12BB1C14B000F2DEE /* fireMove.wav in Resources */ = {isa = PBXBuildFile; fileRef = 040B47BC2BB1C14B000F2DEE /* fireMove.wav */; };
 		040F99AC2B9D0CDD00F29CD7 /* Sears_Tower.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 040F99AB2B9D0CDD00F29CD7 /* Sears_Tower.ttf */; };
 		040F99B12B9D0DC600F29CD7 /* BackGr.png in Resources */ = {isa = PBXBuildFile; fileRef = 040F99B02B9D0DC600F29CD7 /* BackGr.png */; };
 		040F99B92B9D0E1F00F29CD7 /* fire3.png in Resources */ = {isa = PBXBuildFile; fileRef = 040F99B32B9D0E1F00F29CD7 /* fire3.png */; };
@@ -54,6 +61,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		040B47B02BB1C0C7000F2DEE /* ITEM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITEM.h; sourceTree = "<group>"; };
+		040B47B32BB1C118000F2DEE /* fuel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fuel.png; sourceTree = "<group>"; };
+		040B47B42BB1C118000F2DEE /* energyBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = energyBar.png; sourceTree = "<group>"; };
+		040B47B82BB1C14B000F2DEE /* fireMove1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fireMove1.wav; sourceTree = "<group>"; };
+		040B47B92BB1C14B000F2DEE /* tailFireMove1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tailFireMove1.wav; sourceTree = "<group>"; };
+		040B47BA2BB1C14B000F2DEE /* BackGrMusic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BackGrMusic.wav; sourceTree = "<group>"; };
+		040B47BB2BB1C14B000F2DEE /* tailFireMove.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tailFireMove.wav; sourceTree = "<group>"; };
+		040B47BC2BB1C14B000F2DEE /* fireMove.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fireMove.wav; sourceTree = "<group>"; };
+		040B47CA2BB1C6A2000F2DEE /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		040B47CB2BB1C851000F2DEE /* BasicMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicMode.h; sourceTree = "<group>"; };
+		040B47CC2BB1E67D000F2DEE /* Fuel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fuel.h; sourceTree = "<group>"; };
 		040F99AB2B9D0CDD00F29CD7 /* Sears_Tower.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sears_Tower.ttf; sourceTree = "<group>"; };
 		040F99B02B9D0DC600F29CD7 /* BackGr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackGr.png; sourceTree = "<group>"; };
 		040F99B32B9D0E1F00F29CD7 /* fire3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire3.png; sourceTree = "<group>"; };
@@ -76,13 +94,8 @@
 		040F99D92B9D102600F29CD7 /* ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ball.h; sourceTree = "<group>"; };
 		040F99DA2B9D102600F29CD7 /* Heart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Heart.h; sourceTree = "<group>"; };
 		040F99DB2B9D102600F29CD7 /* Trap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trap.h; sourceTree = "<group>"; };
-		040F99DC2B9D10FE00F29CD7 /* LTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTexture.h; sourceTree = "<group>"; };
 		040F99DD2B9D10FE00F29CD7 /* CheckCollide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckCollide.h; sourceTree = "<group>"; };
 		040F99DE2B9D10FE00F29CD7 /* Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
-		040F99DF2B9D10FE00F29CD7 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
-		040F99E02B9D10FE00F29CD7 /* defGlobalSpecialVar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defGlobalSpecialVar.h; sourceTree = "<group>"; };
-		040F99E12B9D10FE00F29CD7 /* def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = def.h; sourceTree = "<group>"; };
-		040F99E22B9D10FE00F29CD7 /* Pause.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pause.h; sourceTree = "<group>"; };
 		0458A5D92B98C86B0058B970 /* BongCuoi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BongCuoi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0458A5E62B98C86C0058B970 /* BongCuoi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BongCuoi.entitlements; sourceTree = "<group>"; };
 		0458A5EC2B98C8800058B970 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -90,6 +103,12 @@
 		0458A5F42B98C9100058B970 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2_mixer.framework; sourceTree = "<group>"; };
 		0458A5F52B98C9100058B970 /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2_ttf.framework; sourceTree = "<group>"; };
 		0458A5F62B98C9100058B970 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2_image.framework; sourceTree = "<group>"; };
+		0469D9342BB4304E007305DE /* autoBall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = autoBall.h; sourceTree = "<group>"; };
+		0469D9352BB44CA1007305DE /* defLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defLTexture.h; sourceTree = "<group>"; };
+		0469D9362BB44CA1007305DE /* LTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTexture.h; sourceTree = "<group>"; };
+		0469D9372BB44CE8007305DE /* def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = def.h; sourceTree = "<group>"; };
+		0469D93E2BB4503C007305DE /* defMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defMusic.h; sourceTree = "<group>"; };
+		0469D9412BB4524C007305DE /* Pause.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pause.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +126,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040B47B72BB1C14B000F2DEE /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				040B47B82BB1C14B000F2DEE /* fireMove1.wav */,
+				040B47B92BB1C14B000F2DEE /* tailFireMove1.wav */,
+				040B47BA2BB1C14B000F2DEE /* BackGrMusic.wav */,
+				040B47BB2BB1C14B000F2DEE /* tailFireMove.wav */,
+				040B47BC2BB1C14B000F2DEE /* fireMove.wav */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
 		040F99AF2B9D0DA100F29CD7 /* Image */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +166,8 @@
 		040F99BF2B9D0E2B00F29CD7 /* Item */ = {
 			isa = PBXGroup;
 			children = (
+				040B47B42BB1C118000F2DEE /* energyBar.png */,
+				040B47B32BB1C118000F2DEE /* fuel.png */,
 				040F99C02B9D0E4A00F29CD7 /* Ball.png */,
 				040F99C12B9D0E4A00F29CD7 /* Block.png */,
 				040F99C22B9D0E4A00F29CD7 /* dot.bmp */,
@@ -158,13 +191,15 @@
 		040F99D62B9D0FD700F29CD7 /* Header */ = {
 			isa = PBXGroup;
 			children = (
+				0469D9412BB4524C007305DE /* Pause.h */,
+				0469D93E2BB4503C007305DE /* defMusic.h */,
+				0469D9372BB44CE8007305DE /* def.h */,
+				0469D9352BB44CA1007305DE /* defLTexture.h */,
+				0469D9362BB44CA1007305DE /* LTexture.h */,
+				040B47CB2BB1C851000F2DEE /* BasicMode.h */,
+				040B47CA2BB1C6A2000F2DEE /* Game.h */,
 				040F99DD2B9D10FE00F29CD7 /* CheckCollide.h */,
-				040F99E12B9D10FE00F29CD7 /* def.h */,
-				040F99E02B9D10FE00F29CD7 /* defGlobalSpecialVar.h */,
-				040F99DF2B9D10FE00F29CD7 /* Game.h */,
 				040F99DE2B9D10FE00F29CD7 /* Header.h */,
-				040F99DC2B9D10FE00F29CD7 /* LTexture.h */,
-				040F99E22B9D10FE00F29CD7 /* Pause.h */,
 				040F99D72B9D0FE000F29CD7 /* ITEM */,
 			);
 			path = Header;
@@ -173,10 +208,13 @@
 		040F99D72B9D0FE000F29CD7 /* ITEM */ = {
 			isa = PBXGroup;
 			children = (
+				040B47CC2BB1E67D000F2DEE /* Fuel.h */,
+				040B47B02BB1C0C7000F2DEE /* ITEM.h */,
 				040F99D92B9D102600F29CD7 /* ball.h */,
 				040F99D82B9D102600F29CD7 /* Block.h */,
 				040F99DA2B9D102600F29CD7 /* Heart.h */,
 				040F99DB2B9D102600F29CD7 /* Trap.h */,
+				0469D9342BB4304E007305DE /* autoBall.h */,
 			);
 			path = ITEM;
 			sourceTree = "<group>";
@@ -201,6 +239,7 @@
 		0458A5DB2B98C86B0058B970 /* BongCuoi */ = {
 			isa = PBXGroup;
 			children = (
+				040B47B72BB1C14B000F2DEE /* Audio */,
 				040F99D62B9D0FD700F29CD7 /* Header */,
 				040F99AF2B9D0DA100F29CD7 /* Image */,
 				0458A5EC2B98C8800058B970 /* main.cpp */,
@@ -282,19 +321,26 @@
 				040F99C52B9D0E4A00F29CD7 /* Ball.png in Resources */,
 				040F99BA2B9D0E1F00F29CD7 /* fire2.png in Resources */,
 				040F99C82B9D0E4A00F29CD7 /* trap.png in Resources */,
+				040B47BE2BB1C14B000F2DEE /* tailFireMove1.wav in Resources */,
 				040F99C62B9D0E4A00F29CD7 /* Block.png in Resources */,
 				040F99B92B9D0E1F00F29CD7 /* fire3.png in Resources */,
 				040F99D22B9D0EAD00F29CD7 /* Pause.png in Resources */,
 				040F99C72B9D0E4A00F29CD7 /* dot.bmp in Resources */,
+				040B47B62BB1C118000F2DEE /* energyBar.png in Resources */,
 				040F99D32B9D0EAD00F29CD7 /* Play.png in Resources */,
 				040F99BB2B9D0E1F00F29CD7 /* fire6.png in Resources */,
 				040F99BD2B9D0E1F00F29CD7 /* fire1.png in Resources */,
 				040F99C92B9D0E4A00F29CD7 /* tim.png in Resources */,
 				040F99BE2B9D0E1F00F29CD7 /* fire5.png in Resources */,
+				040B47B52BB1C118000F2DEE /* fuel.png in Resources */,
 				040F99BC2B9D0E1F00F29CD7 /* fire4.png in Resources */,
+				040B47BD2BB1C14B000F2DEE /* fireMove1.wav in Resources */,
 				040F99D52B9D0FA900F29CD7 /* GameOver.png in Resources */,
 				040F99D02B9D0EAD00F29CD7 /* Replay.png in Resources */,
+				040B47C02BB1C14B000F2DEE /* tailFireMove.wav in Resources */,
 				040F99AC2B9D0CDD00F29CD7 /* Sears_Tower.ttf in Resources */,
+				040B47C12BB1C14B000F2DEE /* fireMove.wav in Resources */,
+				040B47BF2BB1C14B000F2DEE /* BackGrMusic.wav in Resources */,
 				040F99B12B9D0DC600F29CD7 /* BackGr.png in Resources */,
 				040F99D12B9D0EAD00F29CD7 /* Exit.png in Resources */,
 			);

@@ -6,9 +6,6 @@ int main( int argc, char* argv[] ){
     init();
     loadMedia();
     
-//    Game game;
-//    game.Play();
-    
     BasicMode basicMode;
     basicMode.Play();
     
@@ -20,7 +17,7 @@ void loadMedia(){
     gBackground.loadFromFile("BackGr.png");
 //    gBackground.loadFromFile("/Users/mac/Documents/Code/Project/RapidRoll/BongCuoi/Image/BackGr.png");
     
-    gDotTexture.loadFromFile( "Ball.png" );
+    gBallTexture.loadFromFile( "Ball.png" );
     
     gFire[0].loadFromFile("fire1.png");
     gFire[1].loadFromFile("fire2.png");
@@ -67,7 +64,7 @@ void close()
     gTailFireMove = NULL;
     
     //Free loaded images
-    gDotTexture.freeFire();
+    gBallTexture.freeFire();
     gBackground.freeFire();
     
     gFire[0].freeFire();
