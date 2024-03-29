@@ -28,7 +28,7 @@ const int DENTA_X = 3;              // HORIZINAL VELOCITY OF BALL
 
 const int LENGTH_SCORE = 6;
 
-const int TOTAL_FIRE_TIME_LAPSE = 6;
+//const int TOTAL_FIRE_TIME_LAPSE = 6;
 
 enum Button{
     PAUSE,

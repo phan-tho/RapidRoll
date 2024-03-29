@@ -12,24 +12,13 @@ int main( int argc, char* argv[] ){
     ShootingMode shootingMode;
     shootingMode.Play();
     
-    std::cout << "crash nhuwng van cu laf ok\n";
     close();
-    std::cout << "on roi\n";
     return 0;
 }
 
 void loadMedia(){
     gBackground.loadFromFile("BackGr.png");
 //    gBackground.loadFromFile("/Users/mac/Documents/Code/Project/RapidRoll/BongCuoi/Image/BackGr.png");
-    
-    gBallTexture.loadFromFile( "Ball.png" );
-    
-    gFire[0].loadFromFile("fire1.png");
-    gFire[1].loadFromFile("fire2.png");
-    gFire[2].loadFromFile("fire3.png");
-    gFire[3].loadFromFile("fire4.png");
-    gFire[4].loadFromFile("fire5.png");
-    gFire[5].loadFromFile("fire6.png");
     
     gGameOver.loadFromFile("GameOver.png");
     
@@ -38,7 +27,6 @@ void loadMedia(){
     gTrap.loadFromFile("trap.png");
     
     gFuel.loadFromFile("fuel.png");
-    gEnergyBar.loadFromFile("energyBar.png");
     
     gButtonControlGame[PAUSE].loadFromFile("Pause.png");
     gButtonControlGame[PLAY].loadFromFile("Play.png");
@@ -69,15 +57,7 @@ void close()
     gTailFireMove = NULL;
     
     //Free loaded images
-    gBallTexture.freeFire();
     gBackground.freeFire();
-    
-    gFire[0].freeFire();
-    gFire[1].freeFire();
-    gFire[2].freeFire();
-    gFire[3].freeFire();
-    gFire[4].freeFire();
-    gFire[5].freeFire();
 
     gButtonControlGame[0].freeFire();
     gButtonControlGame[1].freeFire();
@@ -91,7 +71,6 @@ void close()
     gTrap.freeFire();
     
     gFuel.freeFire();
-    gEnergyBar.freeFire();
     
     gTextTexture.freeFire();
     

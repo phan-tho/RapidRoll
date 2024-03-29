@@ -3,19 +3,19 @@
 
 class Trap{
     public:
+        Trap();
+    
         const int TRAP_HEIGHT = 10;
         const int TRAP_WIDTH  = 75;
-        
+    
+        // AS CONST BUT WE CAN ASSIGN ONCE
+        static int dentaX, staticAboveDyn;
+    
         int PosX, PosY;
     
         bool dynamic, left;
-    
-        Trap();
         
         void move(const int& DENTA_Y);
-        
-        static int dentaX, staticAboveDyn;
-    // AS CONST BUT WE CAN ASSIGN ONCE
 };
 
 int Trap::dentaX;

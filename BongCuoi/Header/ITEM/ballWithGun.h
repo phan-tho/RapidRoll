@@ -6,6 +6,7 @@
 #include "ball.h"
 #include "list"
 #include "Bullet.h"
+#include <cmath>
 
 class BallWithGun : public Ball{
 public:
@@ -13,9 +14,11 @@ public:
     
     void renderBall();
     
-    void renderGun();
+    void renderGun(const bool& isPause = 0);
     
     void genBullet(SDL_Event* e);
+    
+//    void handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight );
     
     void handleBullet(const std::deque<Trap>& Traps, const std::deque<Block>& Blocks);
     
@@ -23,6 +26,9 @@ public:
     // clear LTexture
     
 private:
+    const int GUN_WIDTH = 41;
+    const int GUN_HEIGHT = 16;
+    
     double angle;
     
     std::list<Bullet> Bullets;
@@ -36,10 +42,19 @@ private:
 
 void BallWithGun::genBullet(SDL_Event* e){
     if(e->type == SDL_MOUSEBUTTONDOWN){
-        Bullet bullet(mPosX, mPosY, angle);
+        Bullet bullet(mPosX + GUN_WIDTH*cos(angle*M_PI/180), mPosY + GUN_WIDTH*sin(angle*M_PI/180), angle);
         Bullets.push_back(bullet);
     }
 }
+
+//void BallWithGun::handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight ){
+//    Ball::handleEvent(e, DENTA_Y, moveUp, moveLeft, moveRight);
+//    
+//    if(e.type == SDL_MOUSEBUTTONDOWN){
+//        Bullet bullet(mPosX, mPosY, angle);
+//        Bullets.push_back(bullet);
+//    }
+//}
 
 void BallWithGun::handleBullet(const std::deque<Trap>& Traps, const std::deque<Block>& Blocks){
     if(Bullets.empty())     return;
@@ -62,8 +77,10 @@ void BallWithGun::handleBullet(const std::deque<Trap>& Traps, const std::deque<B
     }
 }
 
-void BallWithGun::renderGun(){
-    SDL_GetMouseState(&PosMouseX, &PosMouseY);
+void BallWithGun::renderGun(const bool& isPause){
+    if(isPause == false){
+        SDL_GetMouseState(&PosMouseX, &PosMouseY);
+    }
     
     int x = PosMouseX - mPosX - BALL_WIDTH/2;
     int y = PosMouseY - mPosY - BALL_HEIGHT/2;
@@ -80,12 +97,16 @@ void BallWithGun::renderBall(){
 }
 
 void BallWithGun::close(){
+//    Ball::close();
+    
     BallGunTexture.freeFire();
     GunTextTure.freeFire();
     Bullet::BulletTexture.freeFire();
 }
 
 BallWithGun::BallWithGun(){
+    Ball::close();
+    
     angle = 0;
     
     PosMouseX = 0;

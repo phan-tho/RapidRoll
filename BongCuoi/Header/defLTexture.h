@@ -6,9 +6,6 @@
 
 LTexture gBackground;
 
-LTexture gBallTexture;
-LTexture gFire[TOTAL_FIRE_TIME_LAPSE];
-
 LTexture gButtonControlGame[TOTAL_BUTTON_IN_GAME];
 
 LTexture gGameOver;
@@ -18,7 +15,6 @@ LTexture gHeart;
 LTexture gTrap;
 
 LTexture gFuel;
-LTexture gEnergyBar;
 
 LTexture gTextTexture;
 

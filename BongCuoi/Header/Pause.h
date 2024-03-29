@@ -11,7 +11,6 @@
 
 class Pause {
 public:
-    
     Pause();
     
     bool mCurrentState[TOTAL_BUTTON_IN_GAME];

@@ -35,9 +35,9 @@ class Game{
         void renderFuel(const Fuel& fuel);
         
         void moveBall(Ball& ball, const int& nearestPosBlock);
-        void renderBall(const Ball& ball);
+        void renderBall(Ball& ball);
     
-        void renderEnergyBar(const Ball& ball);
+        void renderEnergyBar(Ball& ball);
     
         void checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const int& idNearTrap);     // DIE OR EAT HEART FUEL
     
@@ -168,69 +168,29 @@ void Game::renderFuel(const Fuel& fuel){
 void Game::moveBall(Ball& ball, const int& nearestPosBlock){
     ball.move( checkCollideBlock(ball, Blocks, nearestPosBlock), DENTA_Y);                                 // ball
     
-    // play gMusicWhenMove when ball.mVelX != 0
-    if(ball.mVelX != 0){                                                                 // PLAY AND PAUSE MUSIC WHEN MOVE
-        // play when music is paused
-        if(!Mix_Playing(FIRST_CHANNEL)){
-            Mix_PlayChannel(FIRST_CHANNEL, gMusicWhenMove, -1);
-        }
-    }
-    else{
-        // PAUSE MUSIC IN CHANNEL 0 if this channel is playing
-        if(Mix_Playing(FIRST_CHANNEL)){
-            Mix_HaltChannel(FIRST_CHANNEL);
-            // play gTailFireMove
-            Mix_PlayChannel(SECOND_CHANNEL, gTailFireMove, -1);
-        }
-    }
-}
-
-void Game::renderBall(const Ball& ball){
-    if(waitRevive == 0){
-        gBallTexture.render(ball.mPosX, ball.mPosY, NULL);
-        
-        int xFire = ball.mPosX - (ball.FIRE_WIDTH - ball.BALL_WIDTH)/2;
-        int yFire = ball.mPosY - ball.FIRE_HEIGHT + ball.BALL_HEIGHT;
-        
-        SDL_Point centre = { ball.FIRE_WIDTH/2, ball.FIRE_HEIGHT - ball.BALL_HEIGHT/2 };
-        gFire[(cnt/9)%6].renderFlip( xFire , yFire, NULL, ball.currentState, &centre , SDL_FLIP_NONE);
-    }
-    else{
-        if((waitRevive/20)&1){              // dot appear and disappear
-            gBallTexture.render(ball.mPosX, ball.mPosY, NULL);
-            
-//            int xFire = dot.mPosX - (dot.FIRE_WIDTH - dot.DOT_WIDTH)/2;                   // render fire
-//            int yFire = dot.mPosY - dot.FIRE_HEIGHT + dot.DOT_HEIGHT;
-//            
-//            SDL_Point centre = { dot.FIRE_WIDTH/2, dot.FIRE_HEIGHT - dot.DOT_HEIGHT/2 };
-//            gFire[(cnt/9)%6].renderFlip( xFire , yFire, NULL, dot.currentState, &centre , SDL_FLIP_NONE);
-        }
-        waitRevive++;
-        if(waitRevive >= TIME_DELAY){
-            waitRevive = 0;
-        }
-    }
-}
-
-void Game::renderEnergyBar(const Ball& ball){
-    if(ball.energy >= 80){
-        SDL_Rect splitBar = { 0, ball.ENERGY_BAR_HEIGHT/10 - ball.energy/10 + ball.ENERGY_BAR_WIDTH/2, ball.ENERGY_BAR_WIDTH, ball.energy/10 - ball.ENERGY_BAR_WIDTH/2 };         // x y w h
-        int x = ball.mPosX + ball.BALL_WIDTH + ball.DISTANCE_BAR_BALL;
-        int y = ball.mPosY + ball.BALL_HEIGHT - ball.energy/10;
-        gEnergyBar.render( x, y + ball.ENERGY_BAR_WIDTH/2, &splitBar);
-        
-        splitBar = { 0, 0, ball.ENERGY_BAR_WIDTH, ball.ENERGY_BAR_WIDTH/2 };
-        gEnergyBar.render(x, y, &splitBar);
-    }
-//    else if(dot.energy > 0){
-//        SDL_Rect splitBar = { 0, dot.ENERGY_BAR_HEIGHT/10 - dot.energy/10 + dot.energy/20, dot.ENERGY_BAR_WIDTH, dot.energy/10 - dot.energy/20 };         // x y w h
-//        int x = dot.mPosX + dot.DOT_WIDTH + dot.DISTANCE_BAR_BALL;
-//        int y = dot.mPosY + dot.DOT_HEIGHT - dot.energy/10;
-//        gEnergyBar.render( x, y + dot.energy/2, &splitBar);
-//        
-//        splitBar = { 0, 0, dot.ENERGY_BAR_WIDTH, dot.energy/20 };
-//        gEnergyBar.render(x, y, &splitBar);
+//    // play gMusicWhenMove when ball.mVelX != 0
+//    if(ball.mVelX != 0){                                                                 // PLAY AND PAUSE MUSIC WHEN MOVE
+//        // play when music is paused
+//        if(!Mix_Playing(FIRST_CHANNEL)){
+//            Mix_PlayChannel(FIRST_CHANNEL, gMusicWhenMove, -1);
+//        }
 //    }
+//    else{
+//        // PAUSE MUSIC IN CHANNEL 0 if this channel is playing
+//        if(Mix_Playing(FIRST_CHANNEL)){
+//            Mix_HaltChannel(FIRST_CHANNEL);
+//            // play gTailFireMove
+//            Mix_PlayChannel(SECOND_CHANNEL, gTailFireMove, -1);
+//        }
+//    }
+}
+
+void Game::renderBall(Ball& ball){
+    ball.render();
+}
+
+void Game::renderEnergyBar(Ball& ball){
+    ball.renderEnergyBar();
 }
 
 void Game::updateScoreAndDentaY(int& score){

@@ -61,13 +61,19 @@ void BasicMode::Play(){
 
     while( !quit ){
         while( SDL_PollEvent( &e ) != 0 ){
-            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x)        quit = true;
+            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x){
+                quit = true;
+                ball.close();
+            }
             
             //Handle input for the ball
             ball.handleEvent(e, DENTA_Y, SDLK_g, SDLK_LEFT, SDLK_RIGHT);
             OptionInGame.handleEvent( &e );
             
-            if (OptionInGame.mCurrentState[EXIT]){   quit = true;   }        // EXIT
+            if (OptionInGame.mCurrentState[EXIT]){
+                quit = true;
+                ball.close();       // free LTexture
+            }        // EXIT
         }
         
         if(OptionInGame.mCurrentState[REPLAY]){                     // RESET PARAMETER WHEN REPLACE

@@ -9,6 +9,8 @@ class autoBall : public Ball{
     public:
         // handle Velocity of ball
         void autoMove(const int& DENTA_Y, int idNearBlock, int idNearTrap, const std::deque<Block>& Blocks, const std::deque<Trap>& Traps);
+    
+        // FUNC CLOSE IS INHERITED FROM BALL
         
     private:
         int nearestBlockCanReach(const int& DENTA_Y, int idInBlocks, const std::deque<Block>& Blocks);
