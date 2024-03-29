@@ -41,6 +41,10 @@
 		0458A5FC2B98C9100058B970 /* SDL2_ttf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0458A5F52B98C9100058B970 /* SDL2_ttf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0458A5FD2B98C9100058B970 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0458A5F62B98C9100058B970 /* SDL2_image.framework */; };
 		0458A5FE2B98C9100058B970 /* SDL2_image.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0458A5F62B98C9100058B970 /* SDL2_image.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0469D9432BB46303007305DE /* Hitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D9422BB46303007305DE /* Hitle.png */; };
+		0469D9462BB4655D007305DE /* awm.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D9452BB4655D007305DE /* awm.png */; };
+		0469D94B2BB476D1007305DE /* SortGun.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D94A2BB476D1007305DE /* SortGun.png */; };
+		0469D94F2BB48025007305DE /* Bullet.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D94E2BB48025007305DE /* Bullet.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -109,6 +113,13 @@
 		0469D9372BB44CE8007305DE /* def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = def.h; sourceTree = "<group>"; };
 		0469D93E2BB4503C007305DE /* defMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defMusic.h; sourceTree = "<group>"; };
 		0469D9412BB4524C007305DE /* Pause.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pause.h; sourceTree = "<group>"; };
+		0469D9422BB46303007305DE /* Hitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Hitle.png; sourceTree = "<group>"; };
+		0469D9452BB4655D007305DE /* awm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = awm.png; sourceTree = "<group>"; };
+		0469D9472BB465B9007305DE /* ballWithGun.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ballWithGun.h; sourceTree = "<group>"; };
+		0469D9492BB46663007305DE /* ShootingMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShootingMode.h; sourceTree = "<group>"; };
+		0469D94A2BB476D1007305DE /* SortGun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SortGun.png; sourceTree = "<group>"; };
+		0469D94D2BB47C86007305DE /* Bullet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bullet.h; sourceTree = "<group>"; };
+		0469D94E2BB48025007305DE /* Bullet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bullet.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,11 +152,12 @@
 		040F99AF2B9D0DA100F29CD7 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				040F99B02B9D0DC600F29CD7 /* BackGr.png */,
 				040F99D42B9D0FA900F29CD7 /* GameOver.png */,
+				0469D9442BB46548007305DE /* Gun */,
 				040F99CB2B9D0E7300F29CD7 /* Control */,
 				040F99BF2B9D0E2B00F29CD7 /* Item */,
 				040F99B22B9D0DD800F29CD7 /* Fire */,
-				040F99B02B9D0DC600F29CD7 /* BackGr.png */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -166,6 +178,7 @@
 		040F99BF2B9D0E2B00F29CD7 /* Item */ = {
 			isa = PBXGroup;
 			children = (
+				0469D9422BB46303007305DE /* Hitle.png */,
 				040B47B42BB1C118000F2DEE /* energyBar.png */,
 				040B47B32BB1C118000F2DEE /* fuel.png */,
 				040F99C02B9D0E4A00F29CD7 /* Ball.png */,
@@ -191,6 +204,7 @@
 		040F99D62B9D0FD700F29CD7 /* Header */ = {
 			isa = PBXGroup;
 			children = (
+				0469D9492BB46663007305DE /* ShootingMode.h */,
 				0469D9412BB4524C007305DE /* Pause.h */,
 				0469D93E2BB4503C007305DE /* defMusic.h */,
 				0469D9372BB44CE8007305DE /* def.h */,
@@ -215,6 +229,8 @@
 				040F99DA2B9D102600F29CD7 /* Heart.h */,
 				040F99DB2B9D102600F29CD7 /* Trap.h */,
 				0469D9342BB4304E007305DE /* autoBall.h */,
+				0469D9472BB465B9007305DE /* ballWithGun.h */,
+				0469D94D2BB47C86007305DE /* Bullet.h */,
 			);
 			path = ITEM;
 			sourceTree = "<group>";
@@ -258,6 +274,24 @@
 				0458A5F32B98C9100058B970 /* SDL2.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0469D9442BB46548007305DE /* Gun */ = {
+			isa = PBXGroup;
+			children = (
+				0469D94C2BB47BBD007305DE /* Bullet */,
+				0469D94A2BB476D1007305DE /* SortGun.png */,
+				0469D9452BB4655D007305DE /* awm.png */,
+			);
+			path = Gun;
+			sourceTree = "<group>";
+		};
+		0469D94C2BB47BBD007305DE /* Bullet */ = {
+			isa = PBXGroup;
+			children = (
+				0469D94E2BB48025007305DE /* Bullet.png */,
+			);
+			path = Bullet;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -326,12 +360,16 @@
 				040F99B92B9D0E1F00F29CD7 /* fire3.png in Resources */,
 				040F99D22B9D0EAD00F29CD7 /* Pause.png in Resources */,
 				040F99C72B9D0E4A00F29CD7 /* dot.bmp in Resources */,
+				0469D94F2BB48025007305DE /* Bullet.png in Resources */,
+				0469D94B2BB476D1007305DE /* SortGun.png in Resources */,
 				040B47B62BB1C118000F2DEE /* energyBar.png in Resources */,
 				040F99D32B9D0EAD00F29CD7 /* Play.png in Resources */,
+				0469D9432BB46303007305DE /* Hitle.png in Resources */,
 				040F99BB2B9D0E1F00F29CD7 /* fire6.png in Resources */,
 				040F99BD2B9D0E1F00F29CD7 /* fire1.png in Resources */,
 				040F99C92B9D0E4A00F29CD7 /* tim.png in Resources */,
 				040F99BE2B9D0E1F00F29CD7 /* fire5.png in Resources */,
+				0469D9462BB4655D007305DE /* awm.png in Resources */,
 				040B47B52BB1C118000F2DEE /* fuel.png in Resources */,
 				040F99BC2B9D0E1F00F29CD7 /* fire4.png in Resources */,
 				040B47BD2BB1C14B000F2DEE /* fireMove1.wav in Resources */,

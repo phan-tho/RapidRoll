@@ -36,6 +36,11 @@ private:
 };
 
 void Pause::handleEvent(SDL_Event* e){
+    // pause when type p
+    if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_p){
+        mCurrentState[PAUSE] ^= 1;
+    }
+    
     if(e->type != SDL_MOUSEBUTTONDOWN && e->type != SDL_MOUSEMOTION){
         return;
     }

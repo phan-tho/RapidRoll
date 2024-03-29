@@ -37,7 +37,7 @@ class Ball{
         void reset();
 
         // CHANGE VELOCITY DEPEND TYPED KEY
-        void handleEvent( SDL_Event& e, const int& DENTA_Y );
+        void handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight );
 
         //Moves the dot
         void move(const int& up, const int& DENTA_Y);
@@ -53,12 +53,12 @@ class Ball{
         };
 };
 
-void Ball::handleEvent( SDL_Event& e, const int& DENTA_Y ){
+void Ball::handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight ){
     if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
-        //Adjust the velocity
+        // Adjust the velocity
         if(!energy)     vJetEngine = NOT;
         else{
-            if( e.key.keysym.sym == SDLK_SPACE || e.key.keysym.sym == SDLK_g || e.key.keysym.sym == SDLK_UP){
+            if( e.key.keysym.sym == moveUp){
                 vJetEngine = GOING_UP;
             }
             else{
@@ -66,26 +66,23 @@ void Ball::handleEvent( SDL_Event& e, const int& DENTA_Y ){
             }
         }
         
-        switch( e.key.keysym.sym ){
-            case SDLK_LEFT:     
-                mVelX -= (DENTA_Y + 1);
-                break;                // VELOCITY WILL RETURN 0 WHEN KEY UP
-            case SDLK_RIGHT:    
-                mVelX += (DENTA_Y + 1);
-                break;
+        if(e.key.keysym.sym == moveLeft){         // move left
+            mVelX -= (DENTA_Y + 1);
+        }
+        else if(e.key.keysym.sym == moveRight){     // move right
+            mVelX += (DENTA_Y + 1);
         }
     }
 
     //If a key was released
     else if( e.type == SDL_KEYUP){
         //Adjust the velocity
-        if( e.key.keysym.sym == SDLK_SPACE || e.key.keysym.sym == SDLK_g || e.key.keysym.sym == SDLK_b || e.key.keysym.sym == SDLK_UP){
+        if( e.key.keysym.sym == moveUp){
             vJetEngine = NOT;
         }
         
-        switch( e.key.keysym.sym ){
-            case SDLK_LEFT:     mVelX = 0; break;                //
-            case SDLK_RIGHT:    mVelX = 0; break;                // VELOCITY
+        if(e.key.keysym.sym == moveLeft || e.key.keysym.sym == moveRight){
+            mVelX = 0;
         }
     }
 }

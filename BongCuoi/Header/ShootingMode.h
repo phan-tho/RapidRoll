@@ -1,34 +1,34 @@
-//  Created by Phan Tho on 25/03/2024.
+//  Created by Phan Tho on 27/03/2024.
 
-
-#ifndef BasicMode_h
-#define BasicMode_h
+#ifndef ShootingMode_h
+#define ShootingMode_h
 
 #include "Game.h"
-#include "ITEM/autoBall.h"
+#include "ITEM/ballWithGun.h"
+#include "ITEM/Bullet.h"
+//#include <cmath>
 
-class BasicMode: public Game{
+class ShootingMode : public Game{
 public:
-    BasicMode();
+    ShootingMode();
     
     void Play();
     
-    // RENDER ITEM NOT MOVE AND PAUSE MUSIC
-    void handleWhenPause();
-    
-    // PROCESSING
+    // PROCESSING 
     void handleWhenPlay();
     // GEN, MOVE ITEM AND CHECK COLLDE
     // AUTO MOVE
     
+    void handleWhenPause();
+    
     void handleWhenDie();
     // RENDER ITEM WITHIN 1.5S AND RENDER GAMEOVER. HANDLE MUSIC
     
-    void resetParameter();
-    // INHERIT FROM GAME. RESET PARAMETER WHEN REPLAY
-    
 private:
-    autoBall ball;
+    const int GUN_WIDTH = 41;
+    const int GUN_HEIGHT = 16;
+    
+    BallWithGun ball;
     Heart heart;
     Fuel fuel;
     
@@ -36,64 +36,45 @@ private:
     // SCORE INCREASE WHEN MOVE
     int life;
     // DIE WHEN LIFE = 0
-    bool isAuto;
     
     int idNearBlock;
     int idNearTrap;
     
     int cntTime;
-    // TIME DELAY WITHIN 1.5S
-    // TIME_DELAY = 90
     
-    // Musical
-    enum Channel{
-        FIRST_CHANNEL = 0,
-        SECOND_CHANNEL = 1
-    };
+    int reloadTime;
+    // reload Time = 0 ==> can fire
+    
 };
 
-void BasicMode::Play(){
-//    Play Background Music
-    Mix_PlayMusic(gBackGrMusic, -1);
-
+void ShootingMode::Play(){
     bool quit = false;
     SDL_Event e;
 
     while( !quit ){
         while( SDL_PollEvent( &e ) != 0 ){
-            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x)        quit = true;
+            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x){
+                close();
+                quit = true;
+            }
             
             //Handle input for the ball
-            ball.handleEvent(e, DENTA_Y, SDLK_g, SDLK_LEFT, SDLK_RIGHT);
-            OptionInGame.handleEvent( &e );
-            
-            if (OptionInGame.mCurrentState[EXIT]){   quit = true;   }        // EXIT
+            ball.handleEvent(e, DENTA_Y, SDLK_g, SDLK_a, SDLK_d);
+            OptionInGame.handleEvent(&e);
+            ball.genBullet(&e);
         }
-        
-        if(OptionInGame.mCurrentState[REPLAY]){                     // RESET PARAMETER WHEN REPLACE
-            resetParameter();
-            OptionInGame.mCurrentState[PAUSE] = false;
-            OptionInGame.mCurrentState[REPLAY] = false;
-            
-//            PLAY ONLY BACKGROUND MUSIC
-            Mix_PlayMusic(gBackGrMusic, -1);
-        }
-        
+    
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
         
         gBackground.render(0, 0, NULL);             // BACKGROUND
-        OptionInGame.render();                      // OPTION PAUSE PLAY REPLAY EXIT
         renderLifeAndScore(score, life);
+        
+        OptionInGame.render();
         
         if(OptionInGame.mCurrentState[PAUSE]){          // PAUSE
             handleWhenPause();
             continue;
-        }
-        
-        // is music is paused, resume music
-        if(Mix_PausedMusic()){
-            Mix_ResumeMusic();
         }
         
         if(life > 0){               // WHEN PAUSE = FALSE
@@ -110,12 +91,12 @@ void BasicMode::Play(){
     }
 }
 
-void BasicMode::handleWhenPlay(){
+
+void ShootingMode::handleWhenPlay(){
     genItem(fuel, heart);
     moveBlocksAndTraps();
     removeItemOutBoard();
     renderBlocksAndTraps();
-
 
     // PROCESSING HEART -->
     moveHeart(heart);
@@ -128,13 +109,15 @@ void BasicMode::handleWhenPlay(){
     idNearBlock = findNearestBlock(ball, Blocks);
     idNearTrap  = findNearestTrap(ball, Traps);
     
-    // AUTO MOVE
-    if( isAuto )    ball.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
+    ball.handleBullet(Traps, Blocks);
     
     // HANDLE BALL
     moveBall(ball, idNearBlock);
-    renderBall(ball);                               // MOVE AND RENDER BALL
-    renderEnergyBar(ball);
+    // RENDER BALL
+    
+    
+    ball.renderBall();
+    ball.renderGun();
     
     // HANDLE INFOR BAR
     updateScoreAndDentaY(score);
@@ -144,31 +127,26 @@ void BasicMode::handleWhenPlay(){
     // APPEAR AFTER 1 SECOND
 }
 
-void BasicMode::handleWhenPause(){
+void ShootingMode::handleWhenPause(){
     renderBlocksAndTraps();
     renderHeart(heart);
     renderFuel(fuel);
     if(life){
-        renderBall(ball);
-        renderEnergyBar(ball);
+        ball.renderBall();
+        ball.renderGun();
     }
     else{
         gGameOver.render(54, 310, NULL);
     }
+    
+    ball.handleBullet(Traps, Blocks);
 
     OptionInGame.render();
-    
-    // pause music
-    Mix_PauseMusic();
-    if( Mix_Playing(FIRST_CHANNEL) || Mix_Playing(SECOND_CHANNEL) ){
-        Mix_HaltChannel(FIRST_CHANNEL);
-        Mix_HaltChannel(SECOND_CHANNEL);
-    }
     
     SDL_RenderPresent( gRenderer );
 }
 
-void BasicMode::handleWhenDie(){
+void ShootingMode::handleWhenDie(){
     if(cntTime++ < TIME_DELAY){
         moveBlocksAndTraps();
         removeItemOutBoard();
@@ -197,20 +175,7 @@ void BasicMode::handleWhenDie(){
     }
 }
 
-void BasicMode::resetParameter(){
-    Game::resetParameter();             // inherit from Game
-    
-    life  = 3;
-    score = 0;
-    
-    ball.reset();
-
-    heart.reset();
-
-    fuel.reset();
-}
-
-BasicMode::BasicMode(){
+ShootingMode::ShootingMode(){
     Block::dentaX = 1;
     Block::staticAboveDyn = 4;
     
@@ -221,11 +186,11 @@ BasicMode::BasicMode(){
     score = 0;
     
     cntTime = 0;
+    reloadTime = 0;
     
     idNearBlock = 0;
     idNearTrap = 0;
     
-    isAuto = 1;
 }
 
-#endif /* BasicMode_h */
+#endif /* ShootingMode_h */

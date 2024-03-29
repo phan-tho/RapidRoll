@@ -1,15 +1,20 @@
 #include "Header/Header.h"
 #include "Header/Game.h"
 #include "Header/BasicMode.h"
+#include "Header/ShootingMode.h"
 
 int main( int argc, char* argv[] ){
     init();
     loadMedia();
     
-    BasicMode basicMode;
-    basicMode.Play();
+//    BasicMode basicMode;
+//    basicMode.Play();
+    ShootingMode shootingMode;
+    shootingMode.Play();
     
+    std::cout << "crash nhuwng van cu laf ok\n";
     close();
+    std::cout << "on roi\n";
     return 0;
 }
 
