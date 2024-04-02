@@ -206,23 +206,10 @@ void Ball::renderEnergyBar(){
         int x = mPosX + BALL_WIDTH + DISTANCE_BAR_BALL;
         int y = mPosY + BALL_HEIGHT - energy/10;
         energyBarTexture.render( x, y + ENERGY_BAR_WIDTH/2, &splitBar);
-//        std::cout << "\npos ball " << mPosX << ' ' << mPosY << "\n";
-//        std::cout << "pos bar " << x << ' ' << y << "\n";
         
         splitBar = { 0, 0, ENERGY_BAR_WIDTH, ENERGY_BAR_WIDTH/2 };
         energyBarTexture.render(x, y, &splitBar);
-//        std::cout << "energy " << energy << "\n";
-//        std::cout << "render success\n";
     }
-//    else if(dot.energy > 0){
-//        SDL_Rect splitBar = { 0, dot.ENERGY_BAR_HEIGHT/10 - dot.energy/10 + dot.energy/20, dot.ENERGY_BAR_WIDTH, dot.energy/10 - dot.energy/20 };         // x y w h
-//        int x = dot.mPosX + dot.DOT_WIDTH + dot.DISTANCE_BAR_BALL;
-//        int y = dot.mPosY + dot.DOT_HEIGHT - dot.energy/10;
-//        gEnergyBar.render( x, y + dot.energy/2, &splitBar);
-//
-//        splitBar = { 0, 0, dot.ENERGY_BAR_WIDTH, dot.energy/20 };
-//        gEnergyBar.render(x, y, &splitBar);
-//    }
 }
 
 #endif /* ball_h */

@@ -13,6 +13,8 @@ public:
     
     void Play();
     
+protected:
+    
     // RENDER ITEM NOT MOVE AND PAUSE MUSIC
     void handleWhenPause();
     
@@ -27,6 +29,9 @@ public:
     void resetParameter();
     // INHERIT FROM GAME. RESET PARAMETER WHEN REPLAY
     
+//    bool handleAutoButton(const SDL_Event& e);
+    
+    void close();
 private:
     autoBall ball;
     Heart heart;
@@ -36,7 +41,6 @@ private:
     // SCORE INCREASE WHEN MOVE
     int life;
     // DIE WHEN LIFE = 0
-    bool isAuto;
     
     int idNearBlock;
     int idNearTrap;
@@ -53,26 +57,21 @@ private:
     
     LTexture AutoTexture[2];
     
-    const int BUTTON_AUTO_WIDTH = 105;
-    const int BUTTON_AUTO_HEIGHT = 45;
+    const int BUTTON_AUTO_WIDTH = 140;
+    const int BUTTON_AUTO_HEIGHT = 47;
     
     const int POS_X_BUTTON_AUTO = 163;
     const int POS_Y_BUTTON_AUTO = 685;
-    
-    void close();
-    
-    void handleAutoButton(const SDL_Event& e);
 };
 
 void BasicMode::Play(){
 //    Play Background Music
-    Mix_PlayMusic(gBackGrMusic, -1);
+    music.backGrMusic();
 
     bool quit = false;
     SDL_Event e;
 
     while( !quit ){
-        
         while( SDL_PollEvent( &e ) != 0 ){
             if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x){
                 quit = true;
@@ -81,8 +80,9 @@ void BasicMode::Play(){
             
             //Handle input for the ball
             ball.handleEvent(e, DENTA_Y);
-            OptionInGame.handleEvent( &e );
-            handleAutoButton(e);
+            if( OptionInGame.handleTapped(&e) ){          // TAP ANY BUTTON
+                music.whenTappedButton();
+            }
             
             if (OptionInGame.mCurrentState[EXIT]){
                 quit = true;
@@ -96,7 +96,7 @@ void BasicMode::Play(){
             OptionInGame.mCurrentState[REPLAY] = false;
             
 //            PLAY ONLY BACKGROUND MUSIC
-            Mix_PlayMusic(gBackGrMusic, -1);
+            music.backGrMusic();
         }
         
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -105,17 +105,15 @@ void BasicMode::Play(){
         gBackground.render(0, 0, NULL);             // BACKGROUND
         OptionInGame.render();                      // OPTION PAUSE PLAY REPLAY EXIT
         renderLifeAndScore(score, life);
-        AutoTexture[isAuto].render(POS_X_BUTTON_AUTO, POS_Y_BUTTON_AUTO, NULL);
+//        AutoTexture[isAuto].render(POS_X_BUTTON_AUTO, POS_Y_BUTTON_AUTO, NULL);
         
         if(OptionInGame.mCurrentState[PAUSE]){          // PAUSE
             handleWhenPause();
             continue;
         }
         
-        // is music is paused, resume music
-        if(Mix_PausedMusic()){
-            Mix_ResumeMusic();
-        }
+//        // is music is paused, resume music
+        music.resumeBackGrMusic();
         
         if(life > 0){               // WHEN PAUSE = FALSE
             handleWhenPlay();
@@ -150,7 +148,7 @@ void BasicMode::handleWhenPlay(){
     idNearTrap  = findNearestTrap(ball, Traps);
     
     // AUTO MOVE
-    if( isAuto )    ball.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
+    if( OptionInGame.isAuto )    ball.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
     
     // HANDLE BALL
     moveBall(ball, idNearBlock);
@@ -180,11 +178,8 @@ void BasicMode::handleWhenPause(){
     OptionInGame.render();
     
 //     pause music
-    Mix_PauseMusic();
-    if( Mix_Playing(FIRST_CHANNEL) || Mix_Playing(SECOND_CHANNEL) ){
-        Mix_HaltChannel(FIRST_CHANNEL);
-        Mix_HaltChannel(SECOND_CHANNEL);
-    }
+    music.pauseBackGrMusic();
+    music.whenNotMove();
     
     SDL_RenderPresent( gRenderer );
 }
@@ -209,28 +204,12 @@ void BasicMode::handleWhenDie(){
         gGameOver.render(54, 310, NULL);            // MAGIC
         OptionInGame.mCurrentState[PAUSE] = true;
         
-        // pause music
-        Mix_PauseMusic();
-        if( Mix_Playing(FIRST_CHANNEL) || Mix_Playing(SECOND_CHANNEL) ){
-            Mix_HaltChannel(FIRST_CHANNEL);
-            Mix_HaltChannel(SECOND_CHANNEL);
-        }
+//        // pause music
+        music.pauseBackGrMusic();
+        music.whenNotMove();
     }
 }
 
-void BasicMode::handleAutoButton(const SDL_Event &e){
-    if(e.type == SDL_MOUSEBUTTONDOWN){
-        int x, y;
-        SDL_GetMouseState(&x, &y);
-        
-        if( x > POS_X_BUTTON_AUTO && x < POS_X_BUTTON_AUTO + BUTTON_AUTO_WIDTH &&
-           y > POS_Y_BUTTON_AUTO && y < POS_Y_BUTTON_AUTO + BUTTON_AUTO_HEIGHT ){
-            isAuto ^= 1;
-        }
-        // click
-    }
-    //    std::cout << "isAuto : " << isAuto << "\n";r
-}
 
 void BasicMode::resetParameter(){
     Game::resetParameter();             // inherit from Game
@@ -249,6 +228,8 @@ void BasicMode::close(){
     AutoTexture[1].freeFire();
     AutoTexture[0].freeFire();
     ball.close();
+    music.close();
+    OptionInGame.close();
 }
 
 BasicMode::BasicMode(){
@@ -269,7 +250,7 @@ BasicMode::BasicMode(){
     idNearBlock = 0;
     idNearTrap = 0;
     
-    isAuto = 0;
+    OptionInGame.isAuto = 0;
     
     ball.moveUp = SDLK_g;
     ball.moveLeft = SDLK_LEFT;

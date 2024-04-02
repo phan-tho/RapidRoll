@@ -36,6 +36,7 @@ enum Button{
     REPLAY,
     EXIT,
     TOTAL_BUTTON_IN_GAME,
+    AUTO,
     NONE
 };
 

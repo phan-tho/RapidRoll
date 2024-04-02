@@ -18,7 +18,6 @@ int main( int argc, char* argv[] ){
 
 void loadMedia(){
     gBackground.loadFromFile("BackGr.png");
-//    gBackground.loadFromFile("/Users/mac/Documents/Code/Project/RapidRoll/BongCuoi/Image/BackGr.png");
     
     gGameOver.loadFromFile("GameOver.png");
     
@@ -28,41 +27,12 @@ void loadMedia(){
     
     gFuel.loadFromFile("fuel.png");
     
-    gButtonControlGame[PAUSE].loadFromFile("Pause.png");
-    gButtonControlGame[PLAY].loadFromFile("Play.png");
-    gButtonControlGame[REPLAY].loadFromFile("Replay.png");
-    gButtonControlGame[EXIT].loadFromFile("Exit.png");
-    
     gFont = TTF_OpenFont("Sears_Tower.ttf", 30);
-    
-    gBackGrMusic = Mix_LoadMUS("BackGrMusic.wav");
-    gMusicWhenMove = Mix_LoadWAV("fireMove.wav");
-    gTailFireMove = Mix_LoadWAV("tailFireMove.wav");
-    
-    Mix_VolumeChunk(gMusicWhenMove, MIX_MAX_VOLUME/48);
-    Mix_VolumeChunk(gTailFireMove, MIX_MAX_VOLUME/48);
-    
-    Mix_VolumeMusic(MIX_MAX_VOLUME/32);
 }
 
-void close()
-{
-    Mix_FreeMusic(gBackGrMusic);
-    gBackGrMusic = NULL;
-    
-    Mix_FreeChunk(gMusicWhenMove);
-    gMusicWhenMove = NULL;
-    
-    Mix_FreeChunk(gTailFireMove);
-    gTailFireMove = NULL;
-    
+void close(){
     //Free loaded images
     gBackground.freeFire();
-
-    gButtonControlGame[0].freeFire();
-    gButtonControlGame[1].freeFire();
-    gButtonControlGame[2].freeFire();
-    gButtonControlGame[3].freeFire();
 
     gGameOver.freeFire();
     

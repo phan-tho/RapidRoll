@@ -7,7 +7,7 @@
 #include "ITEM/ballWithGun.h"
 #include "ITEM/autoBall.h"
 #include "ITEM/Bullet.h"
-//#include <cmath>
+#include "Music/Music.h"
 
 class ShootingMode : public Game{
 public:
@@ -48,15 +48,13 @@ private:
     int reloadTime;
     // reload Time = 0 ==> can fire
     
-    bool isAuto;
-    
     void close();
 };
 
 
 void ShootingMode::Play(){
-////    Play Background Music
-//    Mix_PlayMusic(gBackGrMusic, -1);
+//    Play Background Music
+    music.backGrMusic();
 
     bool quit = false;
     SDL_Event e;
@@ -70,10 +68,12 @@ void ShootingMode::Play(){
             
             // HANDLE VELOCITY OF BALL AND GENERATE BULLET WHEN CLICK MOUSE
             playerBall.handleEvent(e, DENTA_Y);
-            playerBall.genBullet(&e);
-            if(!isAuto)     enemyBall.handleEvent(e, DENTA_Y);
+            playerBall.genBullet(&e, music);
+            enemyBall.handleEvent(e, DENTA_Y);
             
-            OptionInGame.handleEvent( &e );
+            if( OptionInGame.handleTapped(&e) ){
+                music.whenTappedButton();
+            }
             
             if (OptionInGame.mCurrentState[EXIT]){
                 quit = true;
@@ -86,8 +86,8 @@ void ShootingMode::Play(){
             OptionInGame.mCurrentState[PAUSE] = false;
             OptionInGame.mCurrentState[REPLAY] = false;
             
-////            PLAY ONLY BACKGROUND MUSIC
-//            Mix_PlayMusic(gBackGrMusic, -1);
+//            PLAY ONLY BACKGROUND MUSIC
+            music.backGrMusic();
         }
         
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -103,9 +103,7 @@ void ShootingMode::Play(){
         }
         
 //        // is music is paused, resume music
-//        if(Mix_PausedMusic()){
-//            Mix_ResumeMusic();
-//        }
+        music.resumeBackGrMusic();
         
         if(playerBall.life > 0){               // WHEN PAUSE = FALSE
             handleWhenPlay();
@@ -139,8 +137,7 @@ void ShootingMode::handleWhenPlay(){
     idNearBlock = findNearestBlock(enemyBall, Blocks);
     idNearTrap  = findNearestTrap(enemyBall, Traps);
     
-    // ball.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
-    if(isAuto){
+    if(OptionInGame.isAuto){
         enemyBall.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
     }
     
@@ -185,12 +182,9 @@ void ShootingMode::handleWhenPause(){
 
     OptionInGame.render();
     
-//    // pause music
-//    Mix_PauseMusic();
-//    if( Mix_Playing(FIRST_CHANNEL) || Mix_Playing(SECOND_CHANNEL) ){
-//        Mix_HaltChannel(FIRST_CHANNEL);
-//        Mix_HaltChannel(SECOND_CHANNEL);
-//    }
+    // pause music
+    music.pauseBackGrMusic();
+    music.whenNotMove();
     
     SDL_RenderPresent( gRenderer );
 }
@@ -221,12 +215,9 @@ void ShootingMode::handleWhenDie(){
         gGameOver.render(54, 310, NULL);            // MAGIC
         OptionInGame.mCurrentState[PAUSE] = true;
         
-//        // pause music
-//        Mix_PauseMusic();
-//        if( Mix_Playing(FIRST_CHANNEL) || Mix_Playing(SECOND_CHANNEL) ){
-//            Mix_HaltChannel(FIRST_CHANNEL);
-//            Mix_HaltChannel(SECOND_CHANNEL);
-//        }
+        // pause music
+        music.pauseBackGrMusic();
+        music.whenNotMove();
     }
 }
 
@@ -273,6 +264,9 @@ void ShootingMode::resetParameter(){
 void ShootingMode::close(){
     playerBall.close();
     enemyBall.close();
+    
+    music.close();
+    OptionInGame.close();
 }
 
 ShootingMode::ShootingMode(){
@@ -294,11 +288,11 @@ ShootingMode::ShootingMode(){
     playerBall.mPosX -= 50;
     enemyBall.mPosX  += 50;
     
-    isAuto = 1;
+    OptionInGame.isAuto = 1;
     
-    playerBall.moveUp = SDLK_s;
-    playerBall.moveLeft = SDLK_a;
-    playerBall.moveRight = SDLK_d;
+    playerBall.moveUp = SDLK_g;
+    playerBall.moveLeft = SDLK_f;
+    playerBall.moveRight = SDLK_h;
     
     enemyBall.moveUp = SDLK_s;
     enemyBall.moveLeft = SDLK_a;

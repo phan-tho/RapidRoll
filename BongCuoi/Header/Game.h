@@ -1,11 +1,11 @@
 #ifndef Game_h
 #define Game_h
 
-#include "Pause.h"
+#include "Button.h"
 #include "def.h"
 #include "LTexture.h"
 #include "defLTexture.h"
-#include "defMusic.h"
+#include "Music/Music.h"
 
 //#include "Header/ITEM/ITEM.h"
 //#include "Header/CheckCollide.h"
@@ -52,11 +52,7 @@ class Game{
     
         const int TIME_DELAY = 90;                  // 1.5s
     
-        // Musical
-        enum Channel{
-            FIRST_CHANNEL = 0,
-            SECOND_CHANNEL = 1
-        };
+        Music music;
     
     private:
         const int BLOCK_ABOVE_TRAP = 2;             // 3  BLOCK ==> 1 TRAP
@@ -117,8 +113,8 @@ void Game::genItem(Fuel& fuel, Heart& heart){
 
 
 void Game::moveBlocksAndTraps(){
-    for(auto it = Blocks.begin(); it != Blocks.end(); it++)          (*it).move(DENTA_Y);     // MOVE ALL BLOCKS                 // Increase DENTA_Y ==> More option
-    for(auto it = Traps.begin() ; it != Traps.end() ; it++)          (*it).move(DENTA_Y);     // MOVE ALL TRAPS}
+    for(auto it = Blocks.begin(); it != Blocks.end(); it++)          it->move(DENTA_Y);     // MOVE ALL BLOCKS                 // Increase DENTA_Y ==> More option
+    for(auto it = Traps.begin() ; it != Traps.end() ; it++)          it->move(DENTA_Y);     // MOVE ALL TRAPS}
 }
     
 void Game::removeItemOutBoard(){
@@ -132,11 +128,11 @@ void Game::removeItemOutBoard(){
 
 void Game::renderBlocksAndTraps(){
     for(auto it = Blocks.begin(); it != Blocks.end(); it++){                            // RENDER ALL BLOCKS
-        gBlock.render((*it).PosX, (*it).PosY, NULL);
+        gBlock.render(it->PosX, it->PosY, NULL);
     }
     
     for(auto it = Traps.begin(); it != Traps.end(); it++){                              // RENDER ALL TRAPS
-        gTrap.render((*it).PosX, (*it).PosY, NULL);
+        gTrap.render(it->PosX, it->PosY, NULL);
     }
 }
 
@@ -167,21 +163,11 @@ void Game::renderFuel(const Fuel& fuel){
 
 void Game::moveBall(Ball& ball, const int& nearestPosBlock){
     ball.move( checkCollideBlock(ball, Blocks, nearestPosBlock), DENTA_Y);                                 // ball
-    
-    // play gMusicWhenMove when ball.mVelX != 0
-    if(ball.mVelX != 0){                                                                 // PLAY AND PAUSE MUSIC WHEN MOVE
-        // play when music is paused
-        if(!Mix_Playing(FIRST_CHANNEL)){
-            Mix_PlayChannel(FIRST_CHANNEL, gMusicWhenMove, -1);
-        }
+    if( ball.mVelX ){
+        music.whenMove();
     }
     else{
-        // PAUSE MUSIC IN CHANNEL 0 if this channel is playing
-        if(Mix_Playing(FIRST_CHANNEL)){
-            Mix_HaltChannel(FIRST_CHANNEL);
-            // play gTailFireMove
-            Mix_PlayChannel(SECOND_CHANNEL, gTailFireMove, -1);
-        }
+        music.whenNotMove();
     }
 }
 
@@ -199,9 +185,7 @@ void Game::updateScoreAndDentaY(int& score){
 }
 
 void Game::checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const int& idNearTrap){
-    
     if( checkCollideTrap(ball, Traps, idNearTrap) || ball.mPosY <= CEILING || ball.mPosY + ball.BALL_HEIGHT >= FLOOR){
-//        dot = Dot();
         ball.mVelX = 0;
         ball.currentState = ball.DOWN;
         
@@ -212,6 +196,7 @@ void Game::checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const 
         }
         life--;
         waitRevive = 1;
+        music.whenDie();        // MUSIC WHEN DIE
         // ---------------------------------------------------------------------------------------- DIED
         
     }
@@ -220,6 +205,7 @@ void Game::checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const 
         heart.PosX = 0;
         heart.PosY = 0;
         life++;
+        music.whenEatHeartFuel();   // MUSIC WHEN EAT
     }
     
     else if( checkCollideFuel(ball, fuel) ){
@@ -227,6 +213,7 @@ void Game::checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const 
         fuel.PosX = 0;
         fuel.PosY = 0;
         ball.energy = (fmin(500, ball.energy + 160));
+        music.whenEatHeartFuel();   // MUSIC WHEN EAT
     }
 }
 

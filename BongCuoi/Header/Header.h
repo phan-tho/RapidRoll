@@ -9,6 +9,6 @@
 #include "defLTexture.h"
 #include "CheckCollide.h"
 //#include "Game.h"
-#include "Pause.h"
+#include "Button.h"
 
 #endif /* Header_h */

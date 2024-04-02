@@ -6,8 +6,6 @@
 
 LTexture gBackground;
 
-LTexture gButtonControlGame[TOTAL_BUTTON_IN_GAME];
-
 LTexture gGameOver;
 
 LTexture gBlock;

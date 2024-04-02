@@ -16,7 +16,7 @@ public:
     
     void renderGun(const bool& isPause = 0);
     
-    void genBullet(SDL_Event* e);
+    void genBullet(SDL_Event* e, Music& music);
     
 //    void handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight );
     
@@ -24,7 +24,6 @@ public:
     
     void close();
     // clear LTexture
-    
 private:
     const int GUN_WIDTH = 41;
     const int GUN_HEIGHT = 16;
@@ -32,7 +31,7 @@ private:
     const int HITLE_WIDTH  = 30;
     const int HITLE_HEIGHT = 33;
     
-    const int TIME_LOAD_BULLET = 15;
+    const int TIME_LOAD_BULLET = 30;
     int waitLoad;
     
     bool mousePressed;
@@ -48,24 +47,16 @@ private:
     SDL_Point centre;
 };
 
-void BallWithGun::genBullet(SDL_Event* e){
+void BallWithGun::genBullet(SDL_Event* e, Music& music){
     if(e->type == SDL_MOUSEBUTTONDOWN)      mousePressed = true;
     else if (e->type == SDL_MOUSEBUTTONUP)  mousePressed = false;
     if(mousePressed && !waitLoad){
         Bullet bullet(mPosX + GUN_WIDTH*cos(angle*M_PI/180), mPosY + GUN_WIDTH*sin(angle*M_PI/180), angle);
         Bullets.push_back(bullet);
         waitLoad = TIME_LOAD_BULLET;
+        music.whenShoot();
     }
 }
-
-//void BallWithGun::handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight ){
-//    Ball::handleEvent(e, DENTA_Y, moveUp, moveLeft, moveRight);
-//    
-//    if(e.type == SDL_MOUSEBUTTONDOWN){
-//        Bullet bullet(mPosX, mPosY, angle);
-//        Bullets.push_back(bullet);
-//    }
-//}
 
 void BallWithGun::handleBullet(Ball& ball, const std::deque<Trap>& Traps, const std::deque<Block>& Blocks, int& score){
     if(Bullets.empty())     return;
@@ -88,6 +79,7 @@ void BallWithGun::handleBullet(Ball& ball, const std::deque<Trap>& Traps, const 
                 ball.reset();
                 life++;
                 score++;
+                // music when die
                 
                 ball.mPosY = CEILING + 120;                       // MAGIC
                 ball.mPosX = (SCREEN_WIDTH - BALL_WIDTH)/2 + 50;
@@ -118,7 +110,7 @@ void BallWithGun::renderBall(){
 }
 
 void BallWithGun::close(){
-//    Ball::close();
+    Ball::close();
     
     BallGunTexture.freeFire();
     GunTextTure.freeFire();
