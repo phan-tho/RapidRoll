@@ -27,6 +27,8 @@ public:
     
     void resetParameter();
     
+    void ballBoundWhenCollide(Ball& ball1, Ball& ball2);
+    
 private:
     BallWithGun playerBall;
     autoBall    enemyBall;
@@ -36,8 +38,6 @@ private:
     
     int score;
     // SCORE INCREASE WHEN MOVE
-    int life;
-    // DIE WHEN LIFE = 0
     
     int idNearBlock;
     int idNearTrap;
@@ -48,6 +48,9 @@ private:
     int reloadTime;
     // reload Time = 0 ==> can fire
     
+    bool isAuto;
+    
+    void close();
 };
 
 
@@ -62,22 +65,19 @@ void ShootingMode::Play(){
         while( SDL_PollEvent( &e ) != 0 ){
             if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x){
                 quit = true;
-//                ball.close();
-                playerBall.close();     // FREE TEXTURE
-                enemyBall.close();
+                close();
             }
             
-            
             // HANDLE VELOCITY OF BALL AND GENERATE BULLET WHEN CLICK MOUSE
-            playerBall.handleEvent(e, DENTA_Y, SDLK_s, SDLK_a, SDLK_d);
+            playerBall.handleEvent(e, DENTA_Y);
             playerBall.genBullet(&e);
+            if(!isAuto)     enemyBall.handleEvent(e, DENTA_Y);
             
             OptionInGame.handleEvent( &e );
             
             if (OptionInGame.mCurrentState[EXIT]){
                 quit = true;
-                playerBall.close();
-                enemyBall.close();
+                close();
             }        // EXIT
         }
         
@@ -95,7 +95,7 @@ void ShootingMode::Play(){
         
         gBackground.render(0, 0, NULL);             // BACKGROUND
         OptionInGame.render();                      // OPTION PAUSE PLAY REPLAY EXIT
-        renderLifeAndScore(score, life);
+        renderLifeAndScore(score, playerBall.life);
         
         if(OptionInGame.mCurrentState[PAUSE]){          // PAUSE
             handleWhenPause();
@@ -107,11 +107,11 @@ void ShootingMode::Play(){
 //            Mix_ResumeMusic();
 //        }
         
-        if(life > 0){               // WHEN PAUSE = FALSE
+        if(playerBall.life > 0){               // WHEN PAUSE = FALSE
             handleWhenPlay();
         }
                                             // GAME OVER
-        else if(life == 0){
+        else if(playerBall.life == 0){
             handleWhenDie();
         }
 
@@ -127,7 +127,6 @@ void ShootingMode::handleWhenPlay(){
     removeItemOutBoard();
     renderBlocksAndTraps();
 
-
     // PROCESSING HEART -->
     moveHeart(heart);
     renderHeart(heart);
@@ -141,28 +140,30 @@ void ShootingMode::handleWhenPlay(){
     idNearTrap  = findNearestTrap(enemyBall, Traps);
     
     // ball.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
-    enemyBall.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
+    if(isAuto){
+        enemyBall.autoMove(DENTA_Y, idNearBlock, idNearTrap, Blocks, Traps);
+    }
     
     // HANDLE ENEMY BALL
     moveBall(enemyBall, idNearBlock);
     enemyBall.render();
     enemyBall.renderEnergyBar();
-//    renderBall(ball);                               // MOVE AND RENDER BALL
-//    renderEnergyBar(ball);
     
     // HANDLE PLAYER BALL
     moveBall(playerBall, findNearestBlock(playerBall, Blocks));
-    playerBall.handleBullet(Traps, Blocks);
+    playerBall.handleBullet(enemyBall, Traps, Blocks, score);
+    ballBoundWhenCollide(playerBall, enemyBall);
+    
     playerBall.renderBall();
     playerBall.renderGun();
     playerBall.renderEnergyBar();
     
     // HANDLE INFOR BAR
-    updateScoreAndDentaY(score);
+//    updateScoreAndDentaY(score);
     
     // UPDATE LIFE
-    checkLifeBall(enemyBall, heart, fuel, life, idNearTrap);     // DIE OR EAT HEART
-    checkLifeBall(playerBall, heart, fuel, life, findNearestTrap(playerBall, Traps));
+    checkLifeBall(enemyBall, heart, fuel, enemyBall.life, idNearTrap);     // DIE OR EAT HEART
+    checkLifeBall(playerBall, heart, fuel, playerBall.life, findNearestTrap(playerBall, Traps));
     // APPEAR AFTER 1 SECOND
 }
 
@@ -170,9 +171,7 @@ void ShootingMode::handleWhenPause(){
     renderBlocksAndTraps();
     renderHeart(heart);
     renderFuel(fuel);
-    if(life){
-//        renderBall(ball);
-//        renderEnergyBar(ball);
+    if(playerBall.life){
         playerBall.renderBall();
         playerBall.renderGun(true);
         playerBall.renderEnergyBar();
@@ -231,18 +230,49 @@ void ShootingMode::handleWhenDie(){
     }
 }
 
+void ShootingMode::ballBoundWhenCollide(Ball &ball1, Ball &ball2){
+    if( ball1.mPosX > ball2.mPosX - ball1.BALL_WIDTH  &&
+        ball1.mPosX < ball2.mPosX + ball2.BALL_WIDTH  &&
+        ball1.mPosY > ball2.mPosY - ball1.BALL_HEIGHT &&
+        ball1.mPosY < ball2.mPosY + ball2.BALL_HEIGHT ){
+        if(ball2.mPosX > ball1.mPosX){
+            ball1.mPosX -= DENTA_Y + 1;
+            ball2.mPosX += DENTA_Y + 1;
+        }
+        else{
+            ball1.mPosX += DENTA_Y + 1;
+            ball2.mPosX -= DENTA_Y + 1;
+        }
+        if(ball1.mPosY > ball2.mPosY){
+            ball1.mPosY += DENTA_Y;
+            ball2.mPosY -= DENTA_Y;
+        }
+        else{
+            ball1.mPosY -= DENTA_Y;
+            ball2.mPosY += DENTA_Y;
+        }
+    }
+}
+
 void ShootingMode::resetParameter(){
     Game::resetParameter();             // inherit from Game
     
-    life  = 3;
+    playerBall.life = 3;
     score = 0;
     
     playerBall.reset();
+    playerBall.mPosX -= 50;
     enemyBall.reset();
+    enemyBall.mPosX  += 50;
 
     heart.reset();
 
     fuel.reset();
+}
+
+void ShootingMode::close(){
+    playerBall.close();
+    enemyBall.close();
 }
 
 ShootingMode::ShootingMode(){
@@ -252,7 +282,7 @@ ShootingMode::ShootingMode(){
     Trap::dentaX = 1;
     Trap::staticAboveDyn = 3;
     
-    life = 3;
+    enemyBall.life = 100;
     score = 0;
     
     cntTime = 0;
@@ -260,6 +290,19 @@ ShootingMode::ShootingMode(){
     
     idNearBlock = 0;
     idNearTrap = 0;
+    
+    playerBall.mPosX -= 50;
+    enemyBall.mPosX  += 50;
+    
+    isAuto = 1;
+    
+    playerBall.moveUp = SDLK_s;
+    playerBall.moveLeft = SDLK_a;
+    playerBall.moveRight = SDLK_d;
+    
+    enemyBall.moveUp = SDLK_s;
+    enemyBall.moveLeft = SDLK_a;
+    enemyBall.moveRight = SDLK_d;
 }
 
 #endif /* ShootingMode_h */

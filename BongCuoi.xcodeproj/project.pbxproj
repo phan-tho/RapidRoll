@@ -45,6 +45,8 @@
 		0469D9462BB4655D007305DE /* awm.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D9452BB4655D007305DE /* awm.png */; };
 		0469D94B2BB476D1007305DE /* SortGun.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D94A2BB476D1007305DE /* SortGun.png */; };
 		0469D94F2BB48025007305DE /* Bullet.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D94E2BB48025007305DE /* Bullet.png */; };
+		04D7C6DD2BBC496D0096D3F0 /* OffAuto.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7C6DB2BBC496D0096D3F0 /* OffAuto.png */; };
+		04D7C6DE2BBC496D0096D3F0 /* OnAuto.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7C6DC2BBC496D0096D3F0 /* OnAuto.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -120,6 +122,8 @@
 		0469D94A2BB476D1007305DE /* SortGun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SortGun.png; sourceTree = "<group>"; };
 		0469D94D2BB47C86007305DE /* Bullet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bullet.h; sourceTree = "<group>"; };
 		0469D94E2BB48025007305DE /* Bullet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bullet.png; sourceTree = "<group>"; };
+		04D7C6DB2BBC496D0096D3F0 /* OffAuto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OffAuto.png; sourceTree = "<group>"; };
+		04D7C6DC2BBC496D0096D3F0 /* OnAuto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OnAuto.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +197,8 @@
 		040F99CB2B9D0E7300F29CD7 /* Control */ = {
 			isa = PBXGroup;
 			children = (
+				04D7C6DB2BBC496D0096D3F0 /* OffAuto.png */,
+				04D7C6DC2BBC496D0096D3F0 /* OnAuto.png */,
 				040F99CD2B9D0EAD00F29CD7 /* Exit.png */,
 				040F99CE2B9D0EAD00F29CD7 /* Pause.png */,
 				040F99CF2B9D0EAD00F29CD7 /* Play.png */,
@@ -365,6 +371,7 @@
 				040B47B62BB1C118000F2DEE /* energyBar.png in Resources */,
 				040F99D32B9D0EAD00F29CD7 /* Play.png in Resources */,
 				0469D9432BB46303007305DE /* Hitle.png in Resources */,
+				04D7C6DE2BBC496D0096D3F0 /* OnAuto.png in Resources */,
 				040F99BB2B9D0E1F00F29CD7 /* fire6.png in Resources */,
 				040F99BD2B9D0E1F00F29CD7 /* fire1.png in Resources */,
 				040F99C92B9D0E4A00F29CD7 /* tim.png in Resources */,
@@ -380,6 +387,7 @@
 				040B47C12BB1C14B000F2DEE /* fireMove.wav in Resources */,
 				040B47BF2BB1C14B000F2DEE /* BackGrMusic.wav in Resources */,
 				040F99B12B9D0DC600F29CD7 /* BackGr.png in Resources */,
+				04D7C6DD2BBC496D0096D3F0 /* OffAuto.png in Resources */,
 				040F99D12B9D0EAD00F29CD7 /* Exit.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

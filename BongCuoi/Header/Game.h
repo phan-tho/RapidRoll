@@ -59,7 +59,7 @@ class Game{
         };
     
     private:
-        const int BLOCK_ABOVE_TRAP = 2;             // 4  BLOCK ==> 1 TRAP
+        const int BLOCK_ABOVE_TRAP = 2;             // 3  BLOCK ==> 1 TRAP
         const int BLOCK_ABOVE_HEART = 13;           // 15 BLOCK ==> 1 HEART
         const int BLOCK_ABOVE_FUEL = 18;            // AVOID = BLOCK_ABOVE_HEART
 
@@ -168,21 +168,21 @@ void Game::renderFuel(const Fuel& fuel){
 void Game::moveBall(Ball& ball, const int& nearestPosBlock){
     ball.move( checkCollideBlock(ball, Blocks, nearestPosBlock), DENTA_Y);                                 // ball
     
-//    // play gMusicWhenMove when ball.mVelX != 0
-//    if(ball.mVelX != 0){                                                                 // PLAY AND PAUSE MUSIC WHEN MOVE
-//        // play when music is paused
-//        if(!Mix_Playing(FIRST_CHANNEL)){
-//            Mix_PlayChannel(FIRST_CHANNEL, gMusicWhenMove, -1);
-//        }
-//    }
-//    else{
-//        // PAUSE MUSIC IN CHANNEL 0 if this channel is playing
-//        if(Mix_Playing(FIRST_CHANNEL)){
-//            Mix_HaltChannel(FIRST_CHANNEL);
-//            // play gTailFireMove
-//            Mix_PlayChannel(SECOND_CHANNEL, gTailFireMove, -1);
-//        }
-//    }
+    // play gMusicWhenMove when ball.mVelX != 0
+    if(ball.mVelX != 0){                                                                 // PLAY AND PAUSE MUSIC WHEN MOVE
+        // play when music is paused
+        if(!Mix_Playing(FIRST_CHANNEL)){
+            Mix_PlayChannel(FIRST_CHANNEL, gMusicWhenMove, -1);
+        }
+    }
+    else{
+        // PAUSE MUSIC IN CHANNEL 0 if this channel is playing
+        if(Mix_Playing(FIRST_CHANNEL)){
+            Mix_HaltChannel(FIRST_CHANNEL);
+            // play gTailFireMove
+            Mix_PlayChannel(SECOND_CHANNEL, gTailFireMove, -1);
+        }
+    }
 }
 
 void Game::renderBall(Ball& ball){

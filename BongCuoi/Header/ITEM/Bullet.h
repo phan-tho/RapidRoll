@@ -17,6 +17,7 @@ public:
     
     bool isCollideBlock(const Block& block);
     bool isCollideTrap(const Trap& trap);
+    bool isCollideBall(const Ball& ball);
     
     static LTexture BulletTexture;
     
@@ -92,6 +93,14 @@ bool Bullet::isCollideTrap(const Trap& trap){
              PosX <= trap.PosX + trap.TRAP_WIDTH   &&
              PosY >= trap.PosY - BULLET_HEIGHT     &&
              PosY <= trap.PosY + trap.TRAP_HEIGHT
+             );
+}
+
+bool Bullet::isCollideBall(const Ball &ball){
+    return ( PosX >= ball.mPosX - BULLET_WIDTH     &&
+             PosX <= ball.mPosX + ball.BALL_WIDTH  &&
+             PosY >= ball.mPosY - BULLET_HEIGHT    &&
+             PosY <= ball.mPosY + ball.BALL_HEIGHT
              );
 }
 

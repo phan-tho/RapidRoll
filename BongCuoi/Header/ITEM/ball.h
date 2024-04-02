@@ -16,6 +16,10 @@ class Ball{
         const int ENERGY_BAR_HEIGHT = 800;
         const int DISTANCE_BAR_BALL = 15;
     
+        SDL_Keycode moveUp = SDLK_s;
+        SDL_Keycode moveLeft = SDLK_a;
+        SDL_Keycode moveRight = SDLK_d;
+    
         enum fireState{
             UP = 0,
             DOWN = 0,
@@ -37,7 +41,7 @@ class Ball{
         void reset();
 
         // CHANGE VELOCITY DEPEND TYPED KEY
-        void handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight );
+        void handleEvent( const SDL_Event& e, const int& DENTA_Y);
 
         //Moves the dot
         void move(const int& up, const int& DENTA_Y);
@@ -49,7 +53,7 @@ class Ball{
     
         void close();
     
-        int energy;
+        int energy, life;
     private:
         LTexture BallTexture;
         LTexture FireTexture[6];
@@ -64,7 +68,7 @@ class Ball{
         };
 };
 
-void Ball::handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight ){
+void Ball::handleEvent( const SDL_Event& e, const int& DENTA_Y ){
     if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
         // Adjust the velocity
         if(!energy)     vJetEngine = NOT;
@@ -135,8 +139,7 @@ void Ball::reset(){
     mVelX = 0;
 }
 
-Ball::Ball()
-{
+Ball::Ball(){
     //Initialize the offsets
     mPosY = CEILING + 120;                       // MAGIC
     mPosX = (SCREEN_WIDTH - BALL_WIDTH)/2;
@@ -147,6 +150,7 @@ Ball::Ball()
     waitRevive = 0; cnt = 0;
     
     energy = 0;
+    life = 10;
     
     currentState = DOWN;
     
@@ -202,9 +206,13 @@ void Ball::renderEnergyBar(){
         int x = mPosX + BALL_WIDTH + DISTANCE_BAR_BALL;
         int y = mPosY + BALL_HEIGHT - energy/10;
         energyBarTexture.render( x, y + ENERGY_BAR_WIDTH/2, &splitBar);
+//        std::cout << "\npos ball " << mPosX << ' ' << mPosY << "\n";
+//        std::cout << "pos bar " << x << ' ' << y << "\n";
         
         splitBar = { 0, 0, ENERGY_BAR_WIDTH, ENERGY_BAR_WIDTH/2 };
         energyBarTexture.render(x, y, &splitBar);
+//        std::cout << "energy " << energy << "\n";
+//        std::cout << "render success\n";
     }
 //    else if(dot.energy > 0){
 //        SDL_Rect splitBar = { 0, dot.ENERGY_BAR_HEIGHT/10 - dot.energy/10 + dot.energy/20, dot.ENERGY_BAR_WIDTH, dot.energy/10 - dot.energy/20 };         // x y w h

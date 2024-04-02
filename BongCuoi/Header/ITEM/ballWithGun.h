@@ -20,7 +20,7 @@ public:
     
 //    void handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight );
     
-    void handleBullet(const std::deque<Trap>& Traps, const std::deque<Block>& Blocks);
+    void handleBullet(Ball& ball, const std::deque<Trap>& Traps, const std::deque<Block>& Blocks, int& score);
     
     void close();
     // clear LTexture
@@ -28,6 +28,14 @@ public:
 private:
     const int GUN_WIDTH = 41;
     const int GUN_HEIGHT = 16;
+    
+    const int HITLE_WIDTH  = 30;
+    const int HITLE_HEIGHT = 33;
+    
+    const int TIME_LOAD_BULLET = 15;
+    int waitLoad;
+    
+    bool mousePressed;
     
     double angle;
     
@@ -41,9 +49,12 @@ private:
 };
 
 void BallWithGun::genBullet(SDL_Event* e){
-    if(e->type == SDL_MOUSEBUTTONDOWN){
+    if(e->type == SDL_MOUSEBUTTONDOWN)      mousePressed = true;
+    else if (e->type == SDL_MOUSEBUTTONUP)  mousePressed = false;
+    if(mousePressed && !waitLoad){
         Bullet bullet(mPosX + GUN_WIDTH*cos(angle*M_PI/180), mPosY + GUN_WIDTH*sin(angle*M_PI/180), angle);
         Bullets.push_back(bullet);
+        waitLoad = TIME_LOAD_BULLET;
     }
 }
 
@@ -56,7 +67,7 @@ void BallWithGun::genBullet(SDL_Event* e){
 //    }
 //}
 
-void BallWithGun::handleBullet(const std::deque<Trap>& Traps, const std::deque<Block>& Blocks){
+void BallWithGun::handleBullet(Ball& ball, const std::deque<Trap>& Traps, const std::deque<Block>& Blocks, int& score){
     if(Bullets.empty())     return;
     
     auto it = Bullets.begin();
@@ -65,19 +76,29 @@ void BallWithGun::handleBullet(const std::deque<Trap>& Traps, const std::deque<B
         // MOVE
         it->move();
         
+        // COLLIDE WITH BLOCK OR TRAP OR WALL
         int state = it->checkCollide(Traps, Blocks);
         
         if( state == it->NOT_COLLIDE ){
             (*it).render();
             it++;
         }
-        else if( state == it->COLLIDE ){
+        else if( state == it->COLLIDE || it->isCollideBall(ball) ){
+            if(it->isCollideBall(ball)){                // ball is killed
+                ball.reset();
+                life++;
+                score++;
+                
+                ball.mPosY = CEILING + 120;                       // MAGIC
+                ball.mPosX = (SCREEN_WIDTH - BALL_WIDTH)/2 + 50;
+            }
             it = Bullets.erase(it);
         }
     }
 }
 
 void BallWithGun::renderGun(const bool& isPause){
+    waitLoad = fmax(waitLoad - 1, 0);
     if(isPause == false){
         SDL_GetMouseState(&PosMouseX, &PosMouseY);
     }
@@ -112,6 +133,9 @@ BallWithGun::BallWithGun(){
     PosMouseX = 0;
     PosMouseY = 0;
     centre = {0, 0};
+    
+    waitLoad = 0;
+    mousePressed = false;
     
     BallGunTexture.loadFromFile("Hitle.png");
     GunTextTure.loadFromFile("SortGun.png");

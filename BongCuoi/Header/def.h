@@ -73,7 +73,8 @@ void init(){
     //Initialize SDL_ttf
     TTF_Init();                       // WHEN WANT TO LOAD FONT
     
-    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){          // number of channels is 2.
+    Mix_Init(MIX_INIT_MP3 | MIX_INIT_OPUS | MIX_INIT_OGG);
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0){          // number of channels is 2.
         printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
     }
 }

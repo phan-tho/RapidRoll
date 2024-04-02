@@ -50,6 +50,18 @@ private:
         FIRST_CHANNEL = 0,
         SECOND_CHANNEL = 1
     };
+    
+    LTexture AutoTexture[2];
+    
+    const int BUTTON_AUTO_WIDTH = 105;
+    const int BUTTON_AUTO_HEIGHT = 45;
+    
+    const int POS_X_BUTTON_AUTO = 163;
+    const int POS_Y_BUTTON_AUTO = 685;
+    
+    void close();
+    
+    void handleAutoButton(const SDL_Event& e);
 };
 
 void BasicMode::Play(){
@@ -60,19 +72,21 @@ void BasicMode::Play(){
     SDL_Event e;
 
     while( !quit ){
+        
         while( SDL_PollEvent( &e ) != 0 ){
             if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x){
                 quit = true;
-                ball.close();
+                close();
             }
             
             //Handle input for the ball
-            ball.handleEvent(e, DENTA_Y, SDLK_g, SDLK_LEFT, SDLK_RIGHT);
+            ball.handleEvent(e, DENTA_Y);
             OptionInGame.handleEvent( &e );
+            handleAutoButton(e);
             
             if (OptionInGame.mCurrentState[EXIT]){
                 quit = true;
-                ball.close();       // free LTexture
+                close();       // free LTexture
             }        // EXIT
         }
         
@@ -91,6 +105,7 @@ void BasicMode::Play(){
         gBackground.render(0, 0, NULL);             // BACKGROUND
         OptionInGame.render();                      // OPTION PAUSE PLAY REPLAY EXIT
         renderLifeAndScore(score, life);
+        AutoTexture[isAuto].render(POS_X_BUTTON_AUTO, POS_Y_BUTTON_AUTO, NULL);
         
         if(OptionInGame.mCurrentState[PAUSE]){          // PAUSE
             handleWhenPause();
@@ -164,7 +179,7 @@ void BasicMode::handleWhenPause(){
 
     OptionInGame.render();
     
-    // pause music
+//     pause music
     Mix_PauseMusic();
     if( Mix_Playing(FIRST_CHANNEL) || Mix_Playing(SECOND_CHANNEL) ){
         Mix_HaltChannel(FIRST_CHANNEL);
@@ -203,6 +218,20 @@ void BasicMode::handleWhenDie(){
     }
 }
 
+void BasicMode::handleAutoButton(const SDL_Event &e){
+    if(e.type == SDL_MOUSEBUTTONDOWN){
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+        
+        if( x > POS_X_BUTTON_AUTO && x < POS_X_BUTTON_AUTO + BUTTON_AUTO_WIDTH &&
+           y > POS_Y_BUTTON_AUTO && y < POS_Y_BUTTON_AUTO + BUTTON_AUTO_HEIGHT ){
+            isAuto ^= 1;
+        }
+        // click
+    }
+    //    std::cout << "isAuto : " << isAuto << "\n";r
+}
+
 void BasicMode::resetParameter(){
     Game::resetParameter();             // inherit from Game
     
@@ -216,7 +245,16 @@ void BasicMode::resetParameter(){
     fuel.reset();
 }
 
+void BasicMode::close(){
+    AutoTexture[1].freeFire();
+    AutoTexture[0].freeFire();
+    ball.close();
+}
+
 BasicMode::BasicMode(){
+    AutoTexture[1].loadFromFile("OnAuto.png");
+    AutoTexture[0].loadFromFile("OffAuto.png");
+    
     Block::dentaX = 1;
     Block::staticAboveDyn = 4;
     
@@ -231,7 +269,11 @@ BasicMode::BasicMode(){
     idNearBlock = 0;
     idNearTrap = 0;
     
-    isAuto = 1;
+    isAuto = 0;
+    
+    ball.moveUp = SDLK_g;
+    ball.moveLeft = SDLK_LEFT;
+    ball.moveRight = SDLK_RIGHT;
 }
 
 #endif /* BasicMode_h */

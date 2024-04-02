@@ -39,10 +39,10 @@ void loadMedia(){
     gMusicWhenMove = Mix_LoadWAV("fireMove.wav");
     gTailFireMove = Mix_LoadWAV("tailFireMove.wav");
     
-    Mix_VolumeChunk(gMusicWhenMove, MIX_MAX_VOLUME/16);
-    Mix_VolumeChunk(gTailFireMove, MIX_MAX_VOLUME/16);
+    Mix_VolumeChunk(gMusicWhenMove, MIX_MAX_VOLUME/48);
+    Mix_VolumeChunk(gTailFireMove, MIX_MAX_VOLUME/48);
     
-    Mix_VolumeMusic(MIX_MAX_VOLUME/16);
+    Mix_VolumeMusic(MIX_MAX_VOLUME/32);
 }
 
 void close()
