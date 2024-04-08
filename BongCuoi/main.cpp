@@ -1,7 +1,4 @@
 #include "Header/Header.h"
-#include "Header/Game.h"
-#include "Header/BasicMode.h"
-#include "Header/ShootingMode.h"
 
 int main( int argc, char* argv[] ){
     init();
@@ -17,31 +14,11 @@ int main( int argc, char* argv[] ){
 }
 
 void loadMedia(){
-    gBackground.loadFromFile("BackGr.png");
-    
-    gGameOver.loadFromFile("GameOver.png");
-    
-    gBlock.loadFromFile("Block.png");
-    gHeart.loadFromFile("tim.png");
-    gTrap.loadFromFile("trap.png");
-    
-    gFuel.loadFromFile("fuel.png");
-    
-    gFont = TTF_OpenFont("Sears_Tower.ttf", 30);
+//    gFont = TTF_OpenFont("Sears_Tower.ttf", 30);
+    gFont = TTF_OpenFont("turok.ttf", 30);
 }
 
 void close(){
-    //Free loaded images
-    gBackground.freeFire();
-
-    gGameOver.freeFire();
-    
-    gBlock.freeFire();
-    gHeart.freeFire();
-    gTrap.freeFire();
-    
-    gFuel.freeFire();
-    
     gTextTexture.freeFire();
     
     TTF_CloseFont(gFont);
@@ -59,28 +36,3 @@ void close(){
     Mix_Quit();
     SDL_Quit();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -19,6 +19,9 @@ class Ball{
         SDL_Keycode moveUp = SDLK_s;
         SDL_Keycode moveLeft = SDLK_a;
         SDL_Keycode moveRight = SDLK_d;
+//        const SDL_Keycode moveUp;
+//        const SDL_Keycode moveLeft;
+//        const SDL_Keycode moveRight;
     
         enum fireState{
             UP = 0,
@@ -37,6 +40,7 @@ class Ball{
         int mVelX;
         int vJetEngine;
 
+//        Ball(SDL_KeyCode moveUp, SDL_Keycode moveRight, SDL_Keycode MoveLeft);
         Ball();
         void reset();
 
@@ -69,7 +73,7 @@ class Ball{
 };
 
 void Ball::handleEvent( const SDL_Event& e, const int& DENTA_Y ){
-    if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
+    if( e.type == SDL_KEYDOWN){
         // Adjust the velocity
         if(!energy)     vJetEngine = NOT;
         else{
@@ -83,14 +87,17 @@ void Ball::handleEvent( const SDL_Event& e, const int& DENTA_Y ){
         
         if(e.key.keysym.sym == moveLeft){         // move left
             mVelX -= (DENTA_Y + 1);
+//            std::cout << "move left\n";
         }
         else if(e.key.keysym.sym == moveRight){     // move right
             mVelX += (DENTA_Y + 1);
+//            std::cout << "move right\n";
         }
+//        std::cout << mVelX << "\n";
     }
 
     //If a key was released
-    else if( e.type == SDL_KEYUP){
+    if( e.type == SDL_KEYUP){
         //Adjust the velocity
         if( e.key.keysym.sym == moveUp){
             vJetEngine = NOT;
@@ -139,6 +146,7 @@ void Ball::reset(){
     mVelX = 0;
 }
 
+//Ball::Ball(SDL_KeyCode moveUp, SDL_Keycode moveRight, SDL_Keycode MoveLeft) : moveUp(moveUp), moveLeft(MoveLeft), moveRight(moveRight) {
 Ball::Ball(){
     //Initialize the offsets
     mPosY = CEILING + 120;                       // MAGIC

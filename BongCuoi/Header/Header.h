@@ -6,9 +6,11 @@
 
 #include "ITEM/ITEM.h"
 
-#include "defLTexture.h"
 #include "CheckCollide.h"
-//#include "Game.h"
 #include "Button.h"
+
+#include "Game.h"
+#include "ShootingMode.h"
+#include "BasicMode.h"
 
 #endif /* Header_h */

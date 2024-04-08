@@ -29,8 +29,6 @@ protected:
     void resetParameter();
     // INHERIT FROM GAME. RESET PARAMETER WHEN REPLAY
     
-//    bool handleAutoButton(const SDL_Event& e);
-    
     void close();
 private:
     autoBall ball;
@@ -102,10 +100,10 @@ void BasicMode::Play(){
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
         
-        gBackground.render(0, 0, NULL);             // BACKGROUND
+        mBackground.render(0, 0, NULL);             // BACKGROUND
         OptionInGame.render();                      // OPTION PAUSE PLAY REPLAY EXIT
         renderLifeAndScore(score, life);
-//        AutoTexture[isAuto].render(POS_X_BUTTON_AUTO, POS_Y_BUTTON_AUTO, NULL);
+        guide.guide(ball, 0, "s", "a", "d");
         
         if(OptionInGame.mCurrentState[PAUSE]){          // PAUSE
             handleWhenPause();
@@ -172,7 +170,8 @@ void BasicMode::handleWhenPause(){
         renderEnergyBar(ball);
     }
     else{
-        gGameOver.render(54, 310, NULL);
+//        mGameOver.render(54, 310, NULL);
+        renderGameOver(score, BASIC_MODE);
     }
 
     OptionInGame.render();
@@ -201,7 +200,11 @@ void BasicMode::handleWhenDie(){
         renderBlocksAndTraps();
         renderHeart(heart);
         
-        gGameOver.render(54, 310, NULL);            // MAGIC
+        renderGameOver(score, BASIC_MODE);
+        
+//        mGameOver.render(54, 310, NULL);            // MAGIC
+        // 320 x 106
+        
         OptionInGame.mCurrentState[PAUSE] = true;
         
 //        // pause music
@@ -225,6 +228,8 @@ void BasicMode::resetParameter(){
 }
 
 void BasicMode::close(){
+    Game::close();
+    
     AutoTexture[1].freeFire();
     AutoTexture[0].freeFire();
     ball.close();
@@ -252,9 +257,9 @@ BasicMode::BasicMode(){
     
     OptionInGame.isAuto = 0;
     
-    ball.moveUp = SDLK_g;
-    ball.moveLeft = SDLK_LEFT;
-    ball.moveRight = SDLK_RIGHT;
+    ball.moveUp = SDLK_s;
+    ball.moveLeft = SDLK_a;
+    ball.moveRight = SDLK_d;
 }
 
 #endif /* BasicMode_h */

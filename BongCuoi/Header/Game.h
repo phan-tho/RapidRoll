@@ -4,11 +4,12 @@
 #include "Button.h"
 #include "def.h"
 #include "LTexture.h"
-#include "defLTexture.h"
 #include "Music/Music.h"
+#include "Guide.h"
 
 //#include "Header/ITEM/ITEM.h"
 //#include "Header/CheckCollide.h"
+LTexture gTextTexture;
 
 class Game{
     public:
@@ -19,6 +20,8 @@ class Game{
         void resetParameter();
         
         void renderLifeAndScore(const int& score, const int& life);
+    
+        void renderGameOver(const int& score, const int& MODE);
     
         // PROCESSING BLOCKS AND TRAPS -->
         void genItem(Fuel& fuel, Heart& heart);         // BLOCKS TRAPS HEART FUEL
@@ -42,6 +45,8 @@ class Game{
         void checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const int& idNearTrap);     // DIE OR EAT HEART FUEL
     
         void updateScoreAndDentaY(int& score);
+    
+        void close();
     protected:
         int DENTA_Y;
     
@@ -53,11 +58,33 @@ class Game{
         const int TIME_DELAY = 90;                  // 1.5s
     
         Music music;
+        Guide guide;
+    
+        LTexture mBackground;
+
+        LTexture mGameOver;
+
+        LTexture mBlock;
+        LTexture mHeart;
+        LTexture mTrap;
+
+        LTexture mFuel;
+    
+        std::vector<std::string> data;
+    
+        enum idData{
+            USER_NAME,
+            BASIC_MODE,
+            SHOOTING_MODE
+        };
     
     private:
         const int BLOCK_ABOVE_TRAP = 2;             // 3  BLOCK ==> 1 TRAP
         const int BLOCK_ABOVE_HEART = 13;           // 15 BLOCK ==> 1 HEART
         const int BLOCK_ABOVE_FUEL = 18;            // AVOID = BLOCK_ABOVE_HEART
+    
+        const int MENU_OVER_HEIGHT = 106;
+        const int MENU_OVER_WIDTH  = 320;
 
         int waitRevive;
 
@@ -77,6 +104,31 @@ void Game::renderLifeAndScore(const int& score, const int& life){
     str += std::to_string(score);
     gTextTexture.loadFromRenderedText(str, textColor);
     gTextTexture.render(130, 20, NULL);
+}
+
+void Game::renderGameOver(const int& score, const int& MODE){
+    mGameOver.render((SCREEN_WIDTH - MENU_OVER_WIDTH)/2, (SCREEN_HEIGHT - MENU_OVER_HEIGHT)/2 - 30, NULL);
+    
+    SDL_Color textColor = {255, 255, 55};
+    std::string textScore = data[USER_NAME] + "'s score " +  std::to_string(score);
+    
+    //    TTF_SetFontSize(gFont, 10);
+    gTextTexture.loadFromRenderedText(textScore, textColor);
+    gTextTexture.renderCustomSize(60, 410, 0.8);
+    
+    // UPDATE HIGHEST SCORE
+    if(score > std::stoi(data[MODE])){
+        data[MODE] = std::to_string(score);
+    }
+    textScore = data[USER_NAME] + "'s highest score " + data[MODE];
+    
+    std::ofstream out("YouCantSeeMe.txt");
+    if(!out.is_open())      std::cout << "Deo mo duoc file\n";
+    out << data[0] << "\n" << data[1] << "\n" << data[2];
+    out.close();
+
+    gTextTexture.loadFromRenderedText(textScore, textColor);
+    gTextTexture.renderCustomSize(60, 440, 0.8);
 }
 
 void Game::genItem(Fuel& fuel, Heart& heart){
@@ -128,11 +180,11 @@ void Game::removeItemOutBoard(){
 
 void Game::renderBlocksAndTraps(){
     for(auto it = Blocks.begin(); it != Blocks.end(); it++){                            // RENDER ALL BLOCKS
-        gBlock.render(it->PosX, it->PosY, NULL);
+        mBlock.render(it->PosX, it->PosY, NULL);
     }
     
     for(auto it = Traps.begin(); it != Traps.end(); it++){                              // RENDER ALL TRAPS
-        gTrap.render(it->PosX, it->PosY, NULL);
+        mTrap.render(it->PosX, it->PosY, NULL);
     }
 }
 
@@ -142,7 +194,7 @@ void Game::moveHeart(Heart& heart){
 
 void Game::renderHeart(const Heart& heart){
     if(heart.PosY >= CEILING && !heart.isEaten){
-        gHeart.render(heart.PosX, heart.PosY, NULL);
+        mHeart.render(heart.PosX, heart.PosY, NULL);
     }
 }
 
@@ -152,11 +204,11 @@ void Game::moveFuel(Fuel& fuel){
 
 void Game::renderFuel(const Fuel& fuel){
     if(fuel.PosY >= CEILING && !fuel.isEaten){
-        gFuel.render(fuel.PosX, fuel.PosY, NULL);
+        mFuel.render(fuel.PosX, fuel.PosY, NULL);
     }
     else if(fuel.PosY + fuel.FUEL_HEIGHT > CEILING){
         SDL_Rect xywh = { 0, CEILING - fuel.PosY, fuel.FUEL_WIDTH, fuel.FUEL_HEIGHT - CEILING + fuel.PosY};
-        gFuel.render(fuel.PosX, CEILING, &xywh);
+        mFuel.render(fuel.PosX, CEILING, &xywh);
     }
 }
 
@@ -227,11 +279,45 @@ void Game::resetParameter(){
     Traps.clear();
 }
 
+void Game::close(){
+    mBackground.freeFire();
+
+    mGameOver.freeFire();
+    
+    mBlock.freeFire();
+    mHeart.freeFire();
+    mTrap.freeFire();
+    
+    mFuel.freeFire();
+}
+
 Game::Game(){
+    std::ifstream in("YouCantSeeMe.txt");
+    std::cout << (in.is_open() ? "Opened\n" : "Deo the mo\n");
+    
+//    in << "Guest\n0\n0";                // init file. This file can't see. This is feature
+    
+    std::string str;
+    while(getline(in, str)){
+        data.push_back(str);
+    }
+    in.close();
+    
+    
     cnt = 0;
 
     DENTA_Y = 2;
     waitRevive = 0;
+    
+    mBackground.loadFromFile("BackGr.png");
+    
+    mGameOver.loadFromFile("GameOver.png");
+    
+    mBlock.loadFromFile("Block.png");
+    mHeart.loadFromFile("tim.png");
+    mTrap.loadFromFile("trap.png");
+    
+    mFuel.loadFromFile("fuel.png");
 }
 
 #endif /* Game_h */

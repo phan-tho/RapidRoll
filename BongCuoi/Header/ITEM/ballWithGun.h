@@ -20,7 +20,7 @@ public:
     
 //    void handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight );
     
-    void handleBullet(Ball& ball, const std::deque<Trap>& Traps, const std::deque<Block>& Blocks, int& score);
+    bool handleBullet(Ball& ball, const std::deque<Trap>& Traps, const std::deque<Block>& Blocks, int& score);
     
     void close();
     // clear LTexture
@@ -58,8 +58,8 @@ void BallWithGun::genBullet(SDL_Event* e, Music& music){
     }
 }
 
-void BallWithGun::handleBullet(Ball& ball, const std::deque<Trap>& Traps, const std::deque<Block>& Blocks, int& score){
-    if(Bullets.empty())     return;
+bool BallWithGun::handleBullet(Ball& ball, const std::deque<Trap>& Traps, const std::deque<Block>& Blocks, int& score){
+    if(Bullets.empty())     return false;
     
     auto it = Bullets.begin();
     
@@ -80,6 +80,7 @@ void BallWithGun::handleBullet(Ball& ball, const std::deque<Trap>& Traps, const 
                 life++;
                 score++;
                 // music when die
+                return true;
                 
                 ball.mPosY = CEILING + 120;                       // MAGIC
                 ball.mPosX = (SCREEN_WIDTH - BALL_WIDTH)/2 + 50;
@@ -87,6 +88,7 @@ void BallWithGun::handleBullet(Ball& ball, const std::deque<Trap>& Traps, const 
             it = Bullets.erase(it);
         }
     }
+    return false;
 }
 
 void BallWithGun::renderGun(const bool& isPause){
@@ -118,7 +120,7 @@ void BallWithGun::close(){
 }
 
 BallWithGun::BallWithGun(){
-    Ball::close();
+//    Ball::close();
     
     angle = 0;
     

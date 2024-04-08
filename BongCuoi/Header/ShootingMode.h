@@ -93,9 +93,12 @@ void ShootingMode::Play(){
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
         
-        gBackground.render(0, 0, NULL);             // BACKGROUND
+        mBackground.render(0, 0, NULL);             // BACKGROUND
         OptionInGame.render();                      // OPTION PAUSE PLAY REPLAY EXIT
         renderLifeAndScore(score, playerBall.life);
+        // render guide when start game
+        guide.guide(playerBall, 1, "J", "H", "K");
+        guide.guide(enemyBall, 0, "S", "A", "D");
         
         if(OptionInGame.mCurrentState[PAUSE]){          // PAUSE
             handleWhenPause();
@@ -148,7 +151,7 @@ void ShootingMode::handleWhenPlay(){
     
     // HANDLE PLAYER BALL
     moveBall(playerBall, findNearestBlock(playerBall, Blocks));
-    playerBall.handleBullet(enemyBall, Traps, Blocks, score);
+    if( playerBall.handleBullet(enemyBall, Traps, Blocks, score) )      music.whenKill();
     ballBoundWhenCollide(playerBall, enemyBall);
     
     playerBall.renderBall();
@@ -177,7 +180,8 @@ void ShootingMode::handleWhenPause(){
         enemyBall.renderEnergyBar();
     }
     else{
-        gGameOver.render(54, 310, NULL);
+//        mGameOver.render(54, 310, NULL);
+        renderGameOver(score, SHOOTING_MODE);
     }
 
     OptionInGame.render();
@@ -212,7 +216,8 @@ void ShootingMode::handleWhenDie(){
         enemyBall.render();
         enemyBall.renderEnergyBar();
         
-        gGameOver.render(54, 310, NULL);            // MAGIC
+//        mGameOver.render(54, 310, NULL);            // MAGIC
+        renderGameOver(score, SHOOTING_MODE);
         OptionInGame.mCurrentState[PAUSE] = true;
         
         // pause music
@@ -262,6 +267,8 @@ void ShootingMode::resetParameter(){
 }
 
 void ShootingMode::close(){
+    Game::close();
+    
     playerBall.close();
     enemyBall.close();
     
@@ -290,9 +297,9 @@ ShootingMode::ShootingMode(){
     
     OptionInGame.isAuto = 1;
     
-    playerBall.moveUp = SDLK_g;
-    playerBall.moveLeft = SDLK_f;
-    playerBall.moveRight = SDLK_h;
+    playerBall.moveUp = SDLK_j;
+    playerBall.moveLeft = SDLK_h;
+    playerBall.moveRight = SDLK_k;
     
     enemyBall.moveUp = SDLK_s;
     enemyBall.moveLeft = SDLK_a;

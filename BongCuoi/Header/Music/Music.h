@@ -19,6 +19,7 @@ public:
     void whenLoadingBullet();
     
     void whenDie();
+    void whenKill();
     
     void whenEatHeartFuel();
     
@@ -38,6 +39,7 @@ private:
     Mix_Chunk* mMusicWhenDie;
     Mix_Chunk* mMusicWhenShoot;
     Mix_Chunk* mMusicWhenTap;
+    Mix_Chunk* mMusicWhenKill;
     
     Mix_Chunk* mMsLoadBullet;
 };
@@ -80,6 +82,10 @@ void Music::whenDie(){
     Mix_PlayChannel(SECCOND_CHANNEL, mMusicWhenDie, 0);
 }
 
+void Music::whenKill(){
+    Mix_PlayChannel(SECCOND_CHANNEL, mMusicWhenKill, 0);
+}
+
 void Music::whenShoot(){
     Mix_PlayChannel(SECCOND_CHANNEL, mMusicWhenShoot, 0);
 }
@@ -97,6 +103,7 @@ void Music::close(){
     Mix_FreeChunk(mMusicWhenShoot);
     Mix_FreeChunk(mMusicWhenTap);
     Mix_FreeChunk(mMsLoadBullet);
+    Mix_FreeChunk(mMusicWhenKill);
     
     mBackGrMusic    = NULL;
     mMusicWhenMove  = NULL;
@@ -105,6 +112,7 @@ void Music::close(){
     mMusicWhenShoot = NULL;
     mMusicWhenTap   = NULL;
     mMsLoadBullet   = NULL;
+    mMusicWhenKill  = NULL;
 }
 
 Music::Music(){
@@ -114,6 +122,7 @@ Music::Music(){
     mMusicWhenEat  = Mix_LoadWAV("EatHeart.wav");
     
     mMusicWhenDie   = Mix_LoadWAV("Died.wav");
+    mMusicWhenKill  = Mix_LoadWAV("CashRegister.wav");
     mMusicWhenShoot = Mix_LoadWAV("SingleBullet.wav");
     mMusicWhenTap   = Mix_LoadWAV("Tap.wav");
     mMsLoadBullet   = Mix_LoadWAV("LoadBullet.wav");

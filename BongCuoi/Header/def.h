@@ -7,6 +7,7 @@
 #include "SDL2_mixer/SDL_mixer.h"
 #include <string>
 #include <iostream>
+#include <fstream>
 // random
 #include <cstdlib>
 #include <ctime>
@@ -41,7 +42,6 @@ enum Button{
 };
 
 
-
 /*
     This is important to set DOWN velocity of BALL and UP velocity of BLOCK
     This make sure that BALL and BLOCK can pass through other
@@ -56,7 +56,7 @@ void loadMedia();
 void close();
 
 void init(){
-    srand(int(time(0)));
+//    srand(int(time(0)));
     SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO );
     
     //Create window

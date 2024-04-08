@@ -11,7 +11,6 @@
 		040B47B62BB1C118000F2DEE /* energyBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 040B47B42BB1C118000F2DEE /* energyBar.png */; };
 		040B47BF2BB1C14B000F2DEE /* BackGrMusic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 040B47BA2BB1C14B000F2DEE /* BackGrMusic.wav */; };
 		040B47C12BB1C14B000F2DEE /* fireMove.wav in Resources */ = {isa = PBXBuildFile; fileRef = 040B47BC2BB1C14B000F2DEE /* fireMove.wav */; };
-		040F99AC2B9D0CDD00F29CD7 /* Sears_Tower.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 040F99AB2B9D0CDD00F29CD7 /* Sears_Tower.ttf */; };
 		040F99B12B9D0DC600F29CD7 /* BackGr.png in Resources */ = {isa = PBXBuildFile; fileRef = 040F99B02B9D0DC600F29CD7 /* BackGr.png */; };
 		040F99B92B9D0E1F00F29CD7 /* fire3.png in Resources */ = {isa = PBXBuildFile; fileRef = 040F99B32B9D0E1F00F29CD7 /* fire3.png */; };
 		040F99BA2B9D0E1F00F29CD7 /* fire2.png in Resources */ = {isa = PBXBuildFile; fileRef = 040F99B42B9D0E1F00F29CD7 /* fire2.png */; };
@@ -42,12 +41,17 @@
 		0469D9462BB4655D007305DE /* awm.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D9452BB4655D007305DE /* awm.png */; };
 		0469D94B2BB476D1007305DE /* SortGun.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D94A2BB476D1007305DE /* SortGun.png */; };
 		0469D94F2BB48025007305DE /* Bullet.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D94E2BB48025007305DE /* Bullet.png */; };
+		04C2D2242BC2AFAE008B0CD0 /* CashRegister.wav in Resources */ = {isa = PBXBuildFile; fileRef = 04C2D2232BC2AFAE008B0CD0 /* CashRegister.wav */; };
 		04D7C6DD2BBC496D0096D3F0 /* OffAuto.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7C6DB2BBC496D0096D3F0 /* OffAuto.png */; };
 		04D7C6DE2BBC496D0096D3F0 /* OnAuto.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7C6DC2BBC496D0096D3F0 /* OnAuto.png */; };
 		04D7C6E02BBC6EDD0096D3F0 /* EatHeart.wav in Resources */ = {isa = PBXBuildFile; fileRef = 04D7C6DF2BBC6EDD0096D3F0 /* EatHeart.wav */; };
 		04D7C6E52BBC85C20096D3F0 /* SingleBullet.wav in Resources */ = {isa = PBXBuildFile; fileRef = 04D7C6E32BBC85C20096D3F0 /* SingleBullet.wav */; };
 		04D7C6E62BBC85C20096D3F0 /* Died.wav in Resources */ = {isa = PBXBuildFile; fileRef = 04D7C6E42BBC85C20096D3F0 /* Died.wav */; };
 		04D7C6E82BBC88770096D3F0 /* Tap.wav in Resources */ = {isa = PBXBuildFile; fileRef = 04D7C6E72BBC88770096D3F0 /* Tap.wav */; };
+		04FD42762BC3DFFA00A48ADA /* turok.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04FD42752BC3DFFA00A48ADA /* turok.ttf */; };
+		04FD42782BC3E9CE00A48ADA /* MenuGameOver.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FD42772BC3E9CE00A48ADA /* MenuGameOver.png */; };
+		04FD427F2BC3FD7C00A48ADA /* Arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FD427D2BC3FD7C00A48ADA /* Arrow.png */; };
+		04FD42802BC3FD7C00A48ADA /* Mouse.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FD427E2BC3FD7C00A48ADA /* Mouse.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -65,6 +69,15 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		04C2D26C2BC2D773008B0CD0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -76,7 +89,6 @@
 		040B47CA2BB1C6A2000F2DEE /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		040B47CB2BB1C851000F2DEE /* BasicMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicMode.h; sourceTree = "<group>"; };
 		040B47CC2BB1E67D000F2DEE /* Fuel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fuel.h; sourceTree = "<group>"; };
-		040F99AB2B9D0CDD00F29CD7 /* Sears_Tower.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sears_Tower.ttf; sourceTree = "<group>"; };
 		040F99B02B9D0DC600F29CD7 /* BackGr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackGr.png; sourceTree = "<group>"; };
 		040F99B32B9D0E1F00F29CD7 /* fire3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire3.png; sourceTree = "<group>"; };
 		040F99B42B9D0E1F00F29CD7 /* fire2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire2.png; sourceTree = "<group>"; };
@@ -108,7 +120,6 @@
 		0458A5F52B98C9100058B970 /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2_ttf.framework; sourceTree = "<group>"; };
 		0458A5F62B98C9100058B970 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2_image.framework; sourceTree = "<group>"; };
 		0469D9342BB4304E007305DE /* autoBall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = autoBall.h; sourceTree = "<group>"; };
-		0469D9352BB44CA1007305DE /* defLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defLTexture.h; sourceTree = "<group>"; };
 		0469D9362BB44CA1007305DE /* LTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTexture.h; sourceTree = "<group>"; };
 		0469D9372BB44CE8007305DE /* def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = def.h; sourceTree = "<group>"; };
 		0469D9412BB4524C007305DE /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
@@ -119,6 +130,7 @@
 		0469D94A2BB476D1007305DE /* SortGun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SortGun.png; sourceTree = "<group>"; };
 		0469D94D2BB47C86007305DE /* Bullet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bullet.h; sourceTree = "<group>"; };
 		0469D94E2BB48025007305DE /* Bullet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bullet.png; sourceTree = "<group>"; };
+		04C2D2232BC2AFAE008B0CD0 /* CashRegister.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = CashRegister.wav; sourceTree = "<group>"; };
 		04D7C6DB2BBC496D0096D3F0 /* OffAuto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OffAuto.png; sourceTree = "<group>"; };
 		04D7C6DC2BBC496D0096D3F0 /* OnAuto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OnAuto.png; sourceTree = "<group>"; };
 		04D7C6DF2BBC6EDD0096D3F0 /* EatHeart.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = EatHeart.wav; sourceTree = "<group>"; };
@@ -126,6 +138,11 @@
 		04D7C6E32BBC85C20096D3F0 /* SingleBullet.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = SingleBullet.wav; sourceTree = "<group>"; };
 		04D7C6E42BBC85C20096D3F0 /* Died.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Died.wav; sourceTree = "<group>"; };
 		04D7C6E72BBC88770096D3F0 /* Tap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Tap.wav; sourceTree = "<group>"; };
+		04FD42752BC3DFFA00A48ADA /* turok.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = turok.ttf; sourceTree = "<group>"; };
+		04FD42772BC3E9CE00A48ADA /* MenuGameOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MenuGameOver.png; sourceTree = "<group>"; };
+		04FD427B2BC3F93300A48ADA /* Guide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Guide.h; sourceTree = "<group>"; };
+		04FD427D2BC3FD7C00A48ADA /* Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Arrow.png; sourceTree = "<group>"; };
+		04FD427E2BC3FD7C00A48ADA /* Mouse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mouse.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +163,7 @@
 		040B47B72BB1C14B000F2DEE /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				04C2D2232BC2AFAE008B0CD0 /* CashRegister.wav */,
 				04D7C6E72BBC88770096D3F0 /* Tap.wav */,
 				04D7C6E42BBC85C20096D3F0 /* Died.wav */,
 				04D7C6E32BBC85C20096D3F0 /* SingleBullet.wav */,
@@ -159,6 +177,8 @@
 		040F99AF2B9D0DA100F29CD7 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				04FD427C2BC3FBA500A48ADA /* Guide */,
+				04FD42772BC3E9CE00A48ADA /* MenuGameOver.png */,
 				040F99B02B9D0DC600F29CD7 /* BackGr.png */,
 				040F99D42B9D0FA900F29CD7 /* GameOver.png */,
 				0469D9442BB46548007305DE /* Gun */,
@@ -217,13 +237,13 @@
 				0469D9492BB46663007305DE /* ShootingMode.h */,
 				0469D9412BB4524C007305DE /* Button.h */,
 				0469D9372BB44CE8007305DE /* def.h */,
-				0469D9352BB44CA1007305DE /* defLTexture.h */,
 				0469D9362BB44CA1007305DE /* LTexture.h */,
 				040B47CB2BB1C851000F2DEE /* BasicMode.h */,
 				040B47CA2BB1C6A2000F2DEE /* Game.h */,
 				040F99DD2B9D10FE00F29CD7 /* CheckCollide.h */,
 				040F99DE2B9D10FE00F29CD7 /* Header.h */,
 				040F99D72B9D0FE000F29CD7 /* ITEM */,
+				04FD427B2BC3F93300A48ADA /* Guide.h */,
 			);
 			path = Header;
 			sourceTree = "<group>";
@@ -268,7 +288,7 @@
 				040F99D62B9D0FD700F29CD7 /* Header */,
 				040F99AF2B9D0DA100F29CD7 /* Image */,
 				0458A5EC2B98C8800058B970 /* main.cpp */,
-				040F99AB2B9D0CDD00F29CD7 /* Sears_Tower.ttf */,
+				04FD42752BC3DFFA00A48ADA /* turok.ttf */,
 				0458A5E62B98C86C0058B970 /* BongCuoi.entitlements */,
 			);
 			path = BongCuoi;
@@ -311,6 +331,15 @@
 			path = Music;
 			sourceTree = "<group>";
 		};
+		04FD427C2BC3FBA500A48ADA /* Guide */ = {
+			isa = PBXGroup;
+			children = (
+				04FD427D2BC3FD7C00A48ADA /* Arrow.png */,
+				04FD427E2BC3FD7C00A48ADA /* Mouse.png */,
+			);
+			path = Guide;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -322,6 +351,7 @@
 				0458A5D62B98C86B0058B970 /* Frameworks */,
 				0458A5D72B98C86B0058B970 /* Resources */,
 				0458A5FF2B98C9100058B970 /* Embed Frameworks */,
+				04C2D26C2BC2D773008B0CD0 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -375,9 +405,13 @@
 				04D7C6E82BBC88770096D3F0 /* Tap.wav in Resources */,
 				040F99C62B9D0E4A00F29CD7 /* Block.png in Resources */,
 				040F99B92B9D0E1F00F29CD7 /* fire3.png in Resources */,
+				04FD42802BC3FD7C00A48ADA /* Mouse.png in Resources */,
 				040F99D22B9D0EAD00F29CD7 /* Pause.png in Resources */,
 				040F99C72B9D0E4A00F29CD7 /* dot.bmp in Resources */,
+				04C2D2242BC2AFAE008B0CD0 /* CashRegister.wav in Resources */,
 				0469D94F2BB48025007305DE /* Bullet.png in Resources */,
+				04FD42762BC3DFFA00A48ADA /* turok.ttf in Resources */,
+				04FD427F2BC3FD7C00A48ADA /* Arrow.png in Resources */,
 				0469D94B2BB476D1007305DE /* SortGun.png in Resources */,
 				040B47B62BB1C118000F2DEE /* energyBar.png in Resources */,
 				040F99D32B9D0EAD00F29CD7 /* Play.png in Resources */,
@@ -393,7 +427,6 @@
 				04D7C6E02BBC6EDD0096D3F0 /* EatHeart.wav in Resources */,
 				040F99D52B9D0FA900F29CD7 /* GameOver.png in Resources */,
 				040F99D02B9D0EAD00F29CD7 /* Replay.png in Resources */,
-				040F99AC2B9D0CDD00F29CD7 /* Sears_Tower.ttf in Resources */,
 				040B47C12BB1C14B000F2DEE /* fireMove.wav in Resources */,
 				04D7C6E62BBC85C20096D3F0 /* Died.wav in Resources */,
 				040B47BF2BB1C14B000F2DEE /* BackGrMusic.wav in Resources */,
@@ -401,6 +434,7 @@
 				04D7C6DD2BBC496D0096D3F0 /* OffAuto.png in Resources */,
 				040F99D12B9D0EAD00F29CD7 /* Exit.png in Resources */,
 				04D7C6E52BBC85C20096D3F0 /* SingleBullet.wav in Resources */,
+				04FD42782BC3E9CE00A48ADA /* MenuGameOver.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

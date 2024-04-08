@@ -128,8 +128,7 @@ void LTexture::freeFire(){
 }
 
 #if defined(SDL_TTF_MAJOR_VERSION)
-bool LTexture::loadFromRenderedText( std::string textureText, SDL_Color textColor )
-{
+bool LTexture::loadFromRenderedText( std::string textureText, SDL_Color textColor ){
     //Get rid of preexisting texture
     freeFire();
 
