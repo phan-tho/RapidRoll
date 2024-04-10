@@ -3,6 +3,8 @@
 #ifndef MainMenu_h
 #define MainMenu_h
 
+#include "ChooseBall.h"
+
 class MainMenu{
 public:
     MainMenu();
@@ -14,6 +16,8 @@ protected:
     
     void close();
     
+    void renderOptMode();
+    
     void renderButton();
     
     void handeEvent(SDL_Event* e);      // isTapped
@@ -23,6 +27,8 @@ protected:
     void ChooseMode(SDL_Event* e);
     
     void play();
+    
+    void writeFile();
     
     bool isInButton(const int& button);
     
@@ -81,6 +87,8 @@ private:
     
     Mix_Chunk* mBackGrMusic;
     Mix_Chunk* mMusicWhenTap;
+    
+    ChooseBall chooseBall;
 };
 
 void MainMenu::handle(){
@@ -102,6 +110,8 @@ void MainMenu::handle(){
         
         mBackGr.render(0, 0, NULL);
         
+        chooseBall.render();
+        renderOptMode();
         renderButton();
         
         SDL_RenderPresent( gRenderer );
@@ -113,6 +123,7 @@ void MainMenu::handle(){
 // CHANGE USER NAME
 // PLAY GAME
 void MainMenu::handeEvent(SDL_Event *e){
+    chooseBall.handleEvent(e);
     // TYPE NEW NAME
     if(isFixingName){
         handleInputText(e);
@@ -122,27 +133,36 @@ void MainMenu::handeEvent(SDL_Event *e){
         return;
     }
     SDL_GetMouseState(&xMouse, &yMouse);
+    
+    // Not zoom out any thing when mouse isnot in any button
     isZoomOut = NONE;
     
     ChooseMode(e);
     
-    if(isInButton(PLAY)){
+    if( isInButton(PLAY) ){
+        isZoomOut = PLAY;
+        
         if(e->type == SDL_MOUSEBUTTONDOWN){
             play();
         }
-        isZoomOut = PLAY;
     }
-    else if(isInButton(HIGH_SCORE)){
+    else if( isInButton(HIGH_SCORE) ){
+        isZoomOut = HIGH_SCORE;
         
+        // RESET HIGHEST SCORE WHEN TAPPED THIS BUTTON
+        if(e->type == SDL_MOUSEBUTTONDOWN){
+            data[lineBasicMode] = "0";
+            data[lineShootingMode] = "0";
+            writeFile();
+        }
     }
-    else if(isInButton(USER_NAME)){
+    else if( isInButton(USER_NAME) ){
+        if(isFixingName == 0)      isZoomOut = USER_NAME;
+
         if(e->type == SDL_MOUSEBUTTONDOWN){
             isFixingName = 1;
             data[lineName] = " ";
-            textUserName.loadFromRenderedText(data[lineName], {255, 255, 255});
-        }
-        else{
-            isZoomOut = USER_NAME;
+//            textUserName.loadFromRenderedText(data[lineName], {255, 255, 255});
         }
     }
 }
@@ -155,22 +175,17 @@ void MainMenu::handeEvent(SDL_Event *e){
 void MainMenu::handleInputText(SDL_Event* e){
     if(e->type == SDL_TEXTINPUT){
         data[lineName] += e->text.text;
-        textUserName.loadFromRenderedText(data[lineName], {255, 255, 255});
+//        textUserName.loadFromRenderedText(data[lineName], {255, 255, 255});
     }
     if(e->key.keysym.sym == SDLK_BACKSPACE){
         if(data[lineName].size() > 1){
             data[lineName].pop_back();
-            textUserName.loadFromRenderedText(data[lineName], {255, 255, 255});
+//            textUserName.loadFromRenderedText(data[lineName], {255, 255, 255});
         }
     }
     else if(e->type == SDL_MOUSEBUTTONDOWN || e->key.keysym.sym == SDLK_RETURN){
         isFixingName = 0;
-        
-        // write to new user name to file data
-        std::ofstream out("YouCantSeeMe.txt");
-        std::cout << (out.is_open() ? "write success\n" : "deo mo duoc file out\n");
-        out << data[lineName] << "\n" << data[lineBasicMode] << "\n" << data[lineShootingMode] << "\n";
-        out.close();
+        writeFile();
     }
 }
 
@@ -199,6 +214,8 @@ void MainMenu::ChooseMode(SDL_Event* e){
 void MainMenu::play(){
     Mix_PlayChannel(FIRST_CHANNEL, mMusicWhenTap, 0);
     Mix_HaltChannel(SECCOND_CHANNEL);
+    
+    // CLOSE MEDIA OF MENU
     close();
     if(selectedMode == SHOOTING_MODE){
         ShootingMode shootingMode;
@@ -208,19 +225,16 @@ void MainMenu::play(){
         BasicMode basicMode;
         basicMode.Play();
     }
+    
+    // INIT MEDIA
     init();
     // resume back ground music
     Mix_PlayChannel(SECCOND_CHANNEL, mBackGrMusic, -1);
 }
 
 
-// RENDER ALL OPTION BUTTON AND INFO
 // Basic mode and Shooting mode
-// High score
-// Button Play
-// User name
-// UPDATE FEATURE ZOOM OUT IN FUTURE
-void MainMenu::renderButton(){
+void MainMenu::renderOptMode(){
     if(ButtonState[BASIC_MODE] || ButtonState[SHOOTING_MODE]){
         for(int button = 0; button < 2; button++){
             if(ButtonState[button]){
@@ -238,15 +252,50 @@ void MainMenu::renderButton(){
         
         blackScreen.render(POS[!selectedMode].x, POS[!selectedMode].y, NULL);
     }
+}
+
+
+// RENDER ALL OPTION BUTTON AND INFO
+// High score
+// Button Play
+// User name
+// UPDATE FEATURE ZOOM OUT IN FUTURE
+void MainMenu::renderButton(){
+    if(isZoomOut == PLAY){
+        mPlay.renderCustomSize(POS[PLAY].x - DIMENSIONS[PLAY].x/10, POS[PLAY].y - DIMENSIONS[PLAY].y/10, 1.2);
+    }
+    else{
+        mPlay.render(POS[PLAY].x, POS[PLAY].y, NULL);
+    }
     
-    mPlay.render(POS[PLAY].x, POS[PLAY].y, NULL);
+    if(isZoomOut == HIGH_SCORE){
+        mHighScore.renderCustomSize(POS[HIGH_SCORE].x - DIMENSIONS[HIGH_SCORE].x/10, POS[HIGH_SCORE].y - DIMENSIONS[HIGH_SCORE].y/10, 1.2);
+        textScore.loadFromRenderedText("Tap to RESET", {255, 0, 0});
+        textScore.renderCustomSize(POS[HIGH_SCORE].x + 6, POS[HIGH_SCORE].y + 6, 0.8);
+    }
+    else{
+        mHighScore.render(POS[HIGH_SCORE].x, POS[HIGH_SCORE].y, NULL);
+        textScore.loadFromRenderedText(data[(ButtonState[SHOOTING_MODE] == 1 ? lineShootingMode : lineBasicMode)], {255, 0, 0});
+        textScore.renderCustomSize(POS[HIGH_SCORE].x + 40, POS[HIGH_SCORE].y + 6, 0.8);
+    }
     
-    mHighScore.render(POS[HIGH_SCORE].x, POS[HIGH_SCORE].y, NULL);
-    textScore.loadFromRenderedText(data[(ButtonState[SHOOTING_MODE] == 1 ? lineShootingMode : lineBasicMode)], {255, 0, 0});
-    textScore.renderCustomSize(POS[HIGH_SCORE].x + 40, POS[HIGH_SCORE].y + 8, 0.8);
-    
+    if(isZoomOut == USER_NAME){
+        textUserName.loadFromRenderedText("RENAME", {255, 255, 255});
+        textUserName.renderCustomSize(POS[USER_NAME].x - 5, POS[USER_NAME].y, 0.8);
+    }
+    else{
 //        mUserName.render(POS[USER_NAME].x, POS[USER_NAME].y, NULL);
-    textUserName.renderCustomSize(SCREEN_WIDTH - textUserName.getWidth(), POS[USER_NAME].y, 0.8);
+        textUserName.loadFromRenderedText(data[lineName], {255, 255, 255});
+        textUserName.renderCustomSize(SCREEN_WIDTH - textUserName.getWidth(), POS[USER_NAME].y, 0.8);
+    }
+}
+
+
+void MainMenu::writeFile(){
+    std::ofstream out("YouCantSeeMe.txt");
+    std::cout << (out.is_open() ? "write success\n" : "deo mo duoc file out\n");
+    out << data[lineName] << "\n" << data[lineBasicMode] << "\n" << data[lineShootingMode] << "\n";
+    out.close();
 }
 
 
@@ -262,6 +311,8 @@ bool MainMenu::isInButton(const int& button){
 
 // CLOSE MEDIA OF MENU
 void MainMenu::close(){
+    chooseBall.close();
+    
     mBackGr.freeFire();
     blackScreen.freeFire();
     frameSelect.freeFire();
@@ -287,6 +338,8 @@ void MainMenu::close(){
 
 // INIT MEDIA AFTER GAME IS PERFORMED
 void MainMenu::init(){
+    chooseBall.init();
+    
     mBackGr.loadFromFile("MainMenu.png");
     blackScreen.loadFromFile("BlackScreen.png");
     blackScreen.setAlpha(100);

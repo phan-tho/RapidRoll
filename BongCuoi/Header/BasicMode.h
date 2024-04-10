@@ -5,7 +5,7 @@
 #define BasicMode_h
 
 #include "Game.h"
-#include "HandleITEM/ITEM/autoBall.h"
+//#include "HandleITEM/ITEM/autoBall.h"
 
 class BasicMode: public Game{
 public:

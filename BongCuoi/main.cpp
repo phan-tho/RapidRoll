@@ -12,7 +12,6 @@ int main( int argc, char* argv[] ){
 }
 
 void loadMedia(){
-//    gFont = TTF_OpenFont("Sears_Tower.ttf", 30);
     gFont = TTF_OpenFont("turok.ttf", 30);
 }
 

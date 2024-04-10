@@ -60,6 +60,12 @@ void init(){
     //Create window
     gWindow = SDL_CreateWindow( "BY PHAN THO", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
     
+//    // Create app icon
+//    SDL_Surface* iconSurface = IMG_Load("AppIcon.png");
+//    SDL_SetWindowIcon(gWindow, iconSurface);
+//    SDL_FreeSurface(iconSurface);
+//    iconSurface = NULL;
+    
     //Create vsynced renderer for window
     gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 
