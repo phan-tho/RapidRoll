@@ -4,9 +4,9 @@
 #define ShootingMode_h
 
 #include "Game.h"
-#include "ITEM/ballWithGun.h"
-#include "ITEM/autoBall.h"
-#include "ITEM/Bullet.h"
+#include "HandleITEM/ITEM/ballWithGun.h"
+#include "HandleITEM/ITEM/autoBall.h"
+#include "HandleITEM/ITEM/Bullet.h"
 #include "Music/Music.h"
 
 class ShootingMode : public Game{
@@ -14,6 +14,8 @@ public:
     ShootingMode();
     
     void Play();
+    
+    bool handleEvent(SDL_Event e);     // return true to quit
     
     // PROCESSING
     void handleWhenPlay();
@@ -61,24 +63,7 @@ void ShootingMode::Play(){
 
     while( !quit ){
         while( SDL_PollEvent( &e ) != 0 ){
-            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x){
-                quit = true;
-                close();
-            }
-            
-            // HANDLE VELOCITY OF BALL AND GENERATE BULLET WHEN CLICK MOUSE
-            playerBall.handleEvent(e, DENTA_Y);
-            playerBall.genBullet(&e, music);
-            enemyBall.handleEvent(e, DENTA_Y);
-            
-            if( OptionInGame.handleTapped(&e) ){
-                music.whenTappedButton();
-            }
-            
-            if (OptionInGame.mCurrentState[EXIT]){
-                quit = true;
-                close();
-            }        // EXIT
+            quit = handleEvent(e);
         }
         
         if(OptionInGame.mCurrentState[REPLAY]){                     // RESET PARAMETER WHEN REPLACE
@@ -120,6 +105,29 @@ void ShootingMode::Play(){
         SDL_RenderPresent( gRenderer );
         
     }
+}
+
+bool ShootingMode::handleEvent(SDL_Event e){
+    if( e.type == SDL_QUIT){
+        return true;
+        music.whenTappedButton();
+        close();
+    }
+    
+    // HANDLE VELOCITY OF BALL AND GENERATE BULLET WHEN CLICK MOUSE
+    playerBall.handleEvent(e, DENTA_Y);
+    playerBall.genBullet(&e, music);
+    enemyBall.handleEvent(e, DENTA_Y);
+    
+    if( OptionInGame.handleTapped(&e) ){
+        music.whenTappedButton();
+    }
+    
+    if (OptionInGame.mCurrentState[EXIT]){
+        return true;
+        close();
+    }        // EXIT
+    return false;
 }
 
 void ShootingMode::handleWhenPlay(){

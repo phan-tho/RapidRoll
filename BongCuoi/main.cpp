@@ -4,10 +4,8 @@ int main( int argc, char* argv[] ){
     init();
     loadMedia();
     
-//    BasicMode basicMode;
-//    basicMode.Play();
-    ShootingMode shootingMode;
-    shootingMode.Play();
+    MainMenu menu;
+    menu.handle();
     
     close();
     return 0;

@@ -73,7 +73,7 @@ class Ball{
 };
 
 void Ball::handleEvent( const SDL_Event& e, const int& DENTA_Y ){
-    if( e.type == SDL_KEYDOWN){
+    if( e.type == SDL_KEYDOWN && e.key.repeat == 0){
         // Adjust the velocity
         if(!energy)     vJetEngine = NOT;
         else{
@@ -87,13 +87,10 @@ void Ball::handleEvent( const SDL_Event& e, const int& DENTA_Y ){
         
         if(e.key.keysym.sym == moveLeft){         // move left
             mVelX -= (DENTA_Y + 1);
-//            std::cout << "move left\n";
         }
         else if(e.key.keysym.sym == moveRight){     // move right
             mVelX += (DENTA_Y + 1);
-//            std::cout << "move right\n";
         }
-//        std::cout << mVelX << "\n";
     }
 
     //If a key was released

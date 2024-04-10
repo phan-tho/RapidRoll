@@ -29,8 +29,6 @@ const int DENTA_X = 3;              // HORIZINAL VELOCITY OF BALL
 
 const int LENGTH_SCORE = 6;
 
-//const int TOTAL_FIRE_TIME_LAPSE = 6;
-
 enum Button{
     PAUSE,
     PLAY,
@@ -56,7 +54,7 @@ void loadMedia();
 void close();
 
 void init(){
-//    srand(int(time(0)));
+    srand(int(time(0)));
     SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO );
     
     //Create window
@@ -79,7 +77,6 @@ void init(){
         printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
     }
 }
-
 
 #endif /* def_h */
 

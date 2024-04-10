@@ -5,7 +5,7 @@
 #define BasicMode_h
 
 #include "Game.h"
-#include "ITEM/autoBall.h"
+#include "HandleITEM/ITEM/autoBall.h"
 
 class BasicMode: public Game{
 public:
@@ -71,8 +71,9 @@ void BasicMode::Play(){
 
     while( !quit ){
         while( SDL_PollEvent( &e ) != 0 ){
-            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_x){
+            if( e.type == SDL_QUIT){
                 quit = true;
+                music.whenTappedButton();
                 close();
             }
             
@@ -110,7 +111,7 @@ void BasicMode::Play(){
             continue;
         }
         
-//        // is music is paused, resume music
+        // is music is paused, resume music
         music.resumeBackGrMusic();
         
         if(life > 0){               // WHEN PAUSE = FALSE
@@ -127,6 +128,12 @@ void BasicMode::Play(){
     }
 }
 
+
+
+/*
+    Generate and remove block, trap, heart, fuel
+    Handle ball and auto ball
+ */
 void BasicMode::handleWhenPlay(){
     genItem(fuel, heart);
     moveBlocksAndTraps();
@@ -161,6 +168,9 @@ void BasicMode::handleWhenPlay(){
     // APPEAR AFTER 1 SECOND
 }
 
+
+// Render everything
+// Handle music
 void BasicMode::handleWhenPause(){
     renderBlocksAndTraps();
     renderHeart(heart);
@@ -183,6 +193,9 @@ void BasicMode::handleWhenPause(){
     SDL_RenderPresent( gRenderer );
 }
 
+
+// Move within small time
+// Render game over and highest score
 void BasicMode::handleWhenDie(){
     if(cntTime++ < TIME_DELAY){
         moveBlocksAndTraps();
@@ -214,6 +227,7 @@ void BasicMode::handleWhenDie(){
 }
 
 
+// Init item when game is replay
 void BasicMode::resetParameter(){
     Game::resetParameter();             // inherit from Game
     
@@ -227,6 +241,7 @@ void BasicMode::resetParameter(){
     fuel.reset();
 }
 
+// close media
 void BasicMode::close(){
     Game::close();
     
@@ -236,6 +251,8 @@ void BasicMode::close(){
     music.close();
     OptionInGame.close();
 }
+
+
 
 BasicMode::BasicMode(){
     AutoTexture[1].loadFromFile("OnAuto.png");

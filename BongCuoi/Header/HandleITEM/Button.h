@@ -1,13 +1,11 @@
 //
 // BY PHAN THO
 // CREATE 09/03/2024
-//
+
 #ifndef Pause_h
 #define Pause_h
 
 #include "def.h"
-
-//#include "defLTexture.h"
 
 class Pause {
 public:
@@ -24,6 +22,9 @@ public:
     bool handleTapped(SDL_Event* e);
     
     void close();
+protected:
+    bool isInButton(const int& button);
+    
 private:
     const int BUTTON_WIDTH = 140;
     const int BUTTON_HEIGHT = 40;
@@ -45,6 +46,7 @@ private:
     LTexture mButtonAuto[2];
     
     int isZoomOut;
+    int x, y;
 };
 
 bool Pause::handleTapped(SDL_Event* e){
@@ -59,12 +61,12 @@ bool Pause::handleTapped(SDL_Event* e){
     }
     
     //Get mouse pos
-    int x, y;
+//    int x, y;
     SDL_GetMouseState( &x, &y );
         
     if( mCurrentState[PAUSE] ){                 // PROCESSING 3 BUTTON
         // IN BUTTON PLAY
-        if ( x >= CORRECTLY_POS[PLAY].x && x <=  CORRECTLY_POS[PLAY].x + BUTTON_WIDTH && y >= CORRECTLY_POS[PLAY].y && y <= CORRECTLY_POS[PLAY].y + BUTTON_HEIGHT){
+        if ( isInButton(PLAY) ){
             if( e->type == SDL_MOUSEBUTTONDOWN ){
                 mCurrentState[PAUSE] = false;
                 isZoomOut = PAUSE;
@@ -75,7 +77,7 @@ bool Pause::handleTapped(SDL_Event* e){
             }
         // IN BUTTON REPLAY
         }
-        else if ( x >= CORRECTLY_POS[REPLAY].x && x <=  CORRECTLY_POS[REPLAY].x + BUTTON_WIDTH && y >= CORRECTLY_POS[REPLAY].y && y <= CORRECTLY_POS[REPLAY].y + BUTTON_HEIGHT){
+        else if ( isInButton(REPLAY) ){
             if( e->type == SDL_MOUSEBUTTONDOWN ){
                 mCurrentState[REPLAY] = true;
                 return true;
@@ -85,7 +87,7 @@ bool Pause::handleTapped(SDL_Event* e){
             }
         }
         // IN BUTTON EXIT
-        else if( x >= CORRECTLY_POS[EXIT].x && x <=  CORRECTLY_POS[EXIT].x + BUTTON_WIDTH && y >= CORRECTLY_POS[EXIT].y && y <= CORRECTLY_POS[EXIT].y+ BUTTON_HEIGHT){
+        else if( isInButton(EXIT) ){
             if( e->type == SDL_MOUSEBUTTONDOWN ){
                 mCurrentState[EXIT] = true;
                 return true;
@@ -97,7 +99,7 @@ bool Pause::handleTapped(SDL_Event* e){
         else    isZoomOut = NONE;
     }
     else{           // PAUSE IS FALSE
-        if ( x >= CORRECTLY_POS[PAUSE].x && x <=  CORRECTLY_POS[PAUSE].x + BUTTON_WIDTH && y >= CORRECTLY_POS[PAUSE].y && y <= BUTTON_HEIGHT){
+        if ( isInButton(PAUSE) ){
             if( e->type == SDL_MOUSEBUTTONDOWN ){
                 mCurrentState[PAUSE] = true;
                 isZoomOut = PLAY;
@@ -118,6 +120,13 @@ bool Pause::handleTapped(SDL_Event* e){
         isZoomOut = AUTO;
     }
     return false;
+}
+
+bool Pause::isInButton(const int& button){
+    return (x >= CORRECTLY_POS[button].x &&
+            x <=  CORRECTLY_POS[button].x + BUTTON_WIDTH &&
+            y >= CORRECTLY_POS[button].y &&
+            y <= CORRECTLY_POS[button].y + BUTTON_HEIGHT);
 }
 
 Pause::Pause(){
