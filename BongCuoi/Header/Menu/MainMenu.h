@@ -162,7 +162,7 @@ void MainMenu::handeEvent(SDL_Event *e){
         if(e->type == SDL_MOUSEBUTTONDOWN){
             isFixingName = 1;
             data[lineName] = " ";
-//            textUserName.loadFromRenderedText(data[lineName], {255, 255, 255});
+            isZoomOut = NONE;
         }
     }
 }
@@ -218,11 +218,11 @@ void MainMenu::play(){
     // CLOSE MEDIA OF MENU
     close();
     if(selectedMode == SHOOTING_MODE){
-        ShootingMode shootingMode;
+        ShootingMode shootingMode(chooseBall.getPath());
         shootingMode.Play();
     }
     else{
-        BasicMode basicMode;
+        BasicMode basicMode(chooseBall.getPath());
         basicMode.Play();
     }
     
@@ -275,7 +275,13 @@ void MainMenu::renderButton(){
     }
     else{
         mHighScore.render(POS[HIGH_SCORE].x, POS[HIGH_SCORE].y, NULL);
-        textScore.loadFromRenderedText(data[(ButtonState[SHOOTING_MODE] == 1 ? lineShootingMode : lineBasicMode)], {255, 0, 0});
+        if(ButtonState[SHOOTING_MODE] || ButtonState[BASIC_MODE]){
+            textScore.loadFromRenderedText(data[(ButtonState[SHOOTING_MODE] == 1 ? lineShootingMode : lineBasicMode)], {255, 0, 0});
+        }
+        else{
+            textScore.loadFromRenderedText(data[(selectedMode == SHOOTING_MODE ? lineShootingMode : lineBasicMode )], {255, 0, 0});
+        }
+        
         textScore.renderCustomSize(POS[HIGH_SCORE].x + 40, POS[HIGH_SCORE].y + 6, 0.8);
     }
     

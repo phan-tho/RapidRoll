@@ -46,10 +46,11 @@
 		0467F12F2BC56C000056BBFA /* ShootingMode.png in Resources */ = {isa = PBXBuildFile; fileRef = 0467F12A2BC56C000056BBFA /* ShootingMode.png */; };
 		0467F1472BC58E6F0056BBFA /* HighScore.png in Resources */ = {isa = PBXBuildFile; fileRef = 0467F1452BC58E6F0056BBFA /* HighScore.png */; };
 		0467F1482BC58E6F0056BBFA /* UserName.png in Resources */ = {isa = PBXBuildFile; fileRef = 0467F1462BC58E6F0056BBFA /* UserName.png */; };
-		0469D9432BB46303007305DE /* Hitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D9422BB46303007305DE /* Hitle.png */; };
 		0469D9462BB4655D007305DE /* awm.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D9452BB4655D007305DE /* awm.png */; };
 		0469D94B2BB476D1007305DE /* SortGun.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D94A2BB476D1007305DE /* SortGun.png */; };
 		0469D94F2BB48025007305DE /* Bullet.png in Resources */ = {isa = PBXBuildFile; fileRef = 0469D94E2BB48025007305DE /* Bullet.png */; };
+		046F4BF02BC78A0800848515 /* LogoUet.png in Resources */ = {isa = PBXBuildFile; fileRef = 046F4BEF2BC78A0800848515 /* LogoUet.png */; };
+		046F4BF22BC78A1700848515 /* sLogoUet.png in Resources */ = {isa = PBXBuildFile; fileRef = 046F4BF12BC78A1700848515 /* sLogoUet.png */; };
 		0498C7652BC6D1DD00F18582 /* FootBall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0498C7612BC6D1DD00F18582 /* FootBall.png */; };
 		0498C7662BC6D1DD00F18582 /* AnhLiem.png in Resources */ = {isa = PBXBuildFile; fileRef = 0498C7622BC6D1DD00F18582 /* AnhLiem.png */; };
 		0498C7672BC6D1DD00F18582 /* VolleyBall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0498C7632BC6D1DD00F18582 /* VolleyBall.png */; };
@@ -59,6 +60,8 @@
 		0498C7782BC6DC1900F18582 /* sVolleyBall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0498C7742BC6DC1900F18582 /* sVolleyBall.png */; };
 		0498C7792BC6DC1900F18582 /* sBiDa.png in Resources */ = {isa = PBXBuildFile; fileRef = 0498C7752BC6DC1900F18582 /* sBiDa.png */; };
 		0498C77B2BC6DD6200F18582 /* Ball110.png in Resources */ = {isa = PBXBuildFile; fileRef = 0498C77A2BC6DD6200F18582 /* Ball110.png */; };
+		0498C7802BC7041B00F18582 /* sHitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0498C77F2BC7041B00F18582 /* sHitle.png */; };
+		0498C7842BC706A400F18582 /* Hitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0498C7832BC706A400F18582 /* Hitle.png */; };
 		04C2D2242BC2AFAE008B0CD0 /* CashRegister.wav in Resources */ = {isa = PBXBuildFile; fileRef = 04C2D2232BC2AFAE008B0CD0 /* CashRegister.wav */; };
 		04D7C6DD2BBC496D0096D3F0 /* OffAuto.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7C6DB2BBC496D0096D3F0 /* OffAuto.png */; };
 		04D7C6DE2BBC496D0096D3F0 /* OnAuto.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7C6DC2BBC496D0096D3F0 /* OnAuto.png */; };
@@ -152,11 +155,12 @@
 		0467F1412BC572D70056BBFA /* MainMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainMenu.h; sourceTree = "<group>"; };
 		0467F1452BC58E6F0056BBFA /* HighScore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HighScore.png; sourceTree = "<group>"; };
 		0467F1462BC58E6F0056BBFA /* UserName.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UserName.png; sourceTree = "<group>"; };
-		0469D9422BB46303007305DE /* Hitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Hitle.png; sourceTree = "<group>"; };
 		0469D9452BB4655D007305DE /* awm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = awm.png; sourceTree = "<group>"; };
 		0469D9492BB46663007305DE /* ShootingMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShootingMode.h; sourceTree = "<group>"; };
 		0469D94A2BB476D1007305DE /* SortGun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SortGun.png; sourceTree = "<group>"; };
 		0469D94E2BB48025007305DE /* Bullet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bullet.png; sourceTree = "<group>"; };
+		046F4BEF2BC78A0800848515 /* LogoUet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoUet.png; sourceTree = "<group>"; };
+		046F4BF12BC78A1700848515 /* sLogoUet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sLogoUet.png; sourceTree = "<group>"; };
 		0498C7612BC6D1DD00F18582 /* FootBall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FootBall.png; sourceTree = "<group>"; };
 		0498C7622BC6D1DD00F18582 /* AnhLiem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AnhLiem.png; sourceTree = "<group>"; };
 		0498C7632BC6D1DD00F18582 /* VolleyBall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VolleyBall.png; sourceTree = "<group>"; };
@@ -167,6 +171,8 @@
 		0498C7752BC6DC1900F18582 /* sBiDa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sBiDa.png; sourceTree = "<group>"; };
 		0498C77A2BC6DD6200F18582 /* Ball110.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ball110.png; sourceTree = "<group>"; };
 		0498C77C2BC6DF5E00F18582 /* ChooseBall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseBall.h; sourceTree = "<group>"; };
+		0498C77F2BC7041B00F18582 /* sHitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sHitle.png; sourceTree = "<group>"; };
+		0498C7832BC706A400F18582 /* Hitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Hitle.png; sourceTree = "<group>"; };
 		04C2D2232BC2AFAE008B0CD0 /* CashRegister.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = CashRegister.wav; sourceTree = "<group>"; };
 		04D7C6DB2BBC496D0096D3F0 /* OffAuto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OffAuto.png; sourceTree = "<group>"; };
 		04D7C6DC2BBC496D0096D3F0 /* OnAuto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OnAuto.png; sourceTree = "<group>"; };
@@ -230,8 +236,8 @@
 		040F99BF2B9D0E2B00F29CD7 /* Item */ = {
 			isa = PBXGroup;
 			children = (
+				0498C77F2BC7041B00F18582 /* sHitle.png */,
 				04313BD72BC6A2530026C940 /* Fire */,
-				0469D9422BB46303007305DE /* Hitle.png */,
 				040B47B42BB1C118000F2DEE /* energyBar.png */,
 				040B47B32BB1C118000F2DEE /* fuel.png */,
 				040F99C02B9D0E4A00F29CD7 /* Ball.png */,
@@ -397,6 +403,8 @@
 		0498C7602BC6CC4700F18582 /* customBall */ = {
 			isa = PBXGroup;
 			children = (
+				046F4BEF2BC78A0800848515 /* LogoUet.png */,
+				0498C7832BC706A400F18582 /* Hitle.png */,
 				0498C77A2BC6DD6200F18582 /* Ball110.png */,
 				0498C7712BC6DBF100F18582 /* Small */,
 				0498C7622BC6D1DD00F18582 /* AnhLiem.png */,
@@ -410,6 +418,7 @@
 		0498C7712BC6DBF100F18582 /* Small */ = {
 			isa = PBXGroup;
 			children = (
+				046F4BF12BC78A1700848515 /* sLogoUet.png */,
 				0498C7722BC6DC1900F18582 /* sAnhLiem.png */,
 				0498C7752BC6DC1900F18582 /* sBiDa.png */,
 				0498C7732BC6DC1900F18582 /* sFootBall.png */,
@@ -506,6 +515,8 @@
 				04FD42802BC3FD7C00A48ADA /* Mouse.png in Resources */,
 				040F99D22B9D0EAD00F29CD7 /* Pause.png in Resources */,
 				0498C7792BC6DC1900F18582 /* sBiDa.png in Resources */,
+				0498C7802BC7041B00F18582 /* sHitle.png in Resources */,
+				046F4BF02BC78A0800848515 /* LogoUet.png in Resources */,
 				0467F12E2BC56C000056BBFA /* Selected.png in Resources */,
 				040F99C72B9D0E4A00F29CD7 /* dot.bmp in Resources */,
 				04C2D2242BC2AFAE008B0CD0 /* CashRegister.wav in Resources */,
@@ -517,8 +528,8 @@
 				0469D94B2BB476D1007305DE /* SortGun.png in Resources */,
 				040B47B62BB1C118000F2DEE /* energyBar.png in Resources */,
 				040F99D32B9D0EAD00F29CD7 /* Play.png in Resources */,
+				046F4BF22BC78A1700848515 /* sLogoUet.png in Resources */,
 				0467F1472BC58E6F0056BBFA /* HighScore.png in Resources */,
-				0469D9432BB46303007305DE /* Hitle.png in Resources */,
 				0498C7672BC6D1DD00F18582 /* VolleyBall.png in Resources */,
 				0498C77B2BC6DD6200F18582 /* Ball110.png in Resources */,
 				0498C7782BC6DC1900F18582 /* sVolleyBall.png in Resources */,
@@ -538,6 +549,7 @@
 				040B47C12BB1C14B000F2DEE /* fireMove.wav in Resources */,
 				04313BD42BC682870026C940 /* MainMenu.wav in Resources */,
 				0498C7762BC6DC1900F18582 /* sAnhLiem.png in Resources */,
+				0498C7842BC706A400F18582 /* Hitle.png in Resources */,
 				04313BE32BC6A2530026C940 /* fire1.png in Resources */,
 				0498C7652BC6D1DD00F18582 /* FootBall.png in Resources */,
 				04D7C6E62BBC85C20096D3F0 /* Died.wav in Resources */,

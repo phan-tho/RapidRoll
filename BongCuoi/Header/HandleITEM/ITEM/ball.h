@@ -6,8 +6,8 @@
 
 class Ball{
     public:
-        static const int BALL_WIDTH = 20;
-        static const int BALL_HEIGHT = 20;
+        static const int BALL_WIDTH  = 30;
+        static const int BALL_HEIGHT = 30;
     
         const int FIRE_WIDTH = 36;
         const int FIRE_HEIGHT = 46;
@@ -41,7 +41,7 @@ class Ball{
         int vJetEngine;
 
 //        Ball(SDL_KeyCode moveUp, SDL_Keycode moveRight, SDL_Keycode MoveLeft);
-        Ball();
+        Ball(std::string path);
         void reset();
 
         // CHANGE VELOCITY DEPEND TYPED KEY
@@ -58,10 +58,11 @@ class Ball{
         void close();
     
         int energy, life;
-    private:
+    protected:
         LTexture BallTexture;
         LTexture FireTexture[6];
         LTexture energyBarTexture;
+    private:
     
         int waitRevive, cnt;
         const int TIME_DELAY = 90;
@@ -143,40 +144,6 @@ void Ball::reset(){
     mVelX = 0;
 }
 
-//Ball::Ball(SDL_KeyCode moveUp, SDL_Keycode moveRight, SDL_Keycode MoveLeft) : moveUp(moveUp), moveLeft(MoveLeft), moveRight(moveRight) {
-Ball::Ball(){
-    //Initialize the offsets
-    mPosY = CEILING + 120;                       // MAGIC
-    mPosX = (SCREEN_WIDTH - BALL_WIDTH)/2;
-
-    //Initialize the velocity
-    mVelX = 0;
-    vJetEngine = 0;
-    waitRevive = 0; cnt = 0;
-    
-    energy = 0;
-    life = 10;
-    
-    currentState = DOWN;
-    
-    BallTexture.loadFromFile("Ball.png");
-    
-    FireTexture[0].loadFromFile("fire1.png");
-    FireTexture[1].loadFromFile("fire2.png");
-    FireTexture[2].loadFromFile("fire3.png");
-    FireTexture[3].loadFromFile("fire4.png");
-    FireTexture[4].loadFromFile("fire5.png");
-    FireTexture[5].loadFromFile("fire6.png");
-    
-    energyBarTexture.loadFromFile("energyBar.png");
-}
-
-void Ball::close(){
-    BallTexture.freeFire();
-    for(int i = 0; i < 6; i++)      FireTexture[i].freeFire();
-    energyBarTexture.freeFire();
-}
-
 void Ball::render(){
     if(waitRevive == 0){
         BallTexture.render(mPosX, mPosY, NULL);
@@ -215,6 +182,45 @@ void Ball::renderEnergyBar(){
         splitBar = { 0, 0, ENERGY_BAR_WIDTH, ENERGY_BAR_WIDTH/2 };
         energyBarTexture.render(x, y, &splitBar);
     }
+}
+
+void Ball::close(){
+    BallTexture.freeFire();
+    for(int i = 0; i < 6; i++)      FireTexture[i].freeFire();
+    energyBarTexture.freeFire();
+}
+
+//Ball::Ball(SDL_KeyCode moveUp, SDL_Keycode moveRight, SDL_Keycode MoveLeft) : moveUp(moveUp), moveLeft(MoveLeft), moveRight(moveRight) {
+Ball::Ball(std::string path){
+    //Initialize the offsets
+    mPosY = CEILING + 120;                       // MAGIC
+    mPosX = (SCREEN_WIDTH - BALL_WIDTH)/2;
+
+    //Initialize the velocity
+    mVelX = 0;
+    vJetEngine = 0;
+    waitRevive = 0; cnt = 0;
+    
+    energy = 0;
+    life = 10;
+    
+    currentState = DOWN;
+    
+    
+    if(path == "sBall110.png"){
+        BallTexture.loadFromFile("Ball.png");
+        
+        FireTexture[0].loadFromFile("fire1.png");
+        FireTexture[1].loadFromFile("fire2.png");
+        FireTexture[2].loadFromFile("fire3.png");
+        FireTexture[3].loadFromFile("fire4.png");
+        FireTexture[4].loadFromFile("fire5.png");
+        FireTexture[5].loadFromFile("fire6.png");
+    }
+    else{
+        BallTexture.loadFromFile(path);
+    }
+    energyBarTexture.loadFromFile("energyBar.png");
 }
 
 #endif /* ball_h */

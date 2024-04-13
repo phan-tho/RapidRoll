@@ -7,28 +7,15 @@ class ChooseBall{
 public:
     ChooseBall();
     
-    int selectedBall;
-    
     void handleEvent(SDL_Event* e);
     
     void render();
-    
-    bool isClicked(int button);
     
     void init();
     
     void close();
     
-    enum TypeBall{
-        RONALDO,
-        BI_DA,
-        FOOT_BALL,
-        VOLLEY_BALL,
-        FIRE_BALL,
-        TOTAL_BALL
-    };
-    
-    const std::string pathBall[TOTAL_BALL] = { "AnhLiem.png", "BiDa.png", "FootBall.png", "VolleyBall.png", "Ball110.png" };
+    std::string getPath();
     
 private:
     const int BALL_WIDTH  = 110;
@@ -47,16 +34,32 @@ private:
     int xMouse, yMouse;
     int cnt = 0;
     
+    int selectedBall;
+    
     enum TypeButton{
         LEFT,
         RIGHT,
         TOTAL_BUTTON
     };
     
+    enum TypeBall{
+        RONALDO,
+        BI_DA,
+        FOOT_BALL,
+        VOLLEY_BALL,
+        HITLE,
+        LOGO_UET,
+        FIRE_BALL,
+        TOTAL_BALL
+    };
+    
     const SDL_Point POS_ARROW[2] = { { POS_BALL.x - DISTANCE - ARROW_WIDTH, POS_BALL.y + (BALL_HEIGHT - ARROW_HEIGHT)/2 },
                                      { POS_BALL.x + BALL_WIDTH + DISTANCE, POS_BALL.y + (BALL_HEIGHT - ARROW_HEIGHT)/2 } };
     
     const std::string pathFire[6] = { "fire1.png", "fire2.png", "fire3.png", "fire4.png", "fire5.png", "fire6.png"};
+    const std::string pathBall[TOTAL_BALL] = { "AnhLiem.png", "BiDa.png", "FootBall.png", "VolleyBall.png", "Hitle.png", "LogoUet.png", "Ball110.png" };
+    
+    bool isClicked(int button);
     
     LTexture ball[TOTAL_BALL];
     LTexture Fire[6];
@@ -106,6 +109,10 @@ bool ChooseBall::isClicked(int button){
             xMouse <= POS_ARROW[button].x + ARROW_WIDTH &&
             yMouse >= POS_ARROW[button].y &&
             yMouse <= POS_ARROW[button].y + ARROW_HEIGHT );
+}
+
+std::string ChooseBall::getPath() {
+    return 's' + pathBall[selectedBall];
 }
 
 void ChooseBall::close(){

@@ -289,14 +289,16 @@ void Game::close(){
     mTrap.freeFire();
     
     mFuel.freeFire();
+    
+    std::ofstream out("YouCantSeeMe.txt");
+    if(!out.is_open())      std::cout << "open file error at Game->close\n";
+    out << data[USER_NAME] << "\n" << data[BASIC_MODE] << "\n" << data[SHOOTING_MODE] << "\n";
+    out.close();
 }
 
 Game::Game(){
     std::ifstream in("YouCantSeeMe.txt");
-    std::cout << (in.is_open() ? "Opened\n" : "Deo the mo\n");
-    
-//    in << "Guest\n0\n0";                // init file. This file can't see. This is feature
-    
+    if(!in.is_open())   std::cout << "open file error at Game(init)\n";
     std::string str;
     while(getline(in, str)){
         data.push_back(str);

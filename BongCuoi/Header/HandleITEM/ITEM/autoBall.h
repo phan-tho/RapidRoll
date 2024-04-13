@@ -7,6 +7,8 @@
 
 class autoBall : public Ball{
     public:
+        autoBall(std::string path) : Ball(path) { }
+    
         // handle Velocity of ball
         void autoMove(const int& DENTA_Y, int idNearBlock, int idNearTrap, const std::deque<Block>& Blocks, const std::deque<Trap>& Traps);
     

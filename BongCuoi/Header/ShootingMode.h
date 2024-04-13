@@ -11,7 +11,7 @@
 
 class ShootingMode : public Game{
 public:
-    ShootingMode();
+    ShootingMode(std::string path);
     
     void Play();
     
@@ -80,6 +80,8 @@ void ShootingMode::Play(){
         
         mBackground.render(0, 0, NULL);             // BACKGROUND
         OptionInGame.render();                      // OPTION PAUSE PLAY REPLAY EXIT
+        
+        playerBall.render();
         renderLifeAndScore(score, playerBall.life);
         // render guide when start game
         guide.guide(playerBall, 1, "J", "H", "K");
@@ -101,7 +103,7 @@ void ShootingMode::Play(){
             handleWhenDie();
         }
 
-        //Update screen
+//        Update screen
         SDL_RenderPresent( gRenderer );
         
     }
@@ -109,9 +111,9 @@ void ShootingMode::Play(){
 
 bool ShootingMode::handleEvent(SDL_Event e){
     if( e.type == SDL_QUIT){
-        return true;
         music.whenTappedButton();
         close();
+        return true;
     }
     
     // HANDLE VELOCITY OF BALL AND GENERATE BULLET WHEN CLICK MOUSE
@@ -124,8 +126,8 @@ bool ShootingMode::handleEvent(SDL_Event e){
     }
     
     if (OptionInGame.mCurrentState[EXIT]){
-        return true;
         close();
+        return true;
     }        // EXIT
     return false;
 }
@@ -162,7 +164,7 @@ void ShootingMode::handleWhenPlay(){
     if( playerBall.handleBullet(enemyBall, Traps, Blocks, score) )      music.whenKill();
     ballBoundWhenCollide(playerBall, enemyBall);
     
-    playerBall.renderBall();
+    playerBall.render();
     playerBall.renderGun();
     playerBall.renderEnergyBar();
     
@@ -180,7 +182,7 @@ void ShootingMode::handleWhenPause(){
     renderHeart(heart);
     renderFuel(fuel);
     if(playerBall.life){
-        playerBall.renderBall();
+        playerBall.render();
         playerBall.renderGun(true);
         playerBall.renderEnergyBar();
         
@@ -284,7 +286,7 @@ void ShootingMode::close(){
     OptionInGame.close();
 }
 
-ShootingMode::ShootingMode(){
+ShootingMode::ShootingMode(std::string path) : playerBall(path), enemyBall("sBall110.png") {
     Block::dentaX = 1;
     Block::staticAboveDyn = 4;
     

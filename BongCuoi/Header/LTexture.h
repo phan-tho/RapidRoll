@@ -54,7 +54,7 @@ void LTexture::loadFromFile(std::string path){
         SDL_GetError();
     }
     else{
-        SDL_SetColorKey(newSurface, SDL_TRUE, SDL_MapRGB(newSurface -> format, 0xFF, 0xFF, 0xFF));             // set color key ==> alpha = max
+        SDL_SetColorKey(newSurface, SDL_TRUE, SDL_MapRGB(newSurface -> format, 0, 0xFF, 0xFF));             // set color key ==> alpha = max
         mTexture = SDL_CreateTextureFromSurface(gRenderer, newSurface);
         if(mTexture != NULL){
             mWidth = newSurface->w;

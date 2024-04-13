@@ -10,9 +10,9 @@
 
 class BallWithGun : public Ball{
 public:
-    BallWithGun();
+    BallWithGun(std::string path);
     
-    void renderBall();
+//    void renderBall();
     
     void renderGun(const bool& isPause = 0);
     
@@ -40,7 +40,7 @@ private:
     
     std::list<Bullet> Bullets;
     
-    LTexture BallGunTexture;
+//    LTexture BallGunTexture;
     LTexture GunTextTure;
     
     int PosMouseX, PosMouseY;
@@ -107,20 +107,21 @@ void BallWithGun::renderGun(const bool& isPause){
     GunTextTure.renderFlip(x, y, NULL, angle, &centre, SDL_FLIP_NONE);
 }
 
-void BallWithGun::renderBall(){
-    BallGunTexture.render(mPosX - 5, mPosY - 10, NULL);
-}
+//void BallWithGun::renderBall(){
+//    BallGunTexture.render(mPosX - 5, mPosY - 10, NULL);
+//}
 
 void BallWithGun::close(){
     Ball::close();
     
-    BallGunTexture.freeFire();
+//    BallGunTexture.freeFire();
     GunTextTure.freeFire();
     Bullet::BulletTexture.freeFire();
 }
 
-BallWithGun::BallWithGun(){
-//    Ball::close();
+BallWithGun::BallWithGun(std::string path) : Ball(path){
+//    BallTexture.freeFire();
+//    for(int i = 0; i < 6; i++)      FireTexture[i].freeFire();
     
     angle = 0;
     
@@ -131,7 +132,7 @@ BallWithGun::BallWithGun(){
     waitLoad = 0;
     mousePressed = false;
     
-    BallGunTexture.loadFromFile("Hitle.png");
+//    BallGunTexture.loadFromFile("sHitle.png");
     GunTextTure.loadFromFile("SortGun.png");
     
     Bullet::BulletTexture.loadFromFile("Bullet.png");

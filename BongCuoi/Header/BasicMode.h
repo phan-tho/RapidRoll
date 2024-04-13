@@ -9,7 +9,7 @@
 
 class BasicMode: public Game{
 public:
-    BasicMode();
+    BasicMode(std::string path);
     
     void Play();
     
@@ -254,7 +254,7 @@ void BasicMode::close(){
 
 
 
-BasicMode::BasicMode(){
+BasicMode::BasicMode(std::string path) : ball(path) {
     AutoTexture[1].loadFromFile("OnAuto.png");
     AutoTexture[0].loadFromFile("OffAuto.png");
     
