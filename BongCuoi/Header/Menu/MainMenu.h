@@ -54,8 +54,8 @@ private:
     bool ButtonState[2];         // 0 when mouse out button, 1 when mouse in button
     int xMouse, yMouse;
     
-    const std::string TURTORIAL[TOTAL] = { "Ball with gun chase and shoot enemy", 
-                                           "Move the ball and avoid trap" };
+    const std::string TURTORIAL[2] = { "Move the ball and avoid trap",
+                                       "Ball with gun chase and shoot enemy" };
     
     int isZoomOut = NONE;
     int selectedMode = BASIC_MODE;

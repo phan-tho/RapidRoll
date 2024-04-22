@@ -16,7 +16,6 @@ public:
     void whenNotMove();
     
     void whenShoot();
-    void whenLoadingBullet();
     
     void whenDie();
     void whenKill();
@@ -28,7 +27,9 @@ public:
 private:
     enum channel{
         FIRST_CHANNEL,          // move, eat
-        SECCOND_CHANNEL         // die, shoot, tap, load bullets
+        SECCOND_CHANNEL,        // die, shoot, tap, load bullets
+        THIRD_CHANNEL,
+        FOURTH_CHANNEL
     };
     
     Mix_Music* mBackGrMusic;
@@ -41,7 +42,7 @@ private:
     Mix_Chunk* mMusicWhenTap;
     Mix_Chunk* mMusicWhenKill;
     
-    Mix_Chunk* mMsLoadBullet;
+//    Mix_Chunk* mMsLoadBullet;
 };
 
 void Music::backGrMusic(){
@@ -90,9 +91,6 @@ void Music::whenShoot(){
     Mix_PlayChannel(SECCOND_CHANNEL, mMusicWhenShoot, 0);
 }
 
-void Music::whenLoadingBullet(){
-    Mix_PlayChannel(SECCOND_CHANNEL, mMsLoadBullet, 0);
-}
 
 void Music::close(){
     Mix_FreeMusic(mBackGrMusic);
@@ -102,7 +100,6 @@ void Music::close(){
     Mix_FreeChunk(mMusicWhenDie);
     Mix_FreeChunk(mMusicWhenShoot);
     Mix_FreeChunk(mMusicWhenTap);
-    Mix_FreeChunk(mMsLoadBullet);
     Mix_FreeChunk(mMusicWhenKill);
     
     mBackGrMusic    = NULL;
@@ -111,7 +108,6 @@ void Music::close(){
     mMusicWhenDie   = NULL;
     mMusicWhenShoot = NULL;
     mMusicWhenTap   = NULL;
-    mMsLoadBullet   = NULL;
     mMusicWhenKill  = NULL;
 }
 
@@ -125,7 +121,6 @@ Music::Music(){
     mMusicWhenKill  = Mix_LoadWAV("CashRegister.wav");
     mMusicWhenShoot = Mix_LoadWAV("SingleBullet.wav");
     mMusicWhenTap   = Mix_LoadWAV("Tap.wav");
-    mMsLoadBullet   = Mix_LoadWAV("LoadBullet.wav");
     
     Mix_VolumeMusic(MIX_MAX_VOLUME/32);
     Mix_VolumeChunk(mMusicWhenMove, MIX_MAX_VOLUME/64);

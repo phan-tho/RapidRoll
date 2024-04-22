@@ -12,13 +12,9 @@ class BallWithGun : public Ball{
 public:
     BallWithGun(std::string path);
     
-//    void renderBall();
-    
     void renderGun(const bool& isPause = 0);
     
-    void genBullet(SDL_Event* e, Music& music);
-    
-//    void handleEvent( const SDL_Event& e, const int& DENTA_Y, const SDL_Keycode& moveUp, const SDL_Keycode& moveLeft, const SDL_Keycode& moveRight );
+    void genBullet(SDL_Event* e);
     
     bool handleBullet(Ball& ball, const std::deque<Trap>& Traps, const std::deque<Block>& Blocks, int& score);
     
@@ -39,22 +35,24 @@ private:
     double angle;
     
     std::list<Bullet> Bullets;
-    
-//    LTexture BallGunTexture;
+
     LTexture GunTextTure;
     
     int PosMouseX, PosMouseY;
     SDL_Point centre;
+    
+    Mix_Chunk* mMusicWhenShoot;
 };
 
-void BallWithGun::genBullet(SDL_Event* e, Music& music){
+void BallWithGun::genBullet(SDL_Event* e){
     if(e->type == SDL_MOUSEBUTTONDOWN)      mousePressed = true;
     else if (e->type == SDL_MOUSEBUTTONUP)  mousePressed = false;
     if(mousePressed && !waitLoad){
         Bullet bullet(mPosX + GUN_WIDTH*cos(angle*M_PI/180), mPosY + GUN_WIDTH*sin(angle*M_PI/180), angle);
         Bullets.push_back(bullet);
         waitLoad = TIME_LOAD_BULLET;
-        music.whenShoot();
+        
+        Mix_PlayChannel(2, mMusicWhenShoot, 0);
     }
 }
 
@@ -102,8 +100,8 @@ void BallWithGun::renderGun(const bool& isPause){
     
     angle = std::atan2(y, x)*180/M_PI;
     x = mPosX + BALL_WIDTH/2;
-    y = mPosY;
-    centre = { 0, BALL_HEIGHT/2 };
+    y = mPosY + (BALL_HEIGHT - GUN_HEIGHT)/2;
+    centre = { 0, GUN_HEIGHT/2 };
     GunTextTure.renderFlip(x, y, NULL, angle, &centre, SDL_FLIP_NONE);
 }
 
@@ -114,15 +112,14 @@ void BallWithGun::renderGun(const bool& isPause){
 void BallWithGun::close(){
     Ball::close();
     
-//    BallGunTexture.freeFire();
     GunTextTure.freeFire();
     Bullet::BulletTexture.freeFire();
+    
+    Mix_FreeChunk(mMusicWhenShoot);
+    mMusicWhenShoot = NULL;
 }
 
 BallWithGun::BallWithGun(std::string path) : Ball(path){
-//    BallTexture.freeFire();
-//    for(int i = 0; i < 6; i++)      FireTexture[i].freeFire();
-    
     angle = 0;
     
     PosMouseX = 0;
@@ -132,10 +129,11 @@ BallWithGun::BallWithGun(std::string path) : Ball(path){
     waitLoad = 0;
     mousePressed = false;
     
-//    BallGunTexture.loadFromFile("sHitle.png");
     GunTextTure.loadFromFile("SortGun.png");
     
     Bullet::BulletTexture.loadFromFile("Bullet.png");
+    
+    mMusicWhenShoot = Mix_LoadWAV("SingleBullet.wav");
 }
 
 #endif /* ballWithGun_h */

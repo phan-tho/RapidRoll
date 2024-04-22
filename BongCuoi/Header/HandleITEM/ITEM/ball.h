@@ -19,9 +19,6 @@ class Ball{
         SDL_Keycode moveUp = SDLK_s;
         SDL_Keycode moveLeft = SDLK_a;
         SDL_Keycode moveRight = SDLK_d;
-//        const SDL_Keycode moveUp;
-//        const SDL_Keycode moveLeft;
-//        const SDL_Keycode moveRight;
     
         enum fireState{
             UP = 0,

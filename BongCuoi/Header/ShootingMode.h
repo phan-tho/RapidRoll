@@ -81,7 +81,6 @@ void ShootingMode::Play(){
         mBackground.render(0, 0, NULL);             // BACKGROUND
         OptionInGame.render();                      // OPTION PAUSE PLAY REPLAY EXIT
         
-        playerBall.render();
         renderLifeAndScore(score, playerBall.life);
         // render guide when start game
         guide.guide(playerBall, 1, "J", "H", "K");
@@ -118,7 +117,7 @@ bool ShootingMode::handleEvent(SDL_Event e){
     
     // HANDLE VELOCITY OF BALL AND GENERATE BULLET WHEN CLICK MOUSE
     playerBall.handleEvent(e, DENTA_Y);
-    playerBall.genBullet(&e, music);
+    playerBall.genBullet(&e);
     enemyBall.handleEvent(e, DENTA_Y);
     
     if( OptionInGame.handleTapped(&e) ){
