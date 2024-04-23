@@ -1,5 +1,3 @@
-[[English]](README_en.md)
-
 # Rapid Roll new Edition
 
 - Thử nghiệm game: 
@@ -33,7 +31,7 @@ Giải nén game và và vào thư mục BongCuoi.app để chơi<br/>
 
 # 1. Bắt đầu game
 ### Màn hình chính của game gồm các thông tin người chơi và lựa chọn:
-<img src="BongCuoi/Image/Preview/StartGame/mainMenu.gif" align="right" width="250"> <br/>
+<img src="BongCuoi/Image/Preview/StartGame/mainMenu.gif" align="right" width="200"> <br/>
 |                                                                          	     | Chức năng                                  |
 |------------------------------------------------------------------------------|-----------------------------------------------|
 | <img src="BongCuoi/Image/Preview/StartGame/userName.png" width="50">        | Hiển thị tên người chơi                         |
@@ -138,7 +136,7 @@ Màn hình hiển thị điểm người chơi và điểm cao nhất <br/>
   * Tuy đã tìm kiếm nhiều cách sửa lỗi trên internet nhưng chưa giải quyết được lỗi khi chia class thành 2 file
 - Việc load icon cho game tiêu tốn quá nhiều RAM
   <img src="BongCuoi/Image/Preview/Bug/iconError.png" align="right" width="100">
-  <img src="BongCuoi/Image/Preview/Bug/codeBug.png" align="right" width="100">
+  <img src="BongCuoi/Image/Preview/Bug/codeBug.png" align="right" width="420">
   * Ram game tiêu tốn ở mức 40MB nhưng tăng lên thành 150MB khi load icon cho game.
   * Mong rằng thông qua việc kiểm tra đánh giá có thể khắc phục được lỗi này 
 # 7. Thuật toán auto
