@@ -12,10 +12,16 @@ class BallWithGun : public Ball{
 public:
     BallWithGun(std::string path);
     
+    // GET COORDINATE OF MOUSE
+    // DETERMINE DIRECTON OF GUN AND RENDER
     void renderGun(const bool& isPause = 0);
     
+    // GEN LOADED BULLET WHEN MOUSE IS CLIKED
     void genBullet(SDL_Event* e);
     
+    // STORE BULLET IN LIST
+    // ERASE WHEN COLLIDE WITH BALL, WALL, BLOCK, TRAP
+    // RETURN TRUE WHEN BALL IS KILLED
     bool handleBullet(Ball& ball, const std::deque<Trap>& Traps, const std::deque<Block>& Blocks, int& score);
     
     void close();
@@ -27,7 +33,7 @@ private:
     const int HITLE_WIDTH  = 30;
     const int HITLE_HEIGHT = 33;
     
-    const int TIME_LOAD_BULLET = 30;
+    const int TIME_LOAD_BULLET = 90;
     int waitLoad;
     
     bool mousePressed;
@@ -44,6 +50,7 @@ private:
     Mix_Chunk* mMusicWhenShoot;
 };
 
+// GEN BULLET WHEN TAPPED BUTTON AND BUULLET IS LOADED
 void BallWithGun::genBullet(SDL_Event* e){
     if(e->type == SDL_MOUSEBUTTONDOWN)      mousePressed = true;
     else if (e->type == SDL_MOUSEBUTTONUP)  mousePressed = false;
@@ -56,6 +63,8 @@ void BallWithGun::genBullet(SDL_Event* e){
     }
 }
 
+// CHECK COLLIDE WITH BLOCK, TRAP, WALL BALL
+// RETURN TRUE WHEN BALL IS KILLED
 bool BallWithGun::handleBullet(Ball& ball, const std::deque<Trap>& Traps, const std::deque<Block>& Blocks, int& score){
     if(Bullets.empty())     return false;
     
@@ -89,6 +98,7 @@ bool BallWithGun::handleBullet(Ball& ball, const std::deque<Trap>& Traps, const 
     return false;
 }
 
+
 void BallWithGun::renderGun(const bool& isPause){
     waitLoad = fmax(waitLoad - 1, 0);
     if(isPause == false){
@@ -105,9 +115,6 @@ void BallWithGun::renderGun(const bool& isPause){
     GunTextTure.renderFlip(x, y, NULL, angle, &centre, SDL_FLIP_NONE);
 }
 
-//void BallWithGun::renderBall(){
-//    BallGunTexture.render(mPosX - 5, mPosY - 10, NULL);
-//}
 
 void BallWithGun::close(){
     Ball::close();

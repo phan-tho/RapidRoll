@@ -27,9 +27,9 @@ public:
 private:
     enum channel{
         FIRST_CHANNEL,          // move, eat
-        SECCOND_CHANNEL,        // die, shoot, tap, load bullets
-        THIRD_CHANNEL,
-        FOURTH_CHANNEL
+        SECCOND_CHANNEL,        // shoot, tap, load bullets
+        THIRD_CHANNEL,          // die
+        FOURTH_CHANNEL          // kill
     };
     
     Mix_Music* mBackGrMusic;
@@ -80,11 +80,11 @@ void Music::whenTappedButton(){
 }
 
 void Music::whenDie(){
-    Mix_PlayChannel(SECCOND_CHANNEL, mMusicWhenDie, 0);
+    Mix_PlayChannel(THIRD_CHANNEL, mMusicWhenDie, 0);
 }
 
 void Music::whenKill(){
-    Mix_PlayChannel(SECCOND_CHANNEL, mMusicWhenKill, 0);
+    Mix_PlayChannel(FOURTH_CHANNEL, mMusicWhenKill, 0);
 }
 
 void Music::whenShoot(){

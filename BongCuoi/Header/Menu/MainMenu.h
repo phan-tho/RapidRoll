@@ -9,31 +9,43 @@ class MainMenu{
 public:
     MainMenu();
     
+    // Display and control menu
     void handle();
     
 protected:
+    // Reload media when player exit from game
     void init();
     
+    // Free media
     void close();
     
+    // Render 2 mode and selected mode
     void renderOptMode();
     
+    // render high score, user name and button play
     void renderButton();
     
+    // handle when player click button user name, high score or play
     void handeEvent(SDL_Event* e);      // isTapped
     
+    // Handle character typed by keyboard when rename
     void handleInputText(SDL_Event* e);
     
+    // Choose mode by handle mouse button down
+    // Mark yellow frame selected mode
     void ChooseMode(SDL_Event* e);
     
+    // Play selected mode
     void play();
     
+    // Write new data to file text
     void writeFile();
     
+    // Check coordinate of mouse is or isnot in button
     bool isInButton(const int& button);
     
 private:
-    const int FRAME_SLT_HEIGHT = 190;
+    const int FRAME_SLT_HEIGHT = 190;   // frame selected
     const int FRAME_SLT_WIDTH  = 420;
     
     enum CHANNEL{
@@ -41,7 +53,7 @@ private:
         SECCOND_CHANNEL     // Back ground music
     };
     
-    enum Option{
+    enum mButton{
         BASIC_MODE,
         SHOOTING_MODE,
         PLAY,
@@ -139,6 +151,7 @@ void MainMenu::handeEvent(SDL_Event *e){
     
     ChooseMode(e);
     
+    // Mouse is in button play
     if( isInButton(PLAY) ){
         isZoomOut = PLAY;
         
@@ -146,6 +159,7 @@ void MainMenu::handeEvent(SDL_Event *e){
             play();
         }
     }
+    // Mouse is in button high score
     else if( isInButton(HIGH_SCORE) ){
         isZoomOut = HIGH_SCORE;
         
@@ -156,6 +170,7 @@ void MainMenu::handeEvent(SDL_Event *e){
             writeFile();
         }
     }
+    // mouse is in button user name
     else if( isInButton(USER_NAME) ){
         if(isFixingName == 0)      isZoomOut = USER_NAME;
 
@@ -189,6 +204,8 @@ void MainMenu::handleInputText(SDL_Event* e){
     }
 }
 
+// CHOOSE MODE
+// SIGN YELLOW FRAME IN SELCETED MODE
 void MainMenu::ChooseMode(SDL_Event* e){
     for(int button = 0; button < 2; button++){
         if( isInButton(button)) {
@@ -259,7 +276,6 @@ void MainMenu::renderOptMode(){
 // High score
 // Button Play
 // User name
-// UPDATE FEATURE ZOOM OUT IN FUTURE
 void MainMenu::renderButton(){
     if(isZoomOut == PLAY){
         mPlay.renderCustomSize(POS[PLAY].x - DIMENSIONS[PLAY].x/10, POS[PLAY].y - DIMENSIONS[PLAY].y/10, 1.2);

@@ -16,7 +16,7 @@ int findBlockSameY(const Ball& ball, const std::deque<Block>& Blocks){
     int l = 0, r = int(Blocks.size()) - 1;
     while(l <= r){
         int mid = (l + r)/2;
-        int blockPos = (*(Blocks.begin() + mid)).PosY;
+        int blockPos = (*(Blocks.begin() + mid)).getY();
         
         if( (blockPos + (*Blocks.begin()).BLOCK_HEIGHT >= ball.mPosY + ball.BALL_HEIGHT) && (ball.mPosY + ball.BALL_HEIGHT >= blockPos) ){
             return mid;
@@ -35,7 +35,7 @@ int findNearestBlock(const Ball& ball, const std::deque<Block>& Blocks){
     int l = 0, r = int(Blocks.size()) - 1;
     while(l < r){
         int mid = (l + r)/2;
-        int blockPos = (*(Blocks.begin() + mid)).PosY;
+        int blockPos = (*(Blocks.begin() + mid)).getY();
         
         if( (blockPos + (*Blocks.begin()).BLOCK_HEIGHT >= ball.mPosY + ball.BALL_HEIGHT) && (ball.mPosY + ball.BALL_HEIGHT >= blockPos) ){
             return mid;
@@ -52,19 +52,19 @@ int checkCollideBlock(Ball& ball, const std::deque<Block>& Blocks, const int& po
     
     Block block = *(Blocks.begin() + pos);
     // check block pos Y collide or not
-    int blockPosY = block.PosY;
+    int blockPosY = block.getY();
     if( (blockPosY + block.BLOCK_HEIGHT < ball.mPosY) || (ball.mPosY + ball.BALL_HEIGHT < blockPosY) ){
         return -20;
     }                                       // NOT COLLIDE WITH ANY BLOCK
     
     // check block pos X collide or not
-    int blockPosX = block.PosX;
+    int blockPosX = block.getX();
     
     // COLLIDE -----------------------------------------------------------------------------------------------------------------------------------
     if( (ball.mPosX + ball.BALL_WIDTH*10/10 > blockPosX) && (ball.mPosX + ball.BALL_WIDTH*0/10 < blockPosX + (*Blocks.begin()).BLOCK_WIDTH) ){
         
         // AVOID BALL ISNOT CIRCLE (BLOCK FILL A PART OF BALL)
-        ball.mPosY = block.PosY - ball.BALL_HEIGHT;
+        ball.mPosY = block.getY() - ball.BALL_HEIGHT;
         
         if(block.dynamic){
             return (block.left ? -block.dentaX : block.dentaX);             // LEFT VELOCITY (CAN BE NEGATIVE)
@@ -99,7 +99,7 @@ int findNearestTrap(const Ball& ball, const std::deque<Trap>& Traps){
     int l = 0, r = int(Traps.size()) - 1;
     while(l < r){
         int mid = (l + r)/2;
-        int trapPos = (*(Traps.begin() + mid)).PosY;
+        int trapPos = (*(Traps.begin() + mid)).getY();
         
         if( (trapPos + (*Traps.begin()).TRAP_HEIGHT >= ball.mPosY + ball.BALL_HEIGHT) && (ball.mPosY + ball.BALL_HEIGHT >= trapPos) ){
             return mid;
@@ -117,17 +117,17 @@ bool checkCollideTrap(Ball& ball, const std::deque<Trap>& Traps, const int& pos)
     Trap trap = *(Traps.begin() + pos);
     
     // check block pos Y collide or not
-    int trapPosY = trap.PosY;
+    int trapPosY = trap.getY();
     if( (trapPosY + trap.TRAP_HEIGHT < ball.mPosY) || (ball.mPosY + ball.BALL_HEIGHT < trapPosY) ){
         return false;
     }                                       // NOT COLLIDE WITH ANY BLOCK
     
-    int trapPosX = (*(Traps.begin() + pos)).PosX;
+    int trapPosX = (*(Traps.begin() + pos)).getX();
     if( (ball.mPosX + ball.BALL_WIDTH*10/10 >= trapPosX) && (ball.mPosX + ball.BALL_WIDTH*0/10 <= trapPosX + (*Traps.begin()).TRAP_WIDTH) ){
         
         // AVOID BALL ISNOT CIRCLE (BLOCK FILL A PART OF BALL)
         
-        ball.mPosY = (*(Traps.begin() + pos)).PosY - ball.BALL_HEIGHT;
+        ball.mPosY = (*(Traps.begin() + pos)).getY() - ball.BALL_HEIGHT;
         return true;
     }
     

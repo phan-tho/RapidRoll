@@ -15,21 +15,30 @@ public:
     
     void Play();
     
+protected:
     bool handleEvent(SDL_Event e);     // return true to quit
     
     // PROCESSING
-    void handleWhenPlay();
     // GEN, MOVE ITEM AND CHECK COLLDE
     // AUTO MOVE
+    void handleWhenPlay();
     
+    // RENDER ITEM IN SCREEN
     void handleWhenPause();
     
+    // RENDER ITEM WITHIN 1.5S AND RENDER GAMEOVER
+    // HANDLE MUSIC
+    // RENDER HIGH SCORE
     void handleWhenDie();
-    // RENDER ITEM WITHIN 1.5S AND RENDER GAMEOVER. HANDLE MUSIC
     
+    // RESET ALL PARAMETER WHEN REPLAY
     void resetParameter();
     
+    // 2 BALL BOUND WHEN COLLIDE
     void ballBoundWhenCollide(Ball& ball1, Ball& ball2);
+    
+    // DESTOR MEDIA WHEN NOT USE
+    void close();
     
 private:
     BallWithGun playerBall;
@@ -49,8 +58,6 @@ private:
     
     int reloadTime;
     // reload Time = 0 ==> can fire
-    
-    void close();
 };
 
 
@@ -91,7 +98,7 @@ void ShootingMode::Play(){
             continue;
         }
         
-//        // is music is paused, resume music
+        // is music is paused, resume music
         music.resumeBackGrMusic();
         
         if(playerBall.life > 0){               // WHEN PAUSE = FALSE
@@ -108,6 +115,10 @@ void ShootingMode::Play(){
     }
 }
 
+// HANDLE EVENT
+// ORIENT BALL
+// SHOOT BULLET
+// BUTTON AUTO, PAUSE, PLAY, REPLAY, EXIT IS TAPPED
 bool ShootingMode::handleEvent(SDL_Event e){
     if( e.type == SDL_QUIT){
         music.whenTappedButton();
@@ -131,6 +142,12 @@ bool ShootingMode::handleEvent(SDL_Event e){
     return false;
 }
 
+// GENERATE BLOCK, TRAP, HEART, FUEL
+// MOVE ITEM
+// HANDLE EVENT FROM KEYBOARD AND MOUSE
+// MOVE PLAYER BALL AND ENEMY BALL
+// HANDLE BULLET
+// CHECK LIFE OF 2 BALLS
 void ShootingMode::handleWhenPlay(){
     genItem(fuel, heart);
     moveBlocksAndTraps();
@@ -176,6 +193,8 @@ void ShootingMode::handleWhenPlay(){
     // APPEAR AFTER 1 SECOND
 }
 
+// REDNDER ALL ITEM
+// HANDLE EVENT OF 3 BUTTONS: PLAY, REPLAY, EXIT
 void ShootingMode::handleWhenPause(){
     renderBlocksAndTraps();
     renderHeart(heart);
@@ -202,6 +221,8 @@ void ShootingMode::handleWhenPause(){
     SDL_RenderPresent( gRenderer );
 }
 
+// HANDLE ITEM 1.5S
+// PAUSE AND RENDER THEM
 void ShootingMode::handleWhenDie(){
     if(cntTime++ < TIME_DELAY){
         moveBlocksAndTraps();
@@ -262,7 +283,7 @@ void ShootingMode::ballBoundWhenCollide(Ball &ball1, Ball &ball2){
 void ShootingMode::resetParameter(){
     Game::resetParameter();             // inherit from Game
     
-    playerBall.life = 3;
+    playerBall.life = 10;
     score = 0;
     
     playerBall.reset();

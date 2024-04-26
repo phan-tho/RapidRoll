@@ -12,83 +12,85 @@
 LTexture gTextTexture;
 
 class Game{
-    public:
-        Game();
-        
-        void Play();
+public:
+    Game();
     
-        void resetParameter();
-        
-        void renderLifeAndScore(const int& score, const int& life);
-    
-        void renderGameOver(const int& score, const int& MODE);
-    
-        // PROCESSING BLOCKS AND TRAPS -->
-        void genItem(Fuel& fuel, Heart& heart);         // BLOCKS TRAPS HEART FUEL
-        void moveBlocksAndTraps();
-        void removeItemOutBoard();
-        void renderBlocksAndTraps();
-    
-        // PROCESSING HEART -->
-        void moveHeart(Heart& heart);
-        void renderHeart(const Heart& heart);
-        
-        // PROCESSING FUEL -->
-        void moveFuel(Fuel& fuel);
-        void renderFuel(const Fuel& fuel);
-        
-        void moveBall(Ball& ball, const int& nearestPosBlock);
-        void renderBall(Ball& ball);
-    
-        void renderEnergyBar(Ball& ball);
-    
-        void checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const int& idNearTrap);     // DIE OR EAT HEART FUEL
-    
-        void updateScoreAndDentaY(int& score);
-    
-        void close();
-    protected:
-        int DENTA_Y;
-    
-        Pause OptionInGame;
-    
-        std::deque<Block> Blocks;               // distance is 170
-        std::deque<Trap>  Traps;
-    
-        const int TIME_DELAY = 90;                  // 1.5s
-    
-        Music music;
-        Guide guide;
-    
-        LTexture mBackground;
+    void Play();
 
-        LTexture mGameOver;
+    // PROCESSING BLOCKS AND TRAPS -->
+    void genItem(Fuel& fuel, Heart& heart);         // BLOCKS TRAPS HEART FUEL
+    void moveBlocksAndTraps();
+    void removeItemOutBoard();
+    void renderBlocksAndTraps();
 
-        LTexture mBlock;
-        LTexture mHeart;
-        LTexture mTrap;
+    // PROCESSING HEART -->
+    void moveHeart(Heart& heart);
+    void renderHeart(const Heart& heart);
+    
+    // PROCESSING FUEL -->
+    void moveFuel(Fuel& fuel);
+    void renderFuel(const Fuel& fuel);
+    
+    void moveBall(Ball& ball, const int& nearestPosBlock);
+    void renderBall(Ball& ball);
 
-        LTexture mFuel;
-    
-        std::vector<std::string> data;
-    
-        enum idData{
-            USER_NAME,
-            BASIC_MODE,
-            SHOOTING_MODE
-        };
-    
-    private:
-        const int BLOCK_ABOVE_TRAP = 2;             // 3  BLOCK ==> 1 TRAP
-        const int BLOCK_ABOVE_HEART = 13;           // 15 BLOCK ==> 1 HEART
-        const int BLOCK_ABOVE_FUEL = 18;            // AVOID = BLOCK_ABOVE_HEART
-    
-        const int MENU_OVER_HEIGHT = 106;
-        const int MENU_OVER_WIDTH  = 320;
+    void renderEnergyBar(Ball& ball);
 
-        int waitRevive;
+    void checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const int& idNearTrap);     // DIE OR EAT HEART FUEL
+    
+    void updateScoreAndDentaY(int& score);
+    
+    // Reset para when replay
+    void resetParameter();
+    
+    void renderLifeAndScore(const int& score, const int& life);
+    
+    // RENDER MESSAGE GAME OVER AND HIGH SCORE
+    void renderGameOver(const int& score, const int& MODE);
 
-        int cnt;
+    void close();
+protected:
+    int DENTA_Y;
+
+    Pause OptionInGame;
+
+    std::deque<Block> Blocks;               // distance is 170
+    std::deque<Trap>  Traps;
+
+    const int TIME_DELAY = 90;                  // 1.5s
+
+    Music music;
+    Guide guide;
+
+    LTexture mBackground;
+
+    LTexture mGameOver;
+
+    LTexture mBlock;
+    LTexture mHeart;
+    LTexture mTrap;
+
+    LTexture mFuel;
+
+    std::vector<std::string> data;
+
+    enum idData{
+        USER_NAME,
+        BASIC_MODE,
+        SHOOTING_MODE
+    };
+
+private:
+    const int BLOCK_ABOVE_TRAP = 2;             // 3  BLOCK ==> 1 TRAP
+    const int BLOCK_ABOVE_HEART = 13;           // 15 BLOCK ==> 1 HEART
+    const int BLOCK_ABOVE_FUEL = 18;            // AVOID = BLOCK_ABOVE_HEART
+
+    const int MENU_OVER_HEIGHT = 106;
+    const int MENU_OVER_WIDTH  = 320;
+
+    int waitRevive;
+
+    int cnt;
 };
 
 void Game::renderLifeAndScore(const int& score, const int& life){
@@ -141,7 +143,7 @@ void Game::genItem(Fuel& fuel, Heart& heart){
         Blocks.push_back(block);
         
         if( cnt % ( (vGEN_BLOCK/DENTA_Y)*(BLOCK_ABOVE_FUEL + 1) ) == 0 && cnt){
-            fuel.assignPos(block.PosX + block.BLOCK_WIDTH/2 - fuel.FUEL_WIDTH/2, block.PosY - fuel.FUEL_HEIGHT);
+            fuel.assignPos(block.getX() + block.BLOCK_WIDTH/2 - fuel.FUEL_WIDTH/2, block.getY() - fuel.FUEL_HEIGHT);
             fuel.isEaten = false;                  // CAN DISPLAY AND EATEN BY BALL
             fuel.moveToLeft = 0;
             
@@ -151,7 +153,7 @@ void Game::genItem(Fuel& fuel, Heart& heart){
         }
         
         else if( cnt % ( (vGEN_BLOCK/DENTA_Y)*(BLOCK_ABOVE_HEART + 1) ) == 0 && cnt){
-            heart.assignPos(block.PosX + block.BLOCK_WIDTH/2 - heart.HEART_WIDTH/2, block.PosY - heart.HEART_HEIGHT);
+            heart.assignPos(block.getX() + block.BLOCK_WIDTH/2 - heart.HEART_WIDTH/2, block.getY() - heart.HEART_HEIGHT);
             heart.isEaten = false;                  // CAN DISPLAY AND EATEN BY BALL
             heart.moveToLeft = 0;
             
@@ -170,21 +172,21 @@ void Game::moveBlocksAndTraps(){
 }
     
 void Game::removeItemOutBoard(){
-    if( !Blocks.empty() && ( *Blocks.begin() ).PosY <= CEILING ){
+    if( !Blocks.empty() && ( *Blocks.begin() ).getY() <= CEILING ){
         Blocks.pop_front();
     }
-    if( !Traps.empty()  && ( *Traps.begin()  ).PosY <= CEILING ){
+    if( !Traps.empty()  && ( *Traps.begin()  ).getY() <= CEILING ){
         Traps.pop_front();
     }
 }
 
 void Game::renderBlocksAndTraps(){
     for(auto it = Blocks.begin(); it != Blocks.end(); it++){                            // RENDER ALL BLOCKS
-        mBlock.render(it->PosX, it->PosY, NULL);
+        mBlock.render(it->getX(), it->getY(), NULL);
     }
     
     for(auto it = Traps.begin(); it != Traps.end(); it++){                              // RENDER ALL TRAPS
-        mTrap.render(it->PosX, it->PosY, NULL);
+        mTrap.render(it->getX(), it->getY(), NULL);
     }
 }
 
@@ -243,8 +245,8 @@ void Game::checkLifeBall(Ball& ball, Heart& heart, Fuel& fuel, int& life, const 
         
         // BALL WILL APPEAR ABOVE LOWEST BLOCK FROM CEILING---------------------------------------------
         if( !Blocks.empty() ){
-            ball.mPosY = Blocks.back().PosY - ball.BALL_HEIGHT;
-            ball.mPosX = Blocks.back().PosX + (Blocks.back().BLOCK_WIDTH - ball.BALL_WIDTH)/2;
+            ball.mPosY = Blocks.back().getY() - ball.BALL_HEIGHT;
+            ball.mPosX = Blocks.back().getX() + (Blocks.back().BLOCK_WIDTH - ball.BALL_WIDTH)/2;
         }
         life--;
         waitRevive = 1;

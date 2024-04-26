@@ -7,14 +7,18 @@ class ChooseBall{
 public:
     ChooseBall();
     
+    // Handle when button left or right is clicked
     void handleEvent(SDL_Event* e);
     
+    // Render left, right arrow and selected ball
     void render();
     
     void init();
     
     void close();
     
+    // Get path of image
+    // Load only 1 ball image when play. Save of memory
     std::string getPath();
     
 private:
@@ -67,6 +71,8 @@ private:
     LTexture ButtonChange;
 };
 
+
+// RENDER ARROW, BALL
 void ChooseBall::render(){
     // render ball in logo
     
@@ -90,6 +96,8 @@ void ChooseBall::render(){
     ButtonChange.renderFlip(POS_ARROW[RIGHT].x, POS_ARROW[RIGHT].y, NULL, 90, NULL, SDL_FLIP_NONE, 10/3);
 }
 
+// BUTTON LEFT OR RIGHT IS TAPPED
+// CHANGE SELECTED BALL
 void ChooseBall::handleEvent(SDL_Event* e){
     if(e->type != SDL_MOUSEBUTTONDOWN){
         return;
@@ -104,6 +112,7 @@ void ChooseBall::handleEvent(SDL_Event* e){
     }
 }
 
+// CHECK WHETHER COORDINATE OF MOUSE IS IN BUTTON
 bool ChooseBall::isClicked(int button){
     return (xMouse >= POS_ARROW[button].x &&
             xMouse <= POS_ARROW[button].x + ARROW_WIDTH &&

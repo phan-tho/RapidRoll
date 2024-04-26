@@ -2,19 +2,22 @@
 #define Block_h
 
 class Block{
-    public:
-        const int BLOCK_HEIGHT = 10;
-        const int BLOCK_WIDTH  = 65;
+public:
+    const int BLOCK_HEIGHT = 10;
+    const int BLOCK_WIDTH  = 65;
 
-        int PosX, PosY;
-    
-        bool dynamic, left;     // Going left
-    
-        Block();
-        
-        void move(const int& DENTA_Y);
+    int getX() const { return PosX; }
+    int getY() const { return PosY; }
 
-        static int dentaX, staticAboveDyn;
+    bool dynamic, left;     // Going left
+
+    Block();
+    
+    void move(const int& DENTA_Y);
+
+    static int dentaX, staticAboveDyn;
+private:
+    int PosX, PosY;
 };
 
 int Block::dentaX;
@@ -25,7 +28,7 @@ Block::Block(){
     PosX = rand()%(rPIVOT - BLOCK_WIDTH - lPIVOT + 1) + lPIVOT;
     
     dynamic = (rand()%staticAboveDyn == 0);
-    left = (PosX - lPIVOT >= rPIVOT - PosX - BLOCK_WIDTH);
+    left = (getX() - lPIVOT >= rPIVOT - getX() - BLOCK_WIDTH);
 }
 
 void Block::move(const int& DENTA_Y){             // MOVE UP
@@ -37,15 +40,11 @@ void Block::move(const int& DENTA_Y){             // MOVE UP
             PosX = lPIVOT;
             left = false;
         }
-        else if(PosX + BLOCK_WIDTH >= rPIVOT){
+        else if(getX() + BLOCK_WIDTH >= rPIVOT){
             PosX = rPIVOT - BLOCK_WIDTH;
             left = true;
         }
     }
 }
-
-//void Block::render(){
-//    gBlock.render(PosX, PosY, NULL);
-//}
 
 #endif /* Block_h */

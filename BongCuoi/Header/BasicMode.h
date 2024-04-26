@@ -129,7 +129,6 @@ void BasicMode::Play(){
 }
 
 
-
 /*
     Generate and remove block, trap, heart, fuel
     Handle ball and auto ball

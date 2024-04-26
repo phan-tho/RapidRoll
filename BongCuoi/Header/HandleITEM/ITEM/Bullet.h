@@ -81,18 +81,18 @@ int Bullet::checkCollide(const std::deque<Trap>& Traps, const std::deque<Block>&
 }
 
 bool Bullet::isCollideBlock(const Block& block){
-    return ( PosX >= block.PosX - BULLET_WIDTH      &&
-             PosX <= block.PosX + block.BLOCK_WIDTH &&
-             PosY >= block.PosY - BULLET_HEIGHT     &&
-             PosY <= block.PosY + block.BLOCK_HEIGHT
+    return ( PosX >= block.getX() - BULLET_WIDTH      &&
+             PosX <= block.getX() + block.BLOCK_WIDTH &&
+             PosY >= block.getY() - BULLET_HEIGHT     &&
+             PosY <= block.getY() + block.BLOCK_HEIGHT
              );
 }
 
 bool Bullet::isCollideTrap(const Trap& trap){
-    return ( PosX >= trap.PosX - BULLET_WIDTH      &&
-             PosX <= trap.PosX + trap.TRAP_WIDTH   &&
-             PosY >= trap.PosY - BULLET_HEIGHT     &&
-             PosY <= trap.PosY + trap.TRAP_HEIGHT
+    return ( PosX >= trap.getX() - BULLET_WIDTH      &&
+             PosX <= trap.getX() + trap.TRAP_WIDTH   &&
+             PosY >= trap.getY() - BULLET_HEIGHT     &&
+             PosY <= trap.getY() + trap.TRAP_HEIGHT
              );
 }
 
