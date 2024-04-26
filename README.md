@@ -1,6 +1,6 @@
 # Rapid Roll new Edition
 
-- Thử nghiệm game: 
+- Thử nghiệm game: [https://youtu.be/lB1d8x_usHQ](https://youtu.be/lB1d8x_usHQ)
 
 # Giới thiệu game
   Rapid Roll với phiên bản đồ hoạ và điều khiển tốt nhất trên máy tính có 2 chế độ<br/>
@@ -135,22 +135,31 @@ Màn hình hiển thị điểm người chơi và điểm cao nhất <br/>
 - Chia mỗi class thành 1 file header và 1 file .cpp để tách biệt việc triển khai và sử dụng
   * Tuy đã tìm kiếm nhiều cách sửa lỗi trên internet nhưng chưa giải quyết được lỗi khi chia class thành 2 file
 - Việc load icon cho game tiêu tốn quá nhiều RAM
-  <img src="BongCuoi/Image/Preview/Bug/iconError.png" align="right" width="100">
+  <br/><img src="BongCuoi/Image/Preview/Bug/iconError.png" align="right" width="100">
   <img src="BongCuoi/Image/Preview/Bug/codeBug.png" align="right" width="420">
   * Ram game tiêu tốn ở mức 40MB nhưng tăng lên thành 150MB khi load icon cho game.
   * Mong rằng thông qua việc kiểm tra đánh giá có thể khắc phục được lỗi này 
 # 7. Thuật toán auto
 ### Mục tiêu của bóng là di chuyển đến các block và né bẫy
-- Tìm kiếm các block có thể tới và điều chỉnh hướng đi của bóng.
+<img src="BongCuoi/Image/Preview/explainAutoMode/dangerArea.png" align="right" width="100">
+- Tìm kiếm các block có thể tới và điều chỉnh hướng đi của bóng <br/>
 - Né bẫy khi nằm trong vùng nguy hiểm <br/>
 - Ta định nghĩa vận tốc theo phương thẳng của bóng là Vy <br/>
-- Vận tốc theo phương ngang của bóng là Vx
+- Vận tốc theo phương ngang của bóng là Vx <br/>
+
+
 ## Điều hướng bóng đến block có thể đến
 <img src="BongCuoi/Image/Preview/explainAutoMode/reachBlock.png" align="right" width="100"> <br/>
 Bóng có thể đi được trong 1 phạm vi có dạng hình tam giác có tỉ lệ đường cao trên chiều rộng tỉ lệ với Vy trên Vx <br/>
 Xác định block có thể đi đến và điều hướng bóng dụa theo tương quan với block ấy <br/>
 
 ## Né bẫy
-<img src="BongCuoi/Image/Preview/explainAutoMode/avoidTrap.png" align="right" width="100"> <br/>
+#### Trong trường hợp bóng ở trên block
+<img src="BongCuoi/Image/Preview/explainAutoMode/AboveDieBlock.png" align="right" width="100">
+Tránh trường hợp bóng sau khi ra khỏi block rơi vào vùng nguy hiểm<br/>
+Xét 2 đầu của block <br/>
+
+#### Trong trường hợp bóng rơi tự do
+<img src="BongCuoi/Image/Preview/explainAutoMode/avoidTrap.png" align="right" width="100">
 Vùng nguy hiểm của 1 cái bẫy có dạng hình tam giác có tỉ tỉ lệ đường cao trên chiều rộng tỉ lệ với Vy trên Vx <br/>
 Điều hướng bóng trước khi nó đi vào vùng nguy hiểm <br/>
