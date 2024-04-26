@@ -141,7 +141,7 @@ Màn hình hiển thị điểm người chơi và điểm cao nhất <br/>
   * Mong rằng thông qua việc kiểm tra đánh giá có thể khắc phục được lỗi này 
 # 7. Thuật toán auto
 ### Mục tiêu của bóng là di chuyển đến các block và né bẫy
-<img src="BongCuoi/Image/Preview/explainAutoMode/dangerArea.png" align="right" width="100">
+<img src="BongCuoi/Image/Preview/explainAutoMode/dangerArea.png" align="right" width="170">
 - Tìm kiếm các block có thể tới và điều chỉnh hướng đi của bóng <br/>
 - Né bẫy khi nằm trong vùng nguy hiểm <br/>
 - Ta định nghĩa vận tốc theo phương thẳng của bóng là Vy <br/>
